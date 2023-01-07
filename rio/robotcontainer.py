@@ -1,6 +1,4 @@
-# Copyright (c) FIRST and other WPILib contributors.
-# Open Source Software; you can modify and/or share it under the terms of
-# the WPILib BSD license file in the root directory of this project.
+# FRC 1721
 
 import wpilib
 import wpimath.controller
@@ -9,8 +7,13 @@ import commands2
 import commands2.cmd
 import commands2.button
 
-import constants
+# Constants
+from constants.constants import getConstants
+
+# Subsystems
 import subsystems.drivesubsystem
+
+# Commands
 import commands.turntoangle
 import commands.turntoangleprofiled
 
@@ -26,12 +29,17 @@ class RobotContainer:
 
     def __init__(self):
         """The container for the robot. Contains subsystems, OI devices, and commands."""
+        # Setup constants
+        self.controlConsts = getConstants("robot_controls")
+        self.hardConsts = getConstants("robot_hardware")
+        self.pidConsts = getConstants("robot_pid")
+
         # The robot's subsystems
         self.robotDrive = subsystems.drivesubsystem.DriveSubsystem()
 
         # The driver's controller
         self.driverController = commands2.button.CommandPS4Controller(
-            constants.OIConstants.kDriverControllerPort
+            self.controlConsts["driver"]["controller_port"]
         )
 
         # Configure the button bindings
@@ -76,9 +84,9 @@ class RobotContainer:
         ).whileTrue(
             commands2.PIDCommand(
                 wpimath.controller.PIDController(
-                    constants.DriveConstants.kStabilizationP,
-                    constants.DriveConstants.kStabilizationI,
-                    constants.DriveConstants.kStabilizationD,
+                    self.pidConsts["drive"]["kStabilizationP"],
+                    self.pidConsts["drive"]["kStabilizationI"],
+                    self.pidConsts["drive"]["kStabilizationD"],
                 ),
                 # Close the loop on the turn rate
                 self.robotDrive.getTurnRate,

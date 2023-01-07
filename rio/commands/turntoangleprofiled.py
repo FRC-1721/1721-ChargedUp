@@ -10,7 +10,7 @@ import wpimath.trajectory
 
 from subsystems.drivesubsystem import DriveSubsystem
 
-import constants
+from constants.constants import getConstants
 
 
 class TurnToAngleProfiled(commands2.ProfiledPIDCommand):
@@ -23,14 +23,17 @@ class TurnToAngleProfiled(commands2.ProfiledPIDCommand):
         :param: targetAngleDegrees The angle to turn to
         :param: drive The drive subsystem to
         """
+
+        pidConst = getConstants("robot_pid")["drive"]  # Get all the drive PID
+
         super().__init__(
             wpimath.controller.ProfiledPIDController(
-                constants.DriveConstants.kTurnP,
-                constants.DriveConstants.kTurnI,
-                constants.DriveConstants.kTurnD,
+                pidConst["kTurnP"],
+                pidConst["kTurnI"],
+                pidConst["kTurnD"],
                 wpimath.trajectory.TrapezoidProfile.Constraints(
-                    constants.DriveConstants.kMaxTurnRateDegPerS,
-                    constants.DriveConstants.kMaxTurnAccelerationDegPerSSquared,
+                    pidConst["kMaxTurnRateDegPerS"],
+                    pidConst["kMaxTurnAccelerationDegPerSSquared"],
                 ),
             ),
             # Close loop on heading
@@ -49,8 +52,8 @@ class TurnToAngleProfiled(commands2.ProfiledPIDCommand):
         # Set the controller tolerance - the delta tolerance ensures the robot is stationary at the
         # setpoint before it is considered as having reached the reference
         self.getController().setTolerance(
-            constants.DriveConstants.kTurnToleranceDeg,
-            constants.DriveConstants.kTurnRateToleranceDegPerS,
+            pidConst["kTurnToleranceDeg"],
+            pidConst["kTurnRateToleranceDegPerS"],
         )
 
     def isFinished(self) -> bool:

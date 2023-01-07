@@ -1,14 +1,13 @@
-# Copyright (c) FIRST and other WPILib contributors.
-# Open Source Software; you can modify and/or share it under the terms of
-# the WPILib BSD license file in the root directory of this project.
+# FRC 1721
 
-
+# Robot
 import wpilib
 import wpilib.drive
 import commands2
 import math
 
-import constants
+# Constants
+from constants.constants import getConstants
 
 
 class DriveSubsystem(commands2.SubsystemBase):
@@ -16,16 +15,20 @@ class DriveSubsystem(commands2.SubsystemBase):
         """Creates a new DriveSubsystem"""
         super().__init__()
 
+        # Get hardware constants
+        constants = getConstants("robot_hardware")
+        self.drive_const = constants["drivetrain"]
+
         # The motors on the left side of the drive.
         self.leftMotors = wpilib.MotorControllerGroup(
-            wpilib.PWMSparkMax(constants.DriveConstants.kLeftMotor1Port),
-            wpilib.PWMSparkMax(constants.DriveConstants.kLeftMotor2Port),
+            wpilib.PWMSparkMax(self.drive_const["leftMotor"]["kLeftMotor1Port"]),
+            wpilib.PWMSparkMax(self.drive_const["leftMotor"]["kLeftMotor2Port"]),
         )
 
         # The motors on the right side of the drive.
         self.rightMotors = wpilib.MotorControllerGroup(
-            wpilib.PWMSparkMax(constants.DriveConstants.kRightMotor1Port),
-            wpilib.PWMSparkMax(constants.DriveConstants.kRightMotor2Port),
+            wpilib.PWMSparkMax(self.drive_const["rightMotor"]["kRightMotor1Port"]),
+            wpilib.PWMSparkMax(self.drive_const["rightMotor"]["kRightMotor2Port"]),
         )
 
         # The robot's drive
@@ -33,16 +36,16 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # The left-side drive encoder
         self.leftEncoder = wpilib.Encoder(
-            constants.DriveConstants.kLeftEncoderPorts[0],
-            constants.DriveConstants.kLeftEncoderPorts[1],
-            constants.DriveConstants.kLeftEncoderReversed,
+            self.drive_const["leftMotor"]["kLeftEncoderPorts"][0],
+            self.drive_const["leftMotor"]["kLeftEncoderPorts"][1],
+            self.drive_const["leftMotor"]["kLeftEncoderReversed"],
         )
 
         # The right-side drive encoder
         self.rightEncoder = wpilib.Encoder(
-            constants.DriveConstants.kRightEncoderPorts[0],
-            constants.DriveConstants.kRightEncoderPorts[1],
-            constants.DriveConstants.kRightEncoderReversed,
+            self.drive_const["rightMotor"]["kRightEncoderPorts"][0],
+            self.drive_const["rightMotor"]["kRightEncoderPorts"][1],
+            self.drive_const["rightMotor"]["kRightEncoderReversed"],
         )
 
         # We need to invert one side of the drivetrain so that positive voltages
@@ -51,12 +54,12 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.rightMotors.setInverted(True)
 
         # Sets the distance per pulse for the encoders
-        self.leftEncoder.setDistancePerPulse(
-            constants.DriveConstants.kEncoderDistancePerPulse
-        )
-        self.rightEncoder.setDistancePerPulse(
-            constants.DriveConstants.kEncoderDistancePerPulse
-        )
+        encoderDistPerP = (
+            self.drive_const["kWheelDiameterInches"] * math.pi
+        ) / self.drive_const["kEncoderCPR"]
+
+        self.leftEncoder.setDistancePerPulse(encoderDistPerP)
+        self.rightEncoder.setDistancePerPulse(encoderDistPerP)
 
         self.gyro = wpilib.ADXRS450_Gyro()
 
@@ -119,7 +122,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         :returns: the robot's heading in degrees, from 180 to 180
         """
         return math.remainder(self.gyro.getAngle(), 180) * (
-            -1 if constants.DriveConstants.kGyroReversed else 1
+            -1 if self.drive_const["leftMotor"]["kGyroReversed"] else 1
         )
 
     def getTurnRate(self):
@@ -128,6 +131,4 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.gyro.getRate() * (
-            -1 if constants.DriveConstants.kGyroReversed else 1
-        )
+        return self.gyro.getRate() * (-1 if self.drive_const["kGyroReversed"] else 1)
