@@ -1,0 +1,8 @@
+# Sphinx
+sphinx
+sphinx_rtd_theme
+#groundwork-sphinx-theme
+readthedocs-sphinx-search
+
+# Other build
+GitPython

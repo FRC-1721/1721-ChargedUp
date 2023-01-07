@@ -1,0 +1,5 @@
+# This file defines the input
+# and control scheme of the robot.
+
+driver:
+  controller_port: 0 # What usb port the driver controller is on
