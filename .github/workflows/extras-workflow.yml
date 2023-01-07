@@ -6,31 +6,31 @@ jobs:
     runs-on: ubuntu-latest
     name: Build Docs
     steps:
-    - name: Setup Python
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.10'
-        architecture: x64
-    
-    - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
+      - name: Setup Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.10"
+          architecture: x64
 
-    - run: sudo apt update
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
 
-    - run: sudo apt install texlive-latex-recommended texlive-latex-extra texlive-pictures pandoc rename latexmk
+      - run: sudo apt update
 
-    - name: Install requirements
-      run: pip install -r docs/requirements.txt
+      - run: sudo apt install texlive-latex-recommended texlive-latex-extra texlive-pictures pandoc rename latexmk
 
-    - run: cd docs && make latexpdf
+      - name: Install requirements
+        run: pip install -r docs/requirements.txt
 
-    - run: mv docs/_build/latex/*.pdf docs/_build/latex/Burnt_Toaster_Robot_Manual.pdf
+      - run: cd docs && make latexpdf
 
-    - uses: actions/upload-artifact@v2
-      with:
-        name: Tidal_Force_Robot_Manual
-        path: docs/_build/latex/Burnt_Toaster_Robot_Manual.pdf
+      - run: mv docs/_build/latex/*.pdf docs/_build/latex/Burnt_Toaster_Robot_Manual.pdf
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: Tidal_Force_Robot_Manual
+          path: docs/_build/latex/Burnt_Toaster_Robot_Manual.pdf
 
   # make_dashboard:
   #   runs-on: ubuntu-latest
@@ -41,7 +41,7 @@ jobs:
   #     with:
   #       python-version: '3.8'
   #       architecture: x64
-    
+
   #   - uses: actions/checkout@v2
   #     with:
   #       fetch-depth: 0
@@ -74,38 +74,38 @@ jobs:
     needs: [make_docs]
 
     steps:
-    - uses: actions/download-artifact@v2
-      with:
-        name: Tidal_Force_Robot_Manual
-    
-    - uses: actions/download-artifact@v2
-      with:
-        name: Dashboard_Transpiled
-        path: Dashboard_Transpiled/
-    
-    - uses: papeloto/action-zip@v1
-      with:
-        files: Dashboard_Transpiled/
-        dest: Dashboard_Transpiled.zip
+      - uses: actions/download-artifact@v2
+        with:
+          name: Tidal_Force_Robot_Manual
 
-    - name: Upload Docs to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: '*.pdf'
-        tag: ${{ github.ref }}
-        overwrite: true
-        prerelease: true
-        body: "Tidal Force Robotics, Automated with github ci/cd."
-        file_glob: true
-    
-    - name: Upload Dashboard to release
-      uses: svenstaro/upload-release-action@v2
-      with:
-        repo_token: ${{ secrets.GITHUB_TOKEN }}
-        file: '*.zip'
-        tag: ${{ github.ref }}
-        overwrite: true
-        prerelease: true
-        body: "Tidal Force Robotics, Automated with github ci/cd."
-        file_glob: true
+      - uses: actions/download-artifact@v2
+        with:
+          name: Dashboard_Transpiled
+          path: Dashboard_Transpiled/
+
+      - uses: papeloto/action-zip@v1
+        with:
+          files: Dashboard_Transpiled/
+          dest: Dashboard_Transpiled.zip
+
+      - name: Upload Docs to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: "*.pdf"
+          tag: ${{ github.ref }}
+          overwrite: true
+          prerelease: true
+          body: "Tidal Force Robotics, Automated with github ci/cd."
+          file_glob: true
+
+      - name: Upload Dashboard to release
+        uses: svenstaro/upload-release-action@v2
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: "*.zip"
+          tag: ${{ github.ref }}
+          overwrite: true
+          prerelease: true
+          body: "Tidal Force Robotics, Automated with github ci/cd."
+          file_glob: true
