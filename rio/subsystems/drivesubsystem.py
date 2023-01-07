@@ -9,6 +9,9 @@ import math
 # Constants
 from constants.constants import getConstants
 
+# Vendor Libs
+from rev import CANSparkMax, CANSparkMaxLowLevel
+
 
 class DriveSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
@@ -16,19 +19,21 @@ class DriveSubsystem(commands2.SubsystemBase):
         super().__init__()
 
         # Get hardware constants
-        constants = getConstants("robot_hardware")
-        self.drive_const = constants["drivetrain"]
+        constants = getConstants("robot_hardware")  # All the robot hardware consts
+        self.driveConst = constants["drivetrain"]  # All the drivetrain consts
+        self.leftCosnt = self.driveConst["leftMotor"]  # Left specific
+        self.rightCosnt = self.driveConst["rightMotor"]  # Right specific
 
         # The motors on the left side of the drive.
         self.leftMotors = wpilib.MotorControllerGroup(
-            wpilib.PWMSparkMax(self.drive_const["leftMotor"]["kLeftMotor1Port"]),
-            wpilib.PWMSparkMax(self.drive_const["leftMotor"]["kLeftMotor2Port"]),
+            wpilib.PWMSparkMax(self.leftCosnt["kLeftMotor1Port"]),
+            wpilib.PWMSparkMax(self.leftCosnt["kLeftMotor2Port"]),
         )
 
         # The motors on the right side of the drive.
         self.rightMotors = wpilib.MotorControllerGroup(
-            wpilib.PWMSparkMax(self.drive_const["rightMotor"]["kRightMotor1Port"]),
-            wpilib.PWMSparkMax(self.drive_const["rightMotor"]["kRightMotor2Port"]),
+            wpilib.PWMSparkMax(self.rightCosnt["kRightMotor1Port"]),
+            wpilib.PWMSparkMax(self.rightCosnt["kRightMotor2Port"]),
         )
 
         # The robot's drive
@@ -36,16 +41,16 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # The left-side drive encoder
         self.leftEncoder = wpilib.Encoder(
-            self.drive_const["leftMotor"]["kLeftEncoderPorts"][0],
-            self.drive_const["leftMotor"]["kLeftEncoderPorts"][1],
-            self.drive_const["leftMotor"]["kLeftEncoderReversed"],
+            self.leftCosnt["kLeftEncoderPorts"][0],
+            self.leftCosnt["kLeftEncoderPorts"][1],
+            self.leftCosnt["kLeftEncoderReversed"],
         )
 
         # The right-side drive encoder
         self.rightEncoder = wpilib.Encoder(
-            self.drive_const["rightMotor"]["kRightEncoderPorts"][0],
-            self.drive_const["rightMotor"]["kRightEncoderPorts"][1],
-            self.drive_const["rightMotor"]["kRightEncoderReversed"],
+            self.rightCosnt["kRightEncoderPorts"][0],
+            self.rightCosnt["kRightEncoderPorts"][1],
+            self.rightCosnt["kRightEncoderReversed"],
         )
 
         # We need to invert one side of the drivetrain so that positive voltages
@@ -55,8 +60,8 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # Sets the distance per pulse for the encoders
         encoderDistPerP = (
-            self.drive_const["kWheelDiameterInches"] * math.pi
-        ) / self.drive_const["kEncoderCPR"]
+            self.driveConst["kWheelDiameterInches"] * math.pi
+        ) / self.driveConst["kEncoderCPR"]
 
         self.leftEncoder.setDistancePerPulse(encoderDistPerP)
         self.rightEncoder.setDistancePerPulse(encoderDistPerP)
@@ -122,7 +127,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         :returns: the robot's heading in degrees, from 180 to 180
         """
         return math.remainder(self.gyro.getAngle(), 180) * (
-            -1 if self.drive_const["leftMotor"]["kGyroReversed"] else 1
+            -1 if self.leftCosnt["kGyroReversed"] else 1
         )
 
     def getTurnRate(self):
@@ -131,4 +136,4 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.gyro.getRate() * (-1 if self.drive_const["kGyroReversed"] else 1)
+        return self.gyro.getRate() * (-1 if self.driveConst["kGyroReversed"] else 1)
