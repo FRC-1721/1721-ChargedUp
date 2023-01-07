@@ -8,5 +8,5 @@ Bill Of Materials
 
 .. csv-table:: Bill Of Materials
    :file: resources/bom.csv
-   :widths: 250 45 85 85 60
+   :widths: 250 45 85 85
    :header-rows: 1
