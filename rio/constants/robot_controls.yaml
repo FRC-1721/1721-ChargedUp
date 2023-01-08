@@ -4,6 +4,10 @@
 driver:
   controller_port: 0 # What usb port the driver controller is on
 
+  # Axis
+  ForwardAxis: 0
+  SteerAxis: 1
+
   # Buttons
   HalfSpeedButton: 1
   DiffLock: 2

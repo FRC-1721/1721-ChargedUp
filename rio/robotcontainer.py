@@ -33,13 +33,14 @@ class RobotContainer:
         self.controlConsts = getConstants("robot_controls")
         self.hardConsts = getConstants("robot_hardware")
         self.pidConsts = getConstants("robot_pid")
+        self.driveConsts = self.controlConsts["driver"]
 
         # The robot's subsystems
         self.robotDrive = subsystems.drivesubsystem.DriveSubsystem()
 
         # The driver's controller
         self.driverController = commands2.button.CommandJoystick(
-            self.controlConsts["driver"]["controller_port"]
+            self.driveConsts["controller_port"]
         )
 
         # Configure the button bindings
@@ -52,8 +53,8 @@ class RobotContainer:
             # hand, and turning controlled by the right.
             commands2.RunCommand(
                 lambda: self.robotDrive.arcadeDrive(
-                    -self.driverController.getLeftY(),
-                    -self.driverController.getRightX(),
+                    -self.driverController.getRawAxis(self.driveConsts["ForwardAxis"]),
+                    -self.driverController.getRawAxis(self.driveConsts["SteerAxis"]),
                 ),
                 [self.robotDrive],
             )
@@ -65,12 +66,9 @@ class RobotContainer:
         factories on commands2.button.CommandGenericHID or one of its
         subclasses (commands2.button.CommandJoystick or command2.button.CommandXboxController).
         """
-        # Get the controller config
-        driverControls = getConstants("robot_controls")["driver"]
-
         # Drive at half speed when the right bumper is held
         commands2.button.JoystickButton(
-            self.driverController, driverControls["HalfSpeedButton"]
+            self.driverController, self.driveConsts["HalfSpeedButton"]
         ).onTrue(
             commands2.InstantCommand(
                 (lambda: self.robotDrive.setMaxOutput(0.5)), [self.robotDrive]
@@ -84,7 +82,7 @@ class RobotContainer:
         # Stabilize robot to drive straight with gyro when left bumper is held
         # TODO: Load button from config file
         commands2.button.JoystickButton(
-            self.driverController, driverControls["DiffLock"]
+            self.driverController, self.driveConsts["DiffLock"]
         ).whileTrue(
             commands2.PIDCommand(
                 wpimath.controller.PIDController(
@@ -108,13 +106,13 @@ class RobotContainer:
         # Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
         # TODO: Load button from config file
         commands2.button.JoystickButton(
-            self.driverController, driverControls["Turn90"]
+            self.driverController, self.driveConsts["Turn90"]
         ).onTrue(commands.turntoangle.TurnToAngle(90, self.robotDrive).withTimeout(5))
 
         # Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
         # TODO: Load button from config file
         commands2.button.JoystickButton(
-            self.driverController, driverControls["TurnAnti90"]
+            self.driverController, self.driveConsts["TurnAnti90"]
         ).onTrue(
             commands.turntoangleprofiled.TurnToAngleProfiled(
                 -90, self.robotDrive
