@@ -18,3 +18,4 @@ _staging
 .OutlineViewer/
 *.out
 sysid_data*
+*_cfg
