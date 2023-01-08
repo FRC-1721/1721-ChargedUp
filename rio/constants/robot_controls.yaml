@@ -3,3 +3,9 @@
 
 driver:
   controller_port: 0 # What usb port the driver controller is on
+
+  # Buttons
+  HalfSpeedButton: 1
+  DiffLock: 2
+  Turn90: 3
+  TurnAnti90: 4
