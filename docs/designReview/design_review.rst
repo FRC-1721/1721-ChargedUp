@@ -9,7 +9,7 @@ Introduction
 
 |outreach|
 
-Talk about our design review process in this section.
+Design review process
 
 Bumpers
 =======

@@ -81,7 +81,7 @@ Examples for each in order are:
 
 .. code-block:: shell
 
-   git clone https://github.com/FRC-1721/1721-RapidReact.git
+   git clone https://github.com/FRC-1721/1721-ChargedUp.git
    git add -A
    git status
    git commit -m "added git subsection"
@@ -111,7 +111,7 @@ Making Pull requests
 
 While you will mostly interact with github through git you should know how to make pull requests.
 
-First go to the current `repo 1721 RapidReact <https://github.com/FRC-1721/1721-RapidReact/tree/main>`_.
+First go to the current `repo 1721 ChargedUp <https://github.com/FRC-1721/1721-ChargedUp/tree/main>`_.
 
 .. figure:: resources/githubPullrequest.png
    :width: 80%
