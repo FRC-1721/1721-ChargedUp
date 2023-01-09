@@ -5,6 +5,8 @@ simgui*
 __pycache__
 _build
 *.*~
+*_cfg
+*_config
 .python-version
 
 # dashboard build files
@@ -18,4 +20,4 @@ _staging
 .OutlineViewer/
 *.out
 sysid_data*
-*_cfg
+
