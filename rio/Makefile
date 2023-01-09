@@ -34,7 +34,7 @@ push:
 	python robot.py deploy
 
 # Shortcut for the download command
-download:	
+download:
 	robotpy-installer download -r robot_requirements.txt
 
 # Shortcut for the install command, run download first!

@@ -5,8 +5,8 @@ name = "pypi"
 
 [packages]
 robotpy = {extras = ["rev", "ctre", "commands2"], version = "*"}
-pynetworktables = "*"
 wpilib = {extras = ["all"], version = "*"}
+pynetworktables = "*"
 pyyaml = "*"
 black = "*"
 
