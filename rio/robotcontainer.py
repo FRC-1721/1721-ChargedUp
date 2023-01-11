@@ -157,8 +157,10 @@ class RobotContainer:
         # Subtables
         self.build_table = self.sd.getSubTable("BuildData")
 
-        self.build_table.putNumber("My Old number", 15)       # Doesn't work at all,
+        self.sd.putNumber("My Old number", 15)  # Doesn't work at all,
         wpilib.SmartDashboard.putNumber("My New number", 69)  # Works fine
+
+        logging.info(self.sd.getNumber("My Old number", -1))
 
     def getAutonomousCommand(self) -> commands2.Command:
         """
