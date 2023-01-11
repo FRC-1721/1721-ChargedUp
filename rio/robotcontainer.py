@@ -3,6 +3,8 @@
 import wpilib
 import wpimath.controller
 
+import logging
+
 import commands2
 import commands2.cmd
 import commands2.button
@@ -17,6 +19,9 @@ import subsystems.drivesubsystem
 import commands.turntoangle
 import commands.turntoangleprofiled
 
+# NetworkTables
+from networktables import NetworkTables
+
 
 class RobotContainer:
     """
@@ -29,6 +34,9 @@ class RobotContainer:
 
     def __init__(self):
         """The container for the robot. Contains subsystems, OI devices, and commands."""
+        # Configure networktables
+        self.configureNetworktables()
+
         # Setup constants
         self.controlConsts = getConstants("robot_controls")
         self.hardConsts = getConstants("robot_hardware")
@@ -46,6 +54,9 @@ class RobotContainer:
         # Configure the button bindings
         self.configureButtonBindings()
 
+        # Setup all autonomous routines
+        self.configureAutonomous()
+
         # Configure default commands
         # Set the default drive command to split-stick arcade drive
         self.robotDrive.setDefaultCommand(
@@ -59,6 +70,9 @@ class RobotContainer:
                 [self.robotDrive],
             )
         )
+
+        # self.sd.putNumber("someNumber", 1234)
+        # print(self.FMSinfo.getNumber("StationNumber", -1))
 
     def configureButtonBindings(self):
         """
@@ -118,6 +132,33 @@ class RobotContainer:
                 -90, self.robotDrive
             ).withTimeout(5)
         )
+
+    def configureAutonomous(self):
+        # Create a sendable chooser
+        self.autoChooser = wpilib.SendableChooser()
+
+        # Add options for chooser
+        # self.autoChooser.setDefaultOption("Null Auto", NullAuto(self.drivetrain))
+        self.autoChooser.setDefaultOption(
+            "(Comp) Low Goal",
+            commands.turntoangleprofiled.TurnToAngleProfiled(
+                -90, self.robotDrive
+            ).withTimeout(5),
+        )
+        # Put the chooser on the dashboard
+        wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
+        # self.sd.putData("Autonomous", self.autoChooser)
+
+    def configureNetworktables(self):
+        # Configure networktables
+        self.nt = NetworkTables.getDefault()
+        self.sd = self.nt.getTable("SmartDashboard")
+
+        # Subtables
+        self.build_table = self.sd.getSubTable("BuildData")
+
+        self.build_table.putNumber("My Old number", 15)       # Doesn't work at all,
+        wpilib.SmartDashboard.putNumber("My New number", 69)  # Works fine
 
     def getAutonomousCommand(self) -> commands2.Command:
         """
