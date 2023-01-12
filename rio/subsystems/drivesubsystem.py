@@ -12,6 +12,7 @@ from constants.constants import getConstants
 
 # Vendor Libs
 from rev import CANSparkMax, CANSparkMaxLowLevel
+from ctre import Pigeon2
 
 
 class DriveSubsystem(commands2.SubsystemBase):
@@ -67,6 +68,17 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # The robot's drivetrain kinematics
         self.drive = wpilib.drive.DifferentialDrive(self.leftMotors, self.rightMotors)
+
+        # Setup Pigeon
+        # Docs: https://docs.ctre-phoenix.com/en/stable/ch11_BringUpPigeon.html?highlight=pigeon#pigeon-api
+        self.imu = Pigeon2(0)  # Create object
+
+        # Setup Pigeon pose
+        self.imu.configMountPose(
+            0,
+            0,
+            0,
+        )
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
