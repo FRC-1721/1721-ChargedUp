@@ -13,10 +13,6 @@ from constants.constants import getConstants
 # Subsystems
 import subsystems.drivesubsystem
 
-# Commands
-import commands.turntoangle
-import commands.turntoangleprofiled
-
 
 class RobotContainer:
     """
@@ -44,7 +40,7 @@ class RobotContainer:
         )
 
         # Configure the button bindings
-        self.configureButtonBindings()
+        # self.configureButtonBindings()
 
         # Configure default commands
         # Set the default drive command to split-stick arcade drive
@@ -66,63 +62,3 @@ class RobotContainer:
         factories on commands2.button.CommandGenericHID or one of its
         subclasses (commands2.button.CommandJoystick or command2.button.CommandXboxController).
         """
-        # Drive at half speed when the right bumper is held
-        commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["HalfSpeedButton"]
-        ).onTrue(
-            commands2.InstantCommand(
-                (lambda: self.robotDrive.setMaxOutput(0.5)), [self.robotDrive]
-            )
-        ).onFalse(
-            commands2.InstantCommand(
-                (lambda: self.robotDrive.setMaxOutput(1)), [self.robotDrive]
-            )
-        )
-
-        # Stabilize robot to drive straight with gyro when left bumper is held
-        # TODO: Load button from config file
-        commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["DiffLock"]
-        ).whileTrue(
-            commands2.PIDCommand(
-                wpimath.controller.PIDController(
-                    self.pidConsts["drive"]["kStabilizationP"],
-                    self.pidConsts["drive"]["kStabilizationI"],
-                    self.pidConsts["drive"]["kStabilizationD"],
-                ),
-                # Close the loop on the turn rate
-                self.robotDrive.getTurnRate,
-                # Setpoint is 0
-                0,
-                # Pipe the output to the turning controls
-                lambda output: self.robotDrive.arcadeDrive(
-                    -self.driverController.getLeftY(), output
-                ),
-                # Require the robot drive
-                [self.robotDrive],
-            )
-        )
-
-        # Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
-        # TODO: Load button from config file
-        commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["Turn90"]
-        ).onTrue(commands.turntoangle.TurnToAngle(90, self.robotDrive).withTimeout(5))
-
-        # Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
-        # TODO: Load button from config file
-        commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["TurnAnti90"]
-        ).onTrue(
-            commands.turntoangleprofiled.TurnToAngleProfiled(
-                -90, self.robotDrive
-            ).withTimeout(5)
-        )
-
-    def getAutonomousCommand(self) -> commands2.Command:
-        """
-        Use this to pass the autonomous command to the main :class:`.Robot` class.
-
-        :returns: the command to run in autonomous
-        """
-        return commands2.InstantCommand()

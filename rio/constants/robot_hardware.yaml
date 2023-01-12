@@ -10,8 +10,8 @@ drivetrain:
 
   # All pose coordinates are in meters.
   leftMotor:
-    Motor1Port: 1            # Updated 1/8 by Keegan
-    Motor2Port: 2            # Updated 1/8 by Keegan
+    Motor1Port: 2            # Updated 1/12 by Keegan
+    Motor2Port: 1            # Updated 1/12 by Keegan 
     EncoderPorts: [0, 1]     # Updated Never by Nobody
     EncoderReversed: False   # Updated Never by Nobody
     Inverted: False          # Updated Never by Nobody
