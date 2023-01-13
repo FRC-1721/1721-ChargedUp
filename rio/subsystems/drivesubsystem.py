@@ -119,8 +119,34 @@ class DriveSubsystem(commands2.SubsystemBase):
         :param fwd: the commanded forward movement
         :param rot: the commanded rotation
         """
-
         self.drive.arcadeDrive(fwd, rot)
+
+    def resetEncoders(self):
+        """Resets the drive encoders to currently read a position of 0."""
+        self.leftEncoder.reset()
+        self.rightEncoder.reset()
+
+    def getAverageEncoderDistance(self):
+        """
+        Gets the average distance of the two encoders.
+        :returns: the average of the two encoder readings
+        """
+        return (self.leftEncoder.getDistance() + self.rightEncoder.getDistance()) / 2.0
+
+    def getLeftEncoder(self) -> wpilib.Encoder:
+        """
+        Gets the left drive encoder.
+        :returns: the left drive encoder
+        """
+        return self.leftEncoder
+
+    def getRightEncoder(self) -> wpilib.Encoder:
+        """
+        Gets the right drive encoder.
+
+        :returns: the right drive encoder
+        """
+        return self.rightEncoder
 
     def setMaxOutput(self, maxOutput: float):
         """
