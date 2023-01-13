@@ -151,7 +151,32 @@ class DriveSubsystem(commands2.SubsystemBase):
     def setMaxOutput(self, maxOutput: float):
         """
         Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
-
         :param maxOutput: the maximum output to which the drive will be constrained
         """
         self.drive.setMaxOutput(maxOutput)
+
+    def zeroHeading(self):
+        """
+        Zeroes the heading of the robot.
+        """
+        # This is most likey the wrong was to do
+        # this but I can't find the reset command
+        self.imu.configMountPose(
+            self.imuConst["yaw"],
+            self.imuConst["pitch"],
+            self.imuConst["roll"],
+        )
+
+    def getHeading(self):
+        """
+        Returns the heading of the robot.
+        :returns: the robot's heading in degrees, from 180 to 180
+        """
+        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
+
+    def getTurnRate(self):
+        """
+        Returns the turn rate of the robot.
+        :returns: The turn rate of the robot, in degrees per second
+        """
+        return self.imu.GetRawGyro()
