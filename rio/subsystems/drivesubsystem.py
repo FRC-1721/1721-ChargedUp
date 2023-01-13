@@ -71,6 +71,29 @@ class DriveSubsystem(commands2.SubsystemBase):
         # The robot's drivetrain kinematics
         self.drive = wpilib.drive.DifferentialDrive(self.leftMotors, self.rightMotors)
 
+        # TODO: These need to be replaced with CAN motor controllers
+        # The left-side drive encoder
+        self.leftEncoder = wpilib.Encoder(
+            self.leftCosnt["EncoderPorts"][0],
+            self.leftCosnt["EncoderPorts"][1],
+            self.leftCosnt["EncoderReversed"],
+        )
+
+        # The right-side drive encoder
+        self.rightEncoder = wpilib.Encoder(
+            self.rightCosnt["EncoderPorts"][0],
+            self.rightCosnt["EncoderPorts"][1],
+            self.rightCosnt["EncoderReversed"],
+        )
+
+        # Sets the distance per pulse for the encoders
+        encoderDistPerP = (
+            self.driveConst["kWheelDiameterInches"] * math.pi
+        ) / self.driveConst["kEncoderCPR"]
+
+        self.leftEncoder.setDistancePerPulse(encoderDistPerP)
+        self.rightEncoder.setDistancePerPulse(encoderDistPerP)
+
         # Setup Pigeon
         # Docs: https://docs.ctre-phoenix.com/en/stable/ch11_BringUpPigeon.html?highlight=pigeon#pigeon-api
         self.imu = Pigeon2(self.imuConst["can_id"])  # Create object
