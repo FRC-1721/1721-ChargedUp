@@ -22,3 +22,9 @@ drivetrain:
     EncoderPorts: [2, 3]     # Updated Never by Nobody
     EncoderReversed: True    # Updated Never by Nobody
     Inverted: True           # Updated Never by Nobody
+
+  imu: # pigeon ids
+    can_id: 0                # Updated 1/13 by Keegan
+    yaw: 0                   # Updated 1/13 by Keegan
+    pitch: 0                 # Updated 1/13 by Keegan
+    roll: 0                  # Updated 1/13 by Keegan

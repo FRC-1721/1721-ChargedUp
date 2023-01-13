@@ -13,6 +13,10 @@ from constants.constants import getConstants
 # Subsystems
 import subsystems.drivesubsystem
 
+# Commands
+import commands.turntoangle
+import commands.turntoangleprofiled
+
 
 class RobotContainer:
     """
@@ -40,7 +44,7 @@ class RobotContainer:
         )
 
         # Configure the button bindings
-        # self.configureButtonBindings()
+        self.configureButtonBindings()
 
         # Configure default commands
         # Set the default drive command to split-stick arcade drive

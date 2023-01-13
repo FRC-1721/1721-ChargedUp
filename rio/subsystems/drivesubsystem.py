@@ -13,6 +13,7 @@ from constants.constants import getConstants
 # Vendor Libs
 from rev import CANSparkMax, CANSparkMaxLowLevel
 from ctre import Pigeon2
+from wpimath import geometry
 
 
 class DriveSubsystem(commands2.SubsystemBase):
@@ -25,6 +26,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.driveConst = constants["drivetrain"]  # All the drivetrain consts
         self.leftCosnt = self.driveConst["leftMotor"]  # Left specific
         self.rightCosnt = self.driveConst["rightMotor"]  # Right specific
+        self.imuConst = self.driveConst["imu"]  # imu's constants
 
         # The motors on the left side of the drive.
         self.leftMotor1 = CANSparkMax(
@@ -71,14 +73,21 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # Setup Pigeon
         # Docs: https://docs.ctre-phoenix.com/en/stable/ch11_BringUpPigeon.html?highlight=pigeon#pigeon-api
-        self.imu = Pigeon2(0)  # Create object
+        self.imu = Pigeon2(self.imuConst["can_id"])  # Create object
 
         # Setup Pigeon pose
         self.imu.configMountPose(
-            0,
-            0,
-            0,
+            self.imuConst["yaw"],
+            self.imuConst["pitch"],
+            self.imuConst["roll"],
         )
+
+    def getGyroHeading(self):
+        """
+        Returns the gyro heading.
+        """
+
+        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
