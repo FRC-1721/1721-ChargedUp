@@ -17,6 +17,8 @@ import subsystems.drivesubsystem
 import commands.turntoangle
 import commands.turntoangleprofiled
 
+from commands.flybywire import FlyByWire
+
 
 class RobotContainer:
     """
@@ -47,16 +49,13 @@ class RobotContainer:
         self.configureButtonBindings()
 
         # Configure default commands
-        # Set the default drive command to split-stick arcade drive
         self.robotDrive.setDefaultCommand(
-            # A split-stick arcade command, with forward/backward controlled by the left
-            # hand, and turning controlled by the right.
-            commands2.RunCommand(
-                lambda: self.robotDrive.arcadeDrive(
-                    -self.driverController.getRawAxis(self.driveConsts["ForwardAxis"]),
-                    -self.driverController.getRawAxis(self.driveConsts["SteerAxis"]),
+            FlyByWire(
+                self.robotDrive,
+                lambda: -self.driverController.getRawAxis(
+                    self.driveConsts["ForwardAxis"]
                 ),
-                [self.robotDrive],
+                lambda: self.driverController.getRawAxis(self.driveConsts["SteerAxis"]),
             )
         )
 
