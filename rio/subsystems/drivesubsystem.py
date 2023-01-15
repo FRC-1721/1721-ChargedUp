@@ -169,6 +169,12 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
 
+    def getAngle(self):
+        """
+        Returns the angle of the robot
+        """
+        return geometry.Rotation2d.fromDegrees(self.imu.getPitch())
+
     def getTurnRate(self):
         """
         Returns the turn rate of the robot.
