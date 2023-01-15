@@ -18,6 +18,7 @@ import subsystems.drivesubsystem
 # Commands
 import commands.turntoangle
 import commands.turntoangleprofiled
+from commands.flybywire import FlyByWire
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -61,16 +62,13 @@ class RobotContainer:
         self.configureAutonomous()
 
         # Configure default commands
-        # Set the default drive command to split-stick arcade drive
         self.robotDrive.setDefaultCommand(
-            # A split-stick arcade command, with forward/backward controlled by the left
-            # hand, and turning controlled by the right.
-            commands2.RunCommand(
-                lambda: self.robotDrive.arcadeDrive(
-                    -self.driverController.getRawAxis(self.driveConsts["ForwardAxis"]),
-                    -self.driverController.getRawAxis(self.driveConsts["SteerAxis"]),
+            FlyByWire(
+                self.robotDrive,
+                lambda: -self.driverController.getRawAxis(
+                    self.driveConsts["ForwardAxis"]
                 ),
-                [self.robotDrive],
+                lambda: self.driverController.getRawAxis(self.driveConsts["SteerAxis"]),
             )
         )
 
@@ -169,7 +167,6 @@ class RobotContainer:
     def getAutonomousCommand(self) -> commands2.Command:
         """
         Use this to pass the autonomous command to the main :class:`.Robot` class.
-
         :returns: the command to run in autonomous
         """
         return commands2.InstantCommand()

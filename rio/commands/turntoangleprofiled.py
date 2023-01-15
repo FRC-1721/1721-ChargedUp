@@ -19,7 +19,6 @@ class TurnToAngleProfiled(commands2.ProfiledPIDCommand):
     def __init__(self, targetAngleDegrees: float, drive: DriveSubsystem) -> None:
         """
         Turns to robot to the specified angle.
-
         :param: targetAngleDegrees The angle to turn to
         :param: drive The drive subsystem to
         """

@@ -5,12 +5,15 @@ import wpilib
 import wpilib.drive
 import commands2
 import math
+import logging
 
 # Constants
 from constants.constants import getConstants
 
 # Vendor Libs
 from rev import CANSparkMax, CANSparkMaxLowLevel
+from ctre import Pigeon2
+from wpimath import geometry
 
 
 class DriveSubsystem(commands2.SubsystemBase):
@@ -23,6 +26,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.driveConst = constants["drivetrain"]  # All the drivetrain consts
         self.leftCosnt = self.driveConst["leftMotor"]  # Left specific
         self.rightCosnt = self.driveConst["rightMotor"]  # Right specific
+        self.imuConst = self.driveConst["imu"]  # imu's constants
 
         # The motors on the left side of the drive.
         self.leftMotor1 = CANSparkMax(
@@ -58,6 +62,12 @@ class DriveSubsystem(commands2.SubsystemBase):
         )
         self.rightMotors.setInverted(self.rightCosnt["Inverted"])
 
+        # TODO: Replace with proper motorconfigs
+        self.leftMotor1.setInverted(False)
+        self.leftMotor2.setInverted(False)
+        self.rightMotor1.setInverted(False)
+        self.rightMotor2.setInverted(False)
+
         # The robot's drivetrain kinematics
         self.drive = wpilib.drive.DifferentialDrive(self.leftMotors, self.rightMotors)
 
@@ -84,7 +94,23 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.leftEncoder.setDistancePerPulse(encoderDistPerP)
         self.rightEncoder.setDistancePerPulse(encoderDistPerP)
 
-        self.gyro = wpilib.ADXRS450_Gyro()  # We may need to use another gyro
+        # Setup Pigeon
+        # Docs: https://docs.ctre-phoenix.com/en/stable/ch11_BringUpPigeon.html?highlight=pigeon#pigeon-api
+        self.imu = Pigeon2(self.imuConst["can_id"])  # Create object
+
+        # Setup Pigeon pose
+        self.imu.configMountPose(
+            self.imuConst["yaw"],
+            self.imuConst["pitch"],
+            self.imuConst["roll"],
+        )
+
+    def getGyroHeading(self):
+        """
+        Returns the gyro heading.
+        """
+
+        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -103,7 +129,6 @@ class DriveSubsystem(commands2.SubsystemBase):
     def getAverageEncoderDistance(self):
         """
         Gets the average distance of the two encoders.
-
         :returns: the average of the two encoder readings
         """
         return (self.leftEncoder.getDistance() + self.rightEncoder.getDistance()) / 2.0
@@ -111,7 +136,6 @@ class DriveSubsystem(commands2.SubsystemBase):
     def getLeftEncoder(self) -> wpilib.Encoder:
         """
         Gets the left drive encoder.
-
         :returns: the left drive encoder
         """
         return self.leftEncoder
@@ -127,7 +151,6 @@ class DriveSubsystem(commands2.SubsystemBase):
     def setMaxOutput(self, maxOutput: float):
         """
         Sets the max output of the drive. Useful for scaling the drive to drive more slowly.
-
         :param maxOutput: the maximum output to which the drive will be constrained
         """
         self.drive.setMaxOutput(maxOutput)
@@ -136,22 +159,24 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         Zeroes the heading of the robot.
         """
-        self.gyro.reset()
+        # This is most likey the wrong was to do
+        # this but I can't find the reset command
+        self.imu.configMountPose(
+            self.imuConst["yaw"],
+            self.imuConst["pitch"],
+            self.imuConst["roll"],
+        )
 
     def getHeading(self):
         """
         Returns the heading of the robot.
-
         :returns: the robot's heading in degrees, from 180 to 180
         """
-        return math.remainder(self.gyro.getAngle(), 180) * (
-            -1 if self.leftCosnt["kGyroReversed"] else 1
-        )
+        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
 
     def getTurnRate(self):
         """
         Returns the turn rate of the robot.
-
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.gyro.getRate() * (-1 if self.driveConst["kGyroReversed"] else 1)
+        return self.imu.GetRawGyro()
