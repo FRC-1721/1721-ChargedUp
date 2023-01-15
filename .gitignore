@@ -8,6 +8,7 @@ _build
 *_cfg
 *_config
 .python-version
+.pytest_cache
 
 # dashboard build files
 dashboard/www/main.js*

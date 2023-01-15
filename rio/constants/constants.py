@@ -12,7 +12,14 @@ Use this file only for storing non-changing constants.
 """
 
 
-def getConstants(identifier):
+def load(fullPath: str):
+    # Try opening requested .yaml
+    with open(f"{fullPath}.yaml", "r") as yamlFile:
+        # Use yaml.safe_load to load the yaml into a dict
+        return yaml.safe_load(yamlFile)
+
+
+def getConstants(identifier: str):
     constants = {}
 
     # Clunky but it works
@@ -23,13 +30,15 @@ def getConstants(identifier):
 
     try:
         # Try opening requested .yaml
-        with open(f"{path}{identifier}.yaml", "r") as yamlFile:
-            # Use yaml.safe_load to load the yaml into a dict
-            constants = yaml.safe_load(yamlFile)
-    except FileNotFoundError as e:
-        # If the file is not found, report it!
-        logging.error(f"{identifier} config not found!")
-        raise e
+        constants = load(f"{path}{identifier}")
+    except FileNotFoundError:
+        try:
+            # Try again but from one directory in (useful for unit testing)
+            constants = load(f"../{path}{identifier}")
+        except FileNotFoundError as e:
+            # If the file is not found, report it!
+            logging.error(f"{identifier} config not found!")
+            raise e
 
     # When all is done, return the important bits!
     return constants
