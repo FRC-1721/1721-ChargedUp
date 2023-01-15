@@ -3,6 +3,8 @@
 import wpilib
 import wpimath.controller
 
+import logging
+
 import commands2
 import commands2.cmd
 import commands2.button
@@ -16,8 +18,13 @@ import subsystems.drivesubsystem
 # Commands
 import commands.turntoangle
 import commands.turntoangleprofiled
+import commands.flybywire
 
-from commands.flybywire import FlyByWire
+# NetworkTables
+from ntcore import NetworkTableInstance
+
+# Misc
+from extras.deployData import getDeployData
 
 
 class RobotContainer:
@@ -31,6 +38,9 @@ class RobotContainer:
 
     def __init__(self):
         """The container for the robot. Contains subsystems, OI devices, and commands."""
+        # Configure networktables
+        self.configureNetworktables()
+
         # Setup constants
         self.controlConsts = getConstants("robot_controls")
         self.hardConsts = getConstants("robot_hardware")
@@ -48,9 +58,12 @@ class RobotContainer:
         # Configure the button bindings
         self.configureButtonBindings()
 
+        # Setup all autonomous routines
+        self.configureAutonomous()
+
         # Configure default commands
         self.robotDrive.setDefaultCommand(
-            FlyByWire(
+            commands.flybywire.FlyByWire(
                 self.robotDrive,
                 lambda: -self.driverController.getRawAxis(
                     self.driveConsts["ForwardAxis"]
@@ -58,6 +71,9 @@ class RobotContainer:
                 lambda: self.driverController.getRawAxis(self.driveConsts["SteerAxis"]),
             )
         )
+
+        # self.sd.putNumber("someNumber", 1234)
+        # print(self.FMSinfo.getNumber("StationNumber", -1))
 
     def configureButtonBindings(self):
         """
@@ -117,6 +133,36 @@ class RobotContainer:
                 -90, self.robotDrive
             ).withTimeout(5)
         )
+
+    def configureAutonomous(self):
+        # Create a sendable chooser
+        self.autoChooser = wpilib.SendableChooser()
+
+        # Add options for chooser
+        # self.autoChooser.setDefaultOption("Null Auto", NullAuto(self.drivetrain))
+        self.autoChooser.setDefaultOption(
+            "(Comp) Low Goal",
+            commands.turntoangleprofiled.TurnToAngleProfiled(
+                -90, self.robotDrive
+            ).withTimeout(5),
+        )
+        # Put the chooser on the dashboard
+        wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
+        # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.
+
+    def configureNetworktables(self):
+        # Configure networktables
+        self.nt = NetworkTableInstance.getDefault()
+        self.sd = self.nt.getTable("SmartDashboard")
+
+        # Subtables
+        self.build_table = self.sd.getSubTable("BuildData")
+
+        # Build data (May need to be moved to a dedicated function to be updated more than once)
+        data = getDeployData()
+        for key in data:
+            key_entry = self.build_table.getEntry(str(key))
+            key_entry.setString(str(data[key]))
 
     def getAutonomousCommand(self) -> commands2.Command:
         """

@@ -76,4 +76,8 @@ class MyRobot(commands2.TimedCommandRobot):
 
 
 if __name__ == "__main__":
+    # Configure Logging
+    logging.basicConfig(level=logging.DEBUG)
+
+    # Run the robot
     wpilib.run(MyRobot)
