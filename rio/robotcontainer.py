@@ -20,7 +20,10 @@ import commands.turntoangle
 import commands.turntoangleprofiled
 
 # NetworkTables
-from networktables import NetworkTables
+from ntcore import NetworkTableInstance
+
+# Misc
+from extras.deployData import getDeployData
 
 
 class RobotContainer:
@@ -147,20 +150,21 @@ class RobotContainer:
         )
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
-        # self.sd.putData("Autonomous", self.autoChooser)
+        # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.
 
     def configureNetworktables(self):
         # Configure networktables
-        self.nt = NetworkTables.getDefault()
+        self.nt = NetworkTableInstance.getDefault()
         self.sd = self.nt.getTable("SmartDashboard")
 
         # Subtables
         self.build_table = self.sd.getSubTable("BuildData")
 
-        self.sd.putNumber("My Old number", 15)  # Doesn't work at all,
-        wpilib.SmartDashboard.putNumber("My New number", 69)  # Works fine
-
-        logging.info(self.sd.getNumber("My Old number", -1))
+        # Build data (May need to be moved to a dedicated function to be updated more than once)
+        data = getDeployData()
+        for key in data:
+            key_entry = self.build_table.getEntry(str(key))
+            key_entry.setString(str(data[key]))
 
     def getAutonomousCommand(self) -> commands2.Command:
         """
