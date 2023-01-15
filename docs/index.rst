@@ -8,7 +8,7 @@
    introduction/introduction
    designReview/design_review
    developing/developing
-   subsystems/example
+   subsystems/drivetrain
    wiring/wiring
    wiring/network
    usage/operating

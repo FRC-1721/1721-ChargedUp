@@ -4,9 +4,9 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-robotpy = {extras = ["rev", "ctre", "commands2"], version = "*"}
-wpilib = {extras = ["all"], version = "*"}
-pyyaml = "*"
+robotpy = {extras = ["rev", "ctre", "commands2"], version = "2023.2.1"}
+wpilib = {extras = ["all"], version = "2023.2.1.0"}
+pyyaml = "6.0"
 black = "*"
 
 [dev-packages]

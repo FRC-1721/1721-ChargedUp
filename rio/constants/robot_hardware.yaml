@@ -10,13 +10,21 @@ drivetrain:
 
   # All pose coordinates are in meters.
   leftMotor:
-    kLeftMotor1Port: 0          # Updated Never by Nobody
-    kLeftMotor2Port: 1          # Updated Never by Nobody
-    kLeftEncoderPorts: [0, 1]   # Updated Never by Nobody
-    kLeftEncoderReversed: False
+    Motor1Port: 2            # Updated 1/12 by Keegan
+    Motor2Port: 1            # Updated 1/12 by Keegan 
+    EncoderPorts: [0, 1]     # Updated Never by Nobody
+    EncoderReversed: False   # Updated Never by Nobody
+    Inverted: False          # Updated Never by Nobody
 
   rightMotor:
-    kRightMotor1Port: 2         # Updated Never by Nobody
-    kRightMotor2Port: 3         # Updated Never by Nobody
-    kRightEncoderPorts: [2, 3]  # Updated Never by Nobody
-    kRightEncoderReversed: True
+    Motor1Port: 3            # Updated 1/8 by Keegan
+    Motor2Port: 4            # Updated 1/8 by Keegan
+    EncoderPorts: [2, 3]     # Updated Never by Nobody
+    EncoderReversed: True    # Updated Never by Nobody
+    Inverted: True           # Updated Never by Nobody
+
+  imu: # pigeon ids
+    can_id: 0                # Updated 1/13 by Keegan
+    yaw: 0                   # Updated 1/13 by Keegan
+    pitch: 0                 # Updated 1/13 by Keegan
+    roll: 0                  # Updated 1/13 by Keegan

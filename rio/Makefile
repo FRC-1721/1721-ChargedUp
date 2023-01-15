@@ -10,12 +10,15 @@ all: help
 help:
 	@echo
 	@echo "Targets:"
-	@echo "   sim           Shortcut for roboy.py sim."
-	@echo "   clean         Shortucut for git clean -fdX"
-	@echo "   deploy        Deploy code with netconsole"
-	@echo "   push          Deploy code by the seat of your pants"
-	@echo "   download      Download all the requirements"
-	@echo "   install       Install requirements"
+	@echo "   sim               Shortcut for roboy.py sim."
+	@echo "   clean             Shortucut for git clean -fdX"
+	@echo "   deploy            Deploy code with netconsole"
+	@echo "   push              Deploy code by the seat of your pants"
+	@echo "   download          Download extra requirements"
+	@echo "   install           Install extra requirements"
+	@echo "   info              Get the robot current build info"
+	@echo "   download-python   Download python (new robots only)"
+	@echo "   inwstall-python   Install python (new robots only)"
 	@echo
 
 # Shortcut for the simulator
@@ -41,6 +44,13 @@ install:
 # Shortcut to get information about the code already on the bot
 info:
 	python robot.py deploy-info
+
+# Shortcuts for inital robot setup
+download-python:
+	robotpy-installer download
+
+install-python:
+	robotpy-installer install-python
 
 clean:
 	git clean -fdX

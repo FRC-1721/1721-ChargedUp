@@ -9,7 +9,7 @@ Introduction
 
 |outreach|
 
-.. figure:: resources/climberPrototype.png
+.. figure:: resources/missing.png
   :width: 200
   :alt: Example Prototype
 
