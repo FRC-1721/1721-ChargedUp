@@ -159,8 +159,8 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         Zeroes the heading of the robot.
         """
-        # This is most likey the wrong was to do
-        # this but I can't find the reset command
+        # TODO find the proper reset command
+        # because this is surely wrong
         self.imu.configMountPose(
             self.imuConst["yaw"],
             self.imuConst["pitch"],
@@ -172,11 +172,13 @@ class DriveSubsystem(commands2.SubsystemBase):
         Returns the heading of the robot.
         :returns: the robot's heading in degrees, from 180 to 180
         """
-        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
+        return geometry.Rotation2d.fromDegrees(self.imu.getYawPitchRoll())
 
     def getTurnRate(self):
         """
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.imu.GetRawGyro()
+        return (
+            self.imu.getRawGyro()
+        )  # I think this works, but take it with a grain of salt and the knowlege it could I could be dumb -- Keegan 2023 build season
