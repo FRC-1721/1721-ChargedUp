@@ -18,7 +18,7 @@ import subsystems.drivesubsystem
 # Commands
 import commands.turntoangle
 import commands.turntoangleprofiled
-from commands.flybywire import FlyByWire
+import commands.flybywire
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -63,7 +63,7 @@ class RobotContainer:
 
         # Configure default commands
         self.robotDrive.setDefaultCommand(
-            FlyByWire(
+            commands.flybywire.FlyByWire(
                 self.robotDrive,
                 lambda: -self.driverController.getRawAxis(
                     self.driveConsts["ForwardAxis"]
