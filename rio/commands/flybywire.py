@@ -26,15 +26,14 @@ class FlyByWire(commands2.CommandBase):
 
     def execute(self) -> None:
         self.drivetrain.arcadeDrive(
-            self.dampen(self.forward()),
+            self.dampen(self.forward()) * -1,
             self.dampen(self.rotation()),
         )
 
     def dampen(self, x):
         """
         Uses a simple math function
-        to dampen and scale the
-        user input.
+        to dampen the user input.
         """
 
-        return (x**3 * -1) * 0.5
+        return x**3 * -1
