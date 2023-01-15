@@ -47,7 +47,6 @@ class MyRobot(commands2.TimedCommandRobot):
         # this line or comment it out.
         if self.autonomousCommand is not None:
             self.autonomousCommand.cancel()
-        self.container.robotDrive.imu.getRawGyro()
 
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
