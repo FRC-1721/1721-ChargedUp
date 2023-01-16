@@ -94,8 +94,7 @@ class RobotContainer:
             )
         )
 
-        # Stabilize robot to drive straight with gyro when left bumper is held
-        # TODO: Load button from config file
+        # Stabilize robot to drive straight with gyro (software diff lock)
         commands2.button.JoystickButton(
             self.driverController, self.driveConsts["DiffLock"]
         ).whileTrue(
@@ -107,7 +106,7 @@ class RobotContainer:
                 ),
                 # Close the loop on the turn rate
                 self.robotDrive.getTurnRate,
-                # Setpoint is 0
+                # Setpoint is 0xxx
                 0,
                 # Pipe the output to the turning controls
                 lambda output: self.robotDrive.arcadeDrive(

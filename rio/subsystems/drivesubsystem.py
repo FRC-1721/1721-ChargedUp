@@ -62,7 +62,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         )
         self.rightMotors.setInverted(self.rightCosnt["Inverted"])
 
-        # TODO: Replace with proper motorconfigs
+        # This fixes a bug in rev firmware involving flash settings.
         self.leftMotor1.setInverted(False)
         self.leftMotor2.setInverted(False)
         self.rightMotor1.setInverted(False)
@@ -71,28 +71,21 @@ class DriveSubsystem(commands2.SubsystemBase):
         # The robot's drivetrain kinematics
         self.drive = wpilib.drive.DifferentialDrive(self.leftMotors, self.rightMotors)
 
-        # TODO: These need to be replaced with CAN motor controllers
         # The left-side drive encoder
-        self.leftEncoder = wpilib.Encoder(
-            self.leftCosnt["EncoderPorts"][0],
-            self.leftCosnt["EncoderPorts"][1],
-            self.leftCosnt["EncoderReversed"],
-        )
+        self.leftEncoder = self.leftMotor1.getEncoder()
 
         # The right-side drive encoder
-        self.rightEncoder = wpilib.Encoder(
-            self.rightCosnt["EncoderPorts"][0],
-            self.rightCosnt["EncoderPorts"][1],
-            self.rightCosnt["EncoderReversed"],
-        )
+        self.rightEncoder = self.rightMotor1.getEncoder()
 
-        # Sets the distance per pulse for the encoders
+        # Setup the conversion factors for the motor controllers
+        # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
+        # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
         encoderDistPerP = (
             self.driveConst["kWheelDiameterInches"] * math.pi
         ) / self.driveConst["kEncoderCPR"]
 
-        self.leftEncoder.setDistancePerPulse(encoderDistPerP)
-        self.rightEncoder.setDistancePerPulse(encoderDistPerP)
+        self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
+        self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
 
         # Setup Pigeon
         # Docs: https://docs.ctre-phoenix.com/en/stable/ch11_BringUpPigeon.html?highlight=pigeon#pigeon-api
