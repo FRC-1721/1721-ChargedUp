@@ -3,7 +3,7 @@ import commands2
 from wpimath import geometry
 
 
-class FlyByWire(commands2.CommandBase):
+class ShowAngles(commands2.CommandBase):
     def __init__(self) -> None:
         pass
 
