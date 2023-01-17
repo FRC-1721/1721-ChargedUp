@@ -48,12 +48,6 @@ class MyRobot(commands2.TimedCommandRobot):
         if self.autonomousCommand is not None:
             self.autonomousCommand.cancel()
 
-        # remove me
-        self.container.robotDrive.getHeading()
-        self.container.robotDrive.getAngle()
-        self.container.robotDrive.getTurnRate()
-        # remove me
-
     def disabledInit(self) -> None:
         """This function is called once each time the robot enters Disabled mode."""
 
