@@ -14,6 +14,7 @@ from constants.constants import getConstants
 from rev import CANSparkMax, CANSparkMaxLowLevel
 from ctre import Pigeon2
 from wpimath import geometry
+from navx import AHRS
 
 
 class DriveSubsystem(commands2.SubsystemBase):
@@ -87,7 +88,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
         self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
 
-        self.gyro = navx.AHRS(self.navxConst["can_id"])  # Create object
+        self.gyro = AHRS(self.navXConst["can_id"])  # Create object
 
     def getGyroHeading(self):
         """
