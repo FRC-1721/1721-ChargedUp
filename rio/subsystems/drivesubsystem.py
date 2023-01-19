@@ -88,7 +88,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
         self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
 
-        self.gyro = AHRS(self.navXConst["can_id"])  # Create object
+        self.gyro = AHRS.create_spi()  # creates navx object
 
     def getGyroHeading(self):
         """
