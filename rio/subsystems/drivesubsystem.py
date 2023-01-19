@@ -26,7 +26,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.driveConst = constants["drivetrain"]  # All the drivetrain consts
         self.leftCosnt = self.driveConst["leftMotor"]  # Left specific
         self.rightCosnt = self.driveConst["rightMotor"]  # Right specific
-        self.imuConst = self.driveConst["imu"]  # imu's constants
+        self.navXConst = self.driveConst["navX"]  # navX's constants
 
         # The motors on the left side of the drive.
         self.leftMotor1 = CANSparkMax(
@@ -87,23 +87,14 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
         self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
 
-        # Setup Pigeon
-        # Docs: https://docs.ctre-phoenix.com/en/stable/ch11_BringUpPigeon.html?highlight=pigeon#pigeon-api
-        self.imu = Pigeon2(self.imuConst["can_id"])  # Create object
-
-        # Setup Pigeon pose
-        self.imu.configMountPose(
-            self.imuConst["yaw"],
-            self.imuConst["pitch"],
-            self.imuConst["roll"],
-        )
+        self.gyro = navx.AHRS(self.navxConst["can_id"])  # Create object
 
     def getGyroHeading(self):
         """
         Returns the gyro heading.
         """
 
-        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
+        return geometry.Rotation2d.fromDegrees(self.gyro.getAngle())
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -153,24 +144,24 @@ class DriveSubsystem(commands2.SubsystemBase):
         Zeroes the heading of the robot.
         """
         # This value takes time to update
-        self.imu.setYaw(0)
+        self.gyro.reset()
 
     def getHeading(self):
         """
         Returns the heading of the robot.
         :returns: the robot's heading in degrees, from 180 to 180
         """
-        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
+        return geometry.Rotation2d.fromDegrees(self.gyro.getAngle())
 
     def getAngle(self):
         """
         Returns the angle of the robot
         """
-        return geometry.Rotation2d.fromDegrees(self.imu.getPitch())
+        return geometry.Rotation2d.fromDegrees(self.gyro.getPitch())
 
     def getTurnRate(self):
         """
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.imu.getRawGyro()
+        return self.gyro.getRate()
