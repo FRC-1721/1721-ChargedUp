@@ -137,8 +137,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         Zeroes the heading of the robot.
         """
-        # This value takes time to update
-        self.imu.setYaw(0)
+        self.ahrs.reset()
 
     def getHeading(self) -> float:
         """
