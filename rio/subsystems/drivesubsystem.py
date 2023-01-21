@@ -142,9 +142,11 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.ntmvcy = self.ntmov.getEntry("vcy")
         self.ntmang = self.ntmov.getEntry("ang")  
         self.ntmtst.setNumber(2)
+
+
         if self.ntmtst.exists():
             print("I exist")
-            print(self.ntmtst.get())
+            print(self.ntmtst.get()) # This line of code shows that the value exists, however it does not show on the GUI.
         else:
             print("Yro'ue an idiot")
 
