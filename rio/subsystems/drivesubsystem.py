@@ -16,7 +16,7 @@ from ctre import Pigeon2
 from wpimath import geometry
 
 # NetworkTables
-from networktables import NetworkTables
+import ntcore
 
 class DriveSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
@@ -133,24 +133,13 @@ class DriveSubsystem(commands2.SubsystemBase):
         # USE subtables if there are many entries -----
 
         #NetworkTables.initialize()
-        self.nt = NetworkTables.getDefault()
+        self.nt = ntcore.NetworkTableInstance.getDefault()
+        self.nt.startServer()
         self.ntdash = self.nt.getTable("SmartDashboard")
 
         self.ntmov = self.ntdash.getSubTable("Testing")
 
-        self.ntmtst = self.ntmov.getEntry("tst")
-        self.ntmvcy = self.ntmov.getEntry("vcy")
-        self.ntmang = self.ntmov.getEntry("ang")  
-        self.ntmtst.setNumber(2)
-
-
-        if self.ntmtst.exists():
-            print("I exist")
-            print(self.ntmtst.get()) # This line of code shows that the value exists, however it does not show on the GUI.
-        else:
-            print("Yro'ue an idiot")
-
-        print("here")
+        self.ntmov.putNumber("tst", 2)
 
     def resetEncoders(self):
         """Resets the drive encoders to currently read a position of 0."""

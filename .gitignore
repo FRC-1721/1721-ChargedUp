@@ -11,7 +11,8 @@ _build
 .pytest_cache
 
 # dashboard build files
-dashboard/www/main.js*
+dashboard/.parcel-cache
+dashboard/dist
 #dashboard packages
 node_modules
 _staging

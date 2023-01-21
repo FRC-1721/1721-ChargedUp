@@ -1,0 +1,69 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600;700&family=Lexend+Deca:wght@300;400;600&display=swap')
+
+*
+    margin: 0
+    padding: 0
+    font-family: 'Lexend Deca', sans-serif
+    font-size: 12px
+    box-sizing: border-box
+
+body
+    background-color: #282828
+
+.header
+    display: flex
+    flex-direction: row
+    background: #802
+    color: #fff
+    padding: 1rem
+    height: 5rem
+
+    &-text
+        display: flex
+        height: 100%
+        margin-left: 1rem
+        line-height: 100%
+        font-size: 2.5rem
+        font-family: 'Fira Code', monospace
+        font-weight: 600
+        align-items: center
+
+    &-logo
+        height: 100%
+        mix-blend-mode: multiply
+        margin-right: .5rem
+
+main
+    color: #ebdbb2
+    padding: 3rem
+
+#info-one
+    display: flex
+    flex-direction: row
+    justify-content: space-between
+
+    table
+        flex-grow: 1
+
+.table
+    background: #3c3836
+    border-radius: 1rem
+
+
+.table-info
+    display: flex
+    flex-direction: row
+    & + .table-info
+        border-top: 2px solid #282828
+
+.table-label
+    padding: .7rem
+    flex: 2
+
+.table-area
+    padding: .7rem
+    flex: 1
+    border-left: 4px solid #504945
+
+#nt
+    width: 100%
