@@ -23,12 +23,13 @@ class ArmSubsystem(commands2.SubsystemBase):
 
         # Get hardware constants
         constants = getConstants("robot_hardware")  # All the robot hardware consts
+        pidConstants = getConstants("robot_pid")
         self.armConst = constants["arm"]  # All the arm consts
         self.backCosnt = self.armConst["backMotor"]  # back specific
         self.middleCosnt = self.armConst["middleMotor"]  # middle specific
-        self.imuConst = self.armConst["imu"]  # imu's constants
+        self.pidConst = pidConstants["arms"]
 
-        # The motor on the back of the drive.
+        # The motor on the back of the drive. (The arm extension motor)
         self.backMotor = CANSparkMax(
             self.backCosnt["MotorPort"],
             CANSparkMaxLowLevel.MotorType.kBrushless,
@@ -36,7 +37,7 @@ class ArmSubsystem(commands2.SubsystemBase):
 
         self.backMotors.setInverted(self.backCosnt["Inverted"])
 
-        # The motor on the middle of the drive.
+        # The motor on the middle of the drive. (The screw motor)
         self.middleMotor = CANSparkMax(
             self.middleCosnt["MotorPort"],
             CANSparkMaxLowLevel.MotorType.kBrushless,
@@ -69,7 +70,9 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.backEncoder.setDistancePerPulse(encoderDistPerP)
         self.middleEncoder.setDistancePerPulse(encoderDistPerP)
 
-        
-        
-
-    
+        # Pid values
+        self.PID = self.backMotor.getPIDController()
+        self.PID.setP(self.pidConst["kp"])
+        self.PID.setI(self.pidConst["ki"])
+        self.PID.setD(self.pidConst["kd"])
+        self.PID.setFF(self.pidConst["ff"])
