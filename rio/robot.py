@@ -14,6 +14,8 @@ import commands2.cmd
 
 import robotcontainer
 
+from networktables import NetworkTables
+
 """
 The VM is configured to automatically run this class, and to call the functions corresponding to
 each mode, as described in the TimedRobot documentation. If you change the name of this class or
@@ -35,6 +37,10 @@ class MyRobot(commands2.TimedCommandRobot):
         initialization code.
         """
         self.autonomousCommand: typing.Optional[commands2.Command] = None
+
+        # NetworkTables
+
+        self.initNT()
 
         # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
         # autonomous chooser on the dashboard.
@@ -73,6 +79,14 @@ class MyRobot(commands2.TimedCommandRobot):
     def testInit(self) -> None:
         # Cancels all running commands at the start of test mode
         commands2.CommandScheduler.getInstance().cancelAll()
+
+    def initNT(self):
+        # Configure networktables
+        self.nt = NetworkTables.getDefault()
+        self.sd = self.nt.getTable("SmartDashboard")
+
+        # Subtables
+        self.build_table = self.sd.getSubTable("BuildData")
 
 
 if __name__ == "__main__":

@@ -15,6 +15,8 @@ from rev import CANSparkMax, CANSparkMaxLowLevel
 from ctre import Pigeon2
 from wpimath import geometry
 
+# NetworkTables
+from networktables import NetworkTables
 
 class DriveSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
@@ -27,6 +29,9 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.leftCosnt = self.driveConst["leftMotor"]  # Left specific
         self.rightCosnt = self.driveConst["rightMotor"]  # Right specific
         self.imuConst = self.driveConst["imu"]  # imu's constants
+
+        # Init NT
+        self.initNT()
 
         # The motors on the left side of the drive.
         self.leftMotor1 = CANSparkMax(
@@ -120,6 +125,30 @@ class DriveSubsystem(commands2.SubsystemBase):
         :param rot: the commanded rotation
         """
         self.drive.arcadeDrive(fwd, rot)
+
+    def initNT(self):
+        """
+        Inits NetworkTables (for the dashboard)
+        """
+        # USE subtables if there are many entries -----
+
+        #NetworkTables.initialize()
+        self.nt = NetworkTables.getDefault()
+        self.ntdash = self.nt.getTable("SmartDashboard")
+
+        self.ntmov = self.ntdash.getSubTable("Testing")
+
+        self.ntmtst = self.ntmov.getEntry("tst")
+        self.ntmvcy = self.ntmov.getEntry("vcy")
+        self.ntmang = self.ntmov.getEntry("ang")  
+        self.ntmtst.setNumber(2)
+        if self.ntmtst.exists():
+            print("I exist")
+            print(self.ntmtst.get())
+        else:
+            print("Yro'ue an idiot")
+
+        print("here")
 
     def resetEncoders(self):
         """Resets the drive encoders to currently read a position of 0."""
