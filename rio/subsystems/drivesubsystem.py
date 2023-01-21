@@ -88,14 +88,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
         self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
 
-        self.gyro = AHRS.create_spi()  # creates navx object
-
-    def getGyroHeading(self):
-        """
-        Returns the gyro heading.
-        """
-
-        return geometry.Rotation2d.fromDegrees(self.gyro.getAngle())
+        self.ahrs = AHRS.create_spi()  # creates navx object
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -145,24 +138,27 @@ class DriveSubsystem(commands2.SubsystemBase):
         Zeroes the heading of the robot.
         """
         # This value takes time to update
-        self.gyro.reset()
+        self.imu.setYaw(0)
 
-    def getHeading(self):
+    def getHeading(self) -> float:
         """
         Returns the heading of the robot.
         :returns: the robot's heading in degrees, from 180 to 180
         """
-        return geometry.Rotation2d.fromDegrees(self.gyro.getAngle())
+        return geometry.Rotation2d.fromDegrees(self.ahrs.getYaw()).degrees()
 
-    def getAngle(self):
+    def getPitch(self):
         """
         Returns the angle of the robot
         """
-        return geometry.Rotation2d.fromDegrees(self.gyro.getPitch())
+        return geometry.Rotation2d.fromDegrees(self.ahrs.getPitch())
 
-    def getTurnRate(self):
+    def getTurnRate(self) -> float:
         """
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.gyro.getRate()
+
+        # See here for turning bug
+        # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
+        return self.ahrs.getRawGyroY()

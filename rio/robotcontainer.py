@@ -66,9 +66,11 @@ class RobotContainer:
             commands.flybywire.FlyByWire(
                 self.robotDrive,
                 lambda: -self.driverController.getRawAxis(
-                    self.driveConsts["ForwardAxis"]
+                    self.driveConsts["ForwardAxis"],
                 ),
-                lambda: self.driverController.getRawAxis(self.driveConsts["SteerAxis"]),
+                lambda: self.driverController.getRawAxis(
+                    self.driveConsts["SteerAxis"],
+                ),
             )
         )
 
@@ -106,30 +108,37 @@ class RobotContainer:
                 ),
                 # Close the loop on the turn rate
                 self.robotDrive.getTurnRate,
-                # Setpoint is 0xxx
+                # Setpoint is 0
                 0,
                 # Pipe the output to the turning controls
                 lambda output: self.robotDrive.arcadeDrive(
-                    -self.driverController.getLeftY(), output
+                    -self.driveConsts["ForwardAxis"],
+                    output,
                 ),
                 # Require the robot drive
                 [self.robotDrive],
             )
         )
 
-        # Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
-        # TODO: Load button from config file
+        # Turn to 90 degrees, with a 5 second timeout
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["Turn90"]
-        ).onTrue(commands.turntoangle.TurnToAngle(90, self.robotDrive).withTimeout(5))
+            self.driverController,
+            self.driveConsts["Turn90"],
+        ).onTrue(
+            commands.turntoangle.TurnToAngle(
+                90,
+                self.robotDrive,
+            ).withTimeout(5)
+        )
 
-        # Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
-        # TODO: Load button from config file
+        # Turn to -90 degrees with a profile, with a 5 second timeout
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["TurnAnti90"]
+            self.driverController,
+            self.driveConsts["TurnAnti90"],
         ).onTrue(
             commands.turntoangleprofiled.TurnToAngleProfiled(
-                -90, self.robotDrive
+                -90,
+                self.robotDrive,
             ).withTimeout(5)
         )
 
