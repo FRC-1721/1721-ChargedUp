@@ -44,3 +44,10 @@ arm:
 
   kWheelDiameterInches: 1    # Updated 1/22 by Keegan
   KEncoderCPR: 1             # Updated 1/22 by Keegan
+
+
+claw:
+  MotorPort: 7             # Updated 1/22 by Keegan
+  Inverted: False          # Updated 1/22 by Keegan
+  EncoderPorts: 3          # Updated 1/22 by Keegan
+  EncoderReversed: False   # Updated 1/22 by Keegan
