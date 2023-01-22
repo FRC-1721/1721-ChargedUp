@@ -20,3 +20,9 @@ arm:
   ki: 0
   kd: 0
   ff: 0
+
+claw:
+  kp: 0
+  ki: 0
+  kd: 0
+  ff: 0
