@@ -28,3 +28,19 @@ drivetrain:
     yaw: 0                   # Updated 1/13 by Keegan
     pitch: 0                 # Updated 1/13 by Keegan
     roll: 0                  # Updated 1/13 by Keegan
+
+arm:
+  backMotor: # the extension motor
+    MotorPort: 5             # Updated 1/22 by Keegan
+    Inverted: False          # Updated 1/22 by Keegan
+    EncoderPorts: 1          # Updated 1/22 by Keegan
+    EncoderReversed: False   # Updated 1/22 by Keegan
+
+  middleMotor: # the screw motor
+    MotorPort: 6             # Updated 1/22 by Keegan
+    Inverted: False          # Updated 1/22 by Keegan
+    EncoderPorts: 2          # Updated 1/22 by Keegan
+    EncoderReversed: False   # Updated 1/22 by Keegan
+
+  kWheelDiameterInches: 1    # Updated 1/22 by Keegan
+  KEncoderCPR: 1             # Updated 1/22 by Keegan

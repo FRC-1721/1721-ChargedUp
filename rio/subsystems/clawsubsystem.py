@@ -15,16 +15,16 @@ from rev import CANSparkMax, CANSparkMaxLowLevel
 
 class ArmSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
-        """Creates a new Arm subsystem"""
+        """
+        Creates a new Claw subsystem
+        """
         super().__init__()
 
         # Get hardware constants
-        constants = getConstants("robot_hardware")  # All the robot hardware consts
+        constants = getConstants("robot_hardware")
         pidConstants = getConstants("robot_pid")
-        self.armConst = constants["arm"]  # All the arm consts
-        self.backCosnt = self.armConst["backMotor"]  # back specific
-        self.middleCosnt = self.armConst["middleMotor"]  # middle specific
-        self.pidConst = pidConstants["arms"]
+        self.clawConst = constants["claw"]
+        self.pidConst = pidConstants["claw"]
 
         # The motor on the back of the drive. (The arm extension motor)
         self.backMotor = CANSparkMax(
