@@ -12,7 +12,7 @@ _build
 
 # dashboard build files
 dashboard/.parcel-cache
-dashboard/dist
+dashboard/dist/*
 #dashboard packages
 node_modules
 _staging

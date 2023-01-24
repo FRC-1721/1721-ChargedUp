@@ -165,7 +165,7 @@ class RobotContainer:
             key_entry.setString(str(data[key]))
 
         self.ntmov = self.sd.getSubTable("Test")
-        self.ntmov.putNumber("test", 2)        
+        self.ntmov.putNumber("test", 2)
 
     def getAutonomousCommand(self) -> commands2.Command:
         """
