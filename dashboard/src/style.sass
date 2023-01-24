@@ -33,37 +33,64 @@ body
         mix-blend-mode: multiply
         margin-right: .5rem
 
+.main-wrapper
+    width: 100%
+
 main
     color: #ebdbb2
     padding: 3rem
-
-#info-one
-    display: flex
-    flex-direction: row
-    justify-content: space-between
-
-    table
-        flex-grow: 1
+    max-width: 960px
+    margin: 0 auto
 
 .table
     background: #3c3836
     border-radius: 1rem
 
+    &-info
+        display: flex
+        flex-direction: row
+        & + .table-info
+            border-top: 2px solid #282828
+            
+    &-label
+        padding: .7rem
+        flex: 3
 
-.table-info
+    &-area
+        padding: .7rem
+        flex: 2
+        border-left: 4px solid #504945
+
+#info-one
     display: flex
     flex-direction: row
-    & + .table-info
-        border-top: 2px solid #282828
+    justify-content: space-between
+    column-gap: 2rem
 
-.table-label
-    padding: .7rem
-    flex: 2
+    .table
+        grow: 1
+        width: 100%
 
-.table-area
-    padding: .7rem
-    flex: 1
-    border-left: 4px solid #504945
+        > .table-info > .table-label
+            width: 80px
+            flex: none
+
+#info-two
+    margin-top: 3rem
+    width: 100%
+
+
+#raw-nt
+    margin-top: 3rem
+    background-color: #1d2021
+    border-radius: 1rem
+
+    #raw-title
+        color: #665c54
+        padding: .5rem .5rem .5rem 1rem
+        font-size: 1.75rem
+        font-weight: 700
+        font-family: 'Fira Code', monospace
 
 #nt
     width: 100%

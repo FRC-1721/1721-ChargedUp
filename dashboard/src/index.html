@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="utf-8"/>
-    <title>1721</title>
+    <title>1721 Dashboard</title>
     <link rel="stylesheet" href="./style.sass">
     <link rel="shortcut icon" href="./assets/frc1721.svg" type="image/x-icon">
   </head>
@@ -14,52 +14,65 @@
         <p class="header-text">TEAM 1721 >--< DASHBOARD</p>
     </header>
 
-    <main>
 
-        <div id="info-one">
-            <table class="build-info">
-                <tbody>
-                    <tr>
-                        <td>Build Date</td>
-                        <td id="build-date-area"></td>
-                    </tr>
-                    <tr>
-                        <td>Build Host</td>
-                        <td id="build-host-area"></td>
-                    </tr>
-                    <tr>
-                        <td>Builder</td>
-                        <td id="builder-area"></td>
-                    </tr>
-                </tbody>
-            </table>
-            <table class="git-info">
-                <tbody>
-                    <tr>
-                        <td>Git Branch</td>
-                        <td id="git-branch-area"></td>
-                    </tr>
-                    <tr>
-                        <td>Git Hash</td>
-                        <td id="git-hash-area"></td>
-                    </tr>
-                    <tr>
-                        <td>Test</td>
-                        <td id="ntmtst">idiot</td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-
-        <div>
-            NetworkTables websocket: <span id="connectstate">Unknown state</span><br/>
-            Robot: <span id="robotstate">Unknown state</span> @ <span id="robotAddress">disconnected</span>
-        </div>
-        
-        <div id="nt">
-            <div class="table"></div>
-        </div>
-    </main>
+    <div class="main-wrapper">
+        <main>
+    
+            <div id="info-one">
+                <div class="table build-info">
+                    <div class="table-info">
+                        <div class="table-label">Build Date</div>
+                        <div class="table-area" id="build-date-area"></div>
+                    </div>
+                    <div class="table-info">
+                        <div class="table-label">Build Host</div>
+                        <div class="table-area" id="build-host-area"></div>
+                    </div>
+                    <div class="table-info">
+                        <div class="table-label">Builder</div>
+                        <div class="table-area" id="builder-area"></div>
+                    </div>
+                </div>
+                <div class="table git-info">
+                    <div class="table-info">
+                        <div class="table-label">Git Branch</div>
+                        <div class="table-area" id="git-branch-area"></div>
+                    </div>
+                    <div class="table-info">
+                        <div class="table-label">Git Hash</div>
+                        <div class="table-area" id="git-hash-area"></div>
+                    </div>
+                    <div class="table-info">
+                        <div class="table-label">Test</div>
+                        <div class="table-area" id="ntmtst">idiot</div>
+                    </div>
+                </div>
+            </div>
+    
+            <div id="info-two" class="table">
+                <div class="table-info">
+                    <div class="table-label">NT Websocket</div>
+                    <div class="table-area connectstate">Unknown</div>
+                </div>
+                <div class="table-info">
+                    <div class="table-label">Robot State</div>
+                    <div class="table-area robotstate">Unknown</div>
+                </div>
+                <div class="table-info">
+                    <div class="table-label">Address</div>
+                    <div class="table-area robotAddress">Disconnected</div>
+                </div>
+            </div>
+    
+            <div id="raw-nt">
+                <div id="raw-title">Raw NT Table</div>
+                <div id="nt">
+                    <div class="table"></div>
+                </div>
+            </div>
+    
+        </main>
+    </div>
 
     <script src="./jquery.js"></script>
     <p></p>

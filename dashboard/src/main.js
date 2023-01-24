@@ -38,7 +38,7 @@ function onValueChanged(key, value, isNew) {
 	// the NetworkTables.keyToId() function to convert them appropriately
 
 	if (isNew) {
-		var tr = $('<div class="table-info"></div>').appendTo($('#nt > .table:last'));
+		var tr = $('<div class="table-info"></div>').appendTo($('#nt > .table'));
 		$('<div class="table-label"></div>').text(key).appendTo(tr);
 		$('<div class="table-area"></div>').attr('id', NetworkTables.keyToId(key))
 					   .text(value)
@@ -53,7 +53,7 @@ function onValueChanged(key, value, isNew) {
     
     console.log("here");
 
-    $('#ntmtst').text(NetworkTables.getValue('/SmartDashboard/Testing/tst', 0));
+    $('#ntmtst').text(NetworkTables.getValue('/SmartDashboard/Test/test', 0));
 
     $('#build-date-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-date', 0));
     $('#build-host-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-host', 0));
