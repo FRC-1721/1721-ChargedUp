@@ -11,11 +11,11 @@ _build
 .pytest_cache
 
 # dashboard build files
+dashboard/.cache
 dashboard/.parcel-cache
 dashboard/dist/*
 #dashboard packages
-node_modules
-_staging
+dashboard/node_modules
 
 # Tools
 .SysId/

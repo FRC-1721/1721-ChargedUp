@@ -11,7 +11,9 @@
   "author": "dublUayaychtee",
   "license": "ISC",
   "devDependencies": {
+    "cssnano": "^5.1.14",
     "parcel": "^2.8.3",
+    "postcss": "^8.4.21",
     "sass": "^1.57.1"
   },
   "dependencies": {

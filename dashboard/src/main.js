@@ -13,21 +13,27 @@ $(function() {
 
 
 function onRobotConnection(connected) {
-	$('#robotstate').text(connected ? "Connected!" : "Disconnected");
-	$('#robotAddress').text(connected ? NetworkTables.getRobotAddress() : "disconnected");
+	$('#robotstate').text(connected ? "Connected" : "Disconnected");
+	$('#robotAddress').text(connected ? NetworkTables.getRobotAddress() : "Disconnected");
+
+	updateColors();
+	
 }
 
 function onNetworkTablesConnection(connected) {
 
 	if (connected) {
-		$("#connectstate").text("Connected!");
+		$("#connectstate").text("Connected");
 		
 		// clear the table
 		$("#nt tbody > tr").remove();
 		
 	} else {
-		$("#connectstate").text("Disconnected!");
+		$("#connectstate").text("Disconnected");
 	}
+
+	updateColors();
+
 }
 
 function onValueChanged(key, value, isNew) {
@@ -60,4 +66,22 @@ function onValueChanged(key, value, isNew) {
     $('#builder-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-user', 0));
     $('#git-branch-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/git-branch', 0));
     $('#git-hash-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/git-desc', 0));
+
+
+	updateColors();
+
+}
+
+function updateColors() {
+	const ids = ['#connectstate', '#robotstate', '#robotAddress'];
+	ids.forEach((v, _) => {
+		if ($(v).text() == "Unknown") {
+			$(v).css('background-color', '#cc241d');
+		} else if ($(v).text() == "Disconnected") {
+			$(v).css('background-color', '#cc241d');
+		} else {
+			$(v).css('background-color', '#689d6a');
+		}
+		console.log(v, $(v).text())
+	});
 }
