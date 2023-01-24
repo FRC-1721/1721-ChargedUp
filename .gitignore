@@ -12,7 +12,8 @@ _build
 
 # dashboard build files
 dashboard/www/main.js*
-#dashboard packages
+
+# dashboard packages
 node_modules
 _staging
 
@@ -21,3 +22,8 @@ _staging
 .OutlineViewer/
 *.out
 sysid_data*
+
+# path plannter
+.pathplanner
+generatedCSV
+generatedJSON
