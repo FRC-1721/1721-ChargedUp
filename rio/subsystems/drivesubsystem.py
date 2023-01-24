@@ -30,9 +30,6 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.rightCosnt = self.driveConst["rightMotor"]  # Right specific
         self.imuConst = self.driveConst["imu"]  # imu's constants
 
-        # Init NT
-        self.initNT()
-
         # The motors on the left side of the drive.
         self.leftMotor1 = CANSparkMax(
             self.leftCosnt["Motor1Port"],
@@ -125,21 +122,6 @@ class DriveSubsystem(commands2.SubsystemBase):
         :param rot: the commanded rotation
         """
         self.drive.arcadeDrive(fwd, rot)
-
-    def initNT(self):
-        """
-        Inits NetworkTables (for the dashboard)
-        """
-        # USE subtables if there are many entries -----
-
-        #NetworkTables.initialize()
-        self.nt = ntcore.NetworkTableInstance.getDefault()
-        self.nt.startServer()
-        self.ntdash = self.nt.getTable("SmartDashboard")
-
-        self.ntmov = self.ntdash.getSubTable("Testing")
-
-        self.ntmov.putNumber("tst", 2)
 
     def resetEncoders(self):
         """Resets the drive encoders to currently read a position of 0."""

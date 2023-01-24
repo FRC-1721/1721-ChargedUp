@@ -8,8 +8,6 @@ robotpy = {extras = ["rev", "ctre", "commands2"], version = "2023.2.1"}
 wpilib = {extras = ["all"], version = "2023.2.1.0"}
 pyyaml = "6.0"
 black = "*"
-pynetworktables = "*"
-pyntcore = "*"
 
 [dev-packages]
 black = "*"
