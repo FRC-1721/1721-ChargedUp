@@ -47,7 +47,7 @@ jobs:
         run: |
           cd dashboard && pipenv install --deploy --dev
 
-      - run: cd dashboard && make stage
+      - run: cd dashboard && pipenv run make stage
 
       - uses: actions/upload-artifact@v2
         with:
