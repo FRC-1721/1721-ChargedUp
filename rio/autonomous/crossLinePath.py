@@ -1,7 +1,5 @@
 # A test autonomous, utilizing pathplanner to cross the line.
 
-
-import wpilib
 import commands2
 import commands2.cmd
 
@@ -10,13 +8,10 @@ from wpimath.controller import (
     PIDController,
     SimpleMotorFeedforwardMeters,
 )
-
-
 from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.kinematics import DifferentialDriveKinematics
 
-from wpimath.geometry import Pose2d, Rotation2d
-
-from pathplannerlib import loadPath
+from pathplannerlib import PathPlanner, PathConstraints
 
 from subsystems.drivesubsystem import DriveSubsystem
 
@@ -27,32 +22,35 @@ class CrossLinePath(commands2.RamseteCommand):
     """A command that uss a ramsete controller to follow a preset path."""
 
     def __init__(self, drive: DriveSubsystem) -> None:
-        # get const here
+        const = getConstants("robot_autonomous")
+        driveKinematics = DifferentialDriveKinematics(const["kTrackWidthMeters"])
 
-        trajectory = loadPath("paths/New Path.path")
+        constraints = PathConstraints(5, 1)
+        trajectory = PathPlanner.loadPath("New Path", constraints, reversed=False)
 
-        _pose = Pose2d(3, 0, Rotation2d(0))
-
-        # super().__init__(
-        #     trajectory=trajectory,
-        #     _pose,
-        #     RamseteController(1, 1),
-        #     SimpleMotorFeedforwardMeters(
-        #         constants.ksVolts,
-        #         constants.kvVoltSecondsPerMeter,
-        #         constants.kaVoltSecondsSquaredPerMeter,
-        #     ),
-        #     # Our drive kinematics.
-        #     constants.kDriveKinematics,
-        #     # A reference to a method which will return a DifferentialDriveWheelSpeeds object.
-        #     self.robotDrive.getWheelSpeeds,
-        #     # The turn controller for the left side of the drivetrain.
-        #     PIDController(constants.kPDriveVel, 0, 0),
-        #     # The turn controller for the right side of the drivetrain.
-        #     PIDController(constants.kPDriveVel, 0, 0),
-        #     # A reference to a method which will set a specified
-        #     # voltage to each motor. The command will pass the two parameters.
-        #     self.robotDrive.tankDriveVolts,
-        #     # The subsystems the command should require.
-        #     [self.robotDrive],
-        # )
+        super().__init__(
+            trajectory.asWPILibTrajectory(),
+            drive.getPose,
+            RamseteController(
+                const["kRamseteB"],
+                const["kRamseteZeta"],
+            ),
+            SimpleMotorFeedforwardMeters(
+                const["ksVolts"],
+                const["kvVoltSecondsPerMeter"],
+                const["kaVoltSecondsSquaredPerMeter"],
+            ),
+            # Our drive kinematics.
+            driveKinematics,
+            # A reference to a method which will return a DifferentialDriveWheelSpeeds object.
+            drive.getWheelSpeeds,
+            # The turn controller for the left side of the drivetrain.
+            PIDController(const["kPDriveVel"], 0, 0),
+            # The turn controller for the right side of the drivetrain.
+            PIDController(const["kPDriveVel"], 0, 0),
+            # A reference to a method which will set a specified
+            # voltage to each motor. The command will pass the two parameters.
+            drive.tankDriveVolts,
+            # The subsystems the command should require.
+            [drive],
+        )

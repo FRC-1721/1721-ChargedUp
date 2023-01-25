@@ -7,6 +7,9 @@ import commands2
 import math
 import logging
 
+from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.kinematics import DifferentialDriveOdometry, DifferentialDriveWheelSpeeds
+
 # Constants
 from constants.constants import getConstants
 
@@ -88,7 +91,15 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
         self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
 
+        # Gyro
         self.ahrs = AHRS.create_spi()  # creates navx object
+
+        # Robot odometry
+        self.odometry = DifferentialDriveOdometry(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            self.rightEncoder.getPosition(),
+        )
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -98,6 +109,32 @@ class DriveSubsystem(commands2.SubsystemBase):
         :param rot: the commanded rotation
         """
         self.drive.arcadeDrive(fwd, rot)
+
+    def tankDriveVolts(self, leftVolts, rightVolts):
+        """Control the robot's drivetrain with voltage inputs for each side."""
+        # Set the voltage of the left side.
+        self.leftMotors.setVoltage(leftVolts)
+
+        # Set the voltage of the right side. It's
+        # inverted with a negative sign because it's motors need to spin in the negative direction
+        # to move forward.
+        self.rightMotors.setVoltage(-rightVolts)
+
+        print(f"({leftVolts}, {rightVolts})")
+
+        # Resets the timer for this motor's MotorSafety
+        self.drive.feed()
+
+    def getPose(self):
+        """Returns the current position of the robot using it's odometry."""
+        return self.odometry.getPose()
+
+    def getWheelSpeeds(self):
+        """Return an object which represents the wheel speeds of our drivetrain."""
+        speeds = DifferentialDriveWheelSpeeds(
+            self.leftEncoder.getVelocity(), self.rightEncoder.getVelocity()
+        )
+        return speeds
 
     def resetEncoders(self):
         """Resets the drive encoders to currently read a position of 0."""
@@ -161,3 +198,14 @@ class DriveSubsystem(commands2.SubsystemBase):
         # See here for turning bug
         # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
         return self.ahrs.getRawGyroY()
+
+    def periodic(self):
+        """
+        Called periodically when it can be called. Updates the robot's
+        odometry with sensor data.
+        """
+        self.odometry.update(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            self.rightEncoder.getPosition(),
+        )
