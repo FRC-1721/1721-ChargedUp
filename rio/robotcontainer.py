@@ -13,15 +13,14 @@ import commands2.button
 from constants.constants import getConstants
 
 # Subsystems
-import subsystems.drivesubsystem
+from subsystems.drivesubsystem import DriveSubsystem
 
 # Commands
-import commands.turntoangle
-import commands.turntoangleprofiled
-import commands.flybywire
+from commands.turntoangle import TurnToAngle
+from commands.turntoangleprofiled import TurnToAngleProfiled
+from commands.flybywire import FlyByWire
 
 # Autonomous
-
 from autonomous.crossLinePath import CrossLinePath
 
 # NetworkTables
@@ -52,7 +51,7 @@ class RobotContainer:
         self.driveConsts = self.controlConsts["driver"]
 
         # The robot's subsystems
-        self.robotDrive = subsystems.drivesubsystem.DriveSubsystem()
+        self.robotDrive = DriveSubsystem()
 
         # The driver's controller
         self.driverController = commands2.button.CommandJoystick(
@@ -67,7 +66,7 @@ class RobotContainer:
 
         # Configure default commands
         self.robotDrive.setDefaultCommand(
-            commands.flybywire.FlyByWire(
+            FlyByWire(
                 self.robotDrive,
                 lambda: -self.driverController.getRawAxis(
                     self.driveConsts["ForwardAxis"],
@@ -129,7 +128,7 @@ class RobotContainer:
             self.driverController,
             self.driveConsts["Turn90"],
         ).onTrue(
-            commands.turntoangle.TurnToAngle(
+            TurnToAngle(
                 90,
                 self.robotDrive,
             ).withTimeout(5)
@@ -140,7 +139,7 @@ class RobotContainer:
             self.driverController,
             self.driveConsts["TurnAnti90"],
         ).onTrue(
-            commands.turntoangleprofiled.TurnToAngleProfiled(
+            TurnToAngleProfiled(
                 -90,
                 self.robotDrive,
             ).withTimeout(5)
