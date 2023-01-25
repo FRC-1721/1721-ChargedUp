@@ -1,12 +1,12 @@
 "use strict";
 
-$(function() {
+$(function () {
 	// sets a function that will be called when the websocket connects/disconnects
 	NetworkTables.addWsConnectionListener(onNetworkTablesConnection, true);
-	
+
 	// sets a function that will be called when the robot connects/disconnects
 	NetworkTables.addRobotConnectionListener(onRobotConnection, true);
-	
+
 	// sets a function that will be called when any NetworkTables key/value changes
 	NetworkTables.addGlobalListener(onValueChanged, true);
 });
@@ -17,17 +17,25 @@ function onRobotConnection(connected) {
 	$('#robotAddress').text(connected ? NetworkTables.getRobotAddress() : "Disconnected");
 
 	updateColors();
-	
+
+}
+
+function ntLoaded() {
+	NetworkTables.addGlobalListener(function (key, value, isNew) {
+		// do something with the values as they change
+	}, true);
+
+	NetworkTables.putValue('/networktablesLoaded', true);
 }
 
 function onNetworkTablesConnection(connected) {
 
 	if (connected) {
 		$("#connectstate").text("Connected");
-		
+
 		// clear the table
 		$("#nt tbody > tr").remove();
-		
+
 	} else {
 		$("#connectstate").text("Disconnected");
 	}
@@ -47,25 +55,25 @@ function onValueChanged(key, value, isNew) {
 		var tr = $('<div class="table-info"></div>').appendTo($('#nt > .table'));
 		$('<div class="table-label"></div>').text(key).appendTo(tr);
 		$('<div class="table-area"></div>').attr('id', NetworkTables.keyToId(key))
-					   .text(value)
-					   .appendTo(tr);
+			.text(value)
+			.appendTo(tr);
 	} else {
-	
+
 		// similarly, use keySelector to convert the key to a valid jQuery
 		// selector. This should work for class names also, not just for ids
 		$('#' + NetworkTables.keySelector(key)).text(value);
 	}
 
-    
-    console.log("here");
 
-    $('#ntmtst').text(NetworkTables.getValue('/SmartDashboard/Test/test', 0));
+	console.log("here");
 
-    $('#build-date-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-date', 0));
-    $('#build-host-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-host', 0));
-    $('#builder-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-user', 0));
-    $('#git-branch-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/git-branch', 0));
-    $('#git-hash-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/git-desc', 0));
+	$('#ntmtst').text(NetworkTables.getValue('/SmartDashboard/Test/test', 0));
+
+	$('#build-date-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-date', 0));
+	$('#build-host-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-host', 0));
+	$('#builder-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-user', 0));
+	$('#git-branch-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/git-branch', 0));
+	$('#git-hash-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/git-desc', 0));
 
 
 	updateColors();
