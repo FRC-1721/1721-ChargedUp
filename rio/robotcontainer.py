@@ -20,6 +20,10 @@ import commands.turntoangle
 import commands.turntoangleprofiled
 import commands.flybywire
 
+# Autonomous
+
+from autonomous.crossLinePath import CrossLinePath
+
 # NetworkTables
 from ntcore import NetworkTableInstance
 
@@ -149,10 +153,8 @@ class RobotContainer:
         # Add options for chooser
         # self.autoChooser.setDefaultOption("Null Auto", NullAuto(self.drivetrain))
         self.autoChooser.setDefaultOption(
-            "(Comp) Low Goal",
-            commands.turntoangleprofiled.TurnToAngleProfiled(
-                -90, self.robotDrive
-            ).withTimeout(5),
+            "Test",
+            CrossLinePath(self.robotDrive).withTimeout(15),
         )
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)

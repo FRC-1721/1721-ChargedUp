@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-robotpy = {extras = ["rev", "ctre", "commands2", "navx"], version = "2023.2.1"}
+robotpy = {extras = ["rev", "ctre", "commands2", "navx", "pathplannerlib"], version = "2023.2.1"}
 wpilib = {extras = ["all"], version = "2023.2.1.0"}
 pyyaml = "6.0"
 black = "*"
