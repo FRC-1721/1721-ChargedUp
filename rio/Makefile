@@ -21,6 +21,8 @@ help:
 	@echo "   inwstall-python   Install python (new robots only)"
 	@echo
 
+.PHONY: deploy
+
 # Shortcut for the simulator
 sim:
 	python robot.py sim

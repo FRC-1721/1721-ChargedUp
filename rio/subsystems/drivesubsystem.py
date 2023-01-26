@@ -9,6 +9,7 @@ import logging
 
 from wpimath.geometry import Pose2d, Rotation2d
 from wpimath.kinematics import DifferentialDriveOdometry, DifferentialDriveWheelSpeeds
+from ntcore import NetworkTableInstance
 
 # Constants
 from constants.constants import getConstants
@@ -24,6 +25,10 @@ class DriveSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
         """Creates a new DriveSubsystem"""
         super().__init__()
+
+        # network tables
+        self.nt = NetworkTableInstance.getDefault()
+        self.sd = self.nt.getTable("SmartDashboard")
 
         # Get hardware constants
         constants = getConstants("robot_hardware")  # All the robot hardware consts
@@ -204,8 +209,16 @@ class DriveSubsystem(commands2.SubsystemBase):
         Called periodically when it can be called. Updates the robot's
         odometry with sensor data.
         """
+        # real bot gear ratio is 3 to 1
+        # kitbot gear ratio is 50 to 14
         self.odometry.update(
             self.ahrs.getRotation2d(),
             self.leftEncoder.getPosition(),
             self.rightEncoder.getPosition(),
         )
+
+        self.leftEncoder.setPositionConversionFactor(0.09)  # this is about correct
+        self.sd.putNumber("data/pose x", self.getPose().x)
+        self.sd.putNumber("data/pose y", self.getPose().y)
+
+        print(self.getPose().x)
