@@ -103,7 +103,7 @@ let img, joe, dvd;
 
 let bounceJoe = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0,753), getRandomInt(0,341)];
 let bounceDvd = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0,681), getRandomInt(0,328)];
-let running = false;
+let running = true;
 
 function preload() {
 	img = loadImage(require('./assets/field.png'));
