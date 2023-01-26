@@ -70,6 +70,21 @@ function onValueChanged(key, value, isNew) {
 		$(this).text(NetworkTables.getValue($(this).data('key')));
 	});
 
+	if (key == "/SmartDashboard/Autonomous/options") {
+		var options = NetworkTables.getValue("/SmartDashboard/Autonomous/options");
+		$('#aut-sel').empty();
+		options.forEach((v, i) => {
+			$('<input type="radio" class="aut-opts" name="auto-selector"></input>')
+							.attr('id', 'opt' + i)
+							.data('opt', v)
+							.appendTo($('#aut-sel'));
+			$('<label></label>').attr('for', 'opt' + i)
+							.text(v)
+							.appendTo($('#aut-sel'));
+
+		});
+	}
+
 }
 
 function updateColors() {
@@ -113,7 +128,7 @@ function preload() {
 
 function setup() {
     let canvas = createCanvas(777, 377);
-    canvas.parent("info-two");
+    canvas.parent("info-field-canvas");
 	frameRate(24);
 }
 
@@ -148,7 +163,7 @@ function draw() {
 
 
 function mousePressed() {
-	if (5 < mouseX < 25 && 5 < mouseY < 25) {
+	if (5 < mouseX && mouseX < 25 && 5 < mouseY && mouseX < 25) {
 		running = !running;
 	}
 }
