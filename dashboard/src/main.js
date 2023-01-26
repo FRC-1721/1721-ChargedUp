@@ -11,6 +11,10 @@ $(function() {
 	NetworkTables.addGlobalListener(onValueChanged, true);
 });
 
+$(document).on('input', '.dub-slider', function() {
+	NetworkTables.putValue($(this).data('key'), parseFloat($(this).val()));
+});
+
 
 function onRobotConnection(connected) {
 	$('#robotstate').text(connected ? "Connected" : "Disconnected");
@@ -56,19 +60,15 @@ function onValueChanged(key, value, isNew) {
 		$('#' + NetworkTables.keySelector(key)).text(value);
 	}
 
-    
-    console.log("here");
-
-    $('#ntmtst').text(NetworkTables.getValue('/SmartDashboard/Test/test', 0));
-
-    $('#build-date-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-date', 0));
-    $('#build-host-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-host', 0));
-    $('#builder-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/deploy-user', 0));
-    $('#git-branch-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/git-branch', 0));
-    $('#git-hash-area').text(NetworkTables.getValue('/SmartDashboard/BuildData/git-desc', 0));
-
-
 	updateColors();
+
+	$('.dub-slider').each(function() {
+		$(this).val(NetworkTables.getValue($(this).data('key')));
+	});
+
+	$('.dub-text').each(function() {
+		$(this).text(NetworkTables.getValue($(this).data('key')));
+	});
 
 }
 
@@ -82,6 +82,38 @@ function updateColors() {
 		} else {
 			$(v).css('background-color', '#689d6a');
 		}
-		console.log(v, $(v).text())
 	});
+
+	let pattern = /-dirty$/;
+	if (pattern.test($("#git-hash-area").text())) {
+		$("#git-hash-area").css('background-color', '#cc241d');
+	} else {
+		$("#git-hash-area").css('background-color', '#504945');
+	}
 }
+
+
+// p5.js canvas
+
+
+let img;
+
+function preload() {
+	img = loadImage(require('./assets/field.png'));
+}
+
+function setup() {
+    let canvas = createCanvas(777, 377);
+    canvas.parent("info-three");
+	frameRate(24);
+}
+
+function draw() {
+    background(220);
+	image(img, 0, 0);
+}
+
+window.preload = preload;
+window.setup = setup; 
+window.draw = draw;
+//window.keyPressed = keyPressed;
