@@ -83,18 +83,22 @@ main
     column-gap: 2rem
 
     .table
-        grow: 1
+        flex-grow: 2
         width: 100%
 
         > .table-info > .table-label
             width: 80px
             flex: none
+    
+    .nt-info
+        flex-grow: none
+        width: 100%
+
+        > .table-info > .table-label
+            width: 120px
+            flex: none
 
 #info-two
-    margin-top: 3rem
-    width: 100%
-
-#info-three
     margin-top: 3rem
     width: 100%
     display: flex
