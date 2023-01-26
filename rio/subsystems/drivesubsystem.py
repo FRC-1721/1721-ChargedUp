@@ -14,6 +14,7 @@ from constants.constants import getConstants
 from rev import CANSparkMax, CANSparkMaxLowLevel
 from ctre import Pigeon2
 from wpimath import geometry
+from navx import AHRS
 
 # NetworkTables
 import ntcore
@@ -29,7 +30,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.driveConst = constants["drivetrain"]  # All the drivetrain consts
         self.leftCosnt = self.driveConst["leftMotor"]  # Left specific
         self.rightCosnt = self.driveConst["rightMotor"]  # Right specific
-        self.imuConst = self.driveConst["imu"]  # imu's constants
+        self.navXConst = self.driveConst["navX"]  # navX's constants
 
         # The motors on the left side of the drive.
         self.leftMotor1 = CANSparkMax(
@@ -65,7 +66,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         )
         self.rightMotors.setInverted(self.rightCosnt["Inverted"])
 
-        # TODO: Replace with proper motorconfigs
+        # This fixes a bug in rev firmware involving flash settings.
         self.leftMotor1.setInverted(False)
         self.leftMotor2.setInverted(False)
         self.rightMotor1.setInverted(False)
@@ -74,46 +75,23 @@ class DriveSubsystem(commands2.SubsystemBase):
         # The robot's drivetrain kinematics
         self.drive = wpilib.drive.DifferentialDrive(self.leftMotors, self.rightMotors)
 
-        # TODO: These need to be replaced with CAN motor controllers
         # The left-side drive encoder
-        self.leftEncoder = wpilib.Encoder(
-            self.leftCosnt["EncoderPorts"][0],
-            self.leftCosnt["EncoderPorts"][1],
-            self.leftCosnt["EncoderReversed"],
-        )
+        self.leftEncoder = self.leftMotor1.getEncoder()
 
         # The right-side drive encoder
-        self.rightEncoder = wpilib.Encoder(
-            self.rightCosnt["EncoderPorts"][0],
-            self.rightCosnt["EncoderPorts"][1],
-            self.rightCosnt["EncoderReversed"],
-        )
+        self.rightEncoder = self.rightMotor1.getEncoder()
 
-        # Sets the distance per pulse for the encoders
+        # Setup the conversion factors for the motor controllers
+        # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
+        # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
         encoderDistPerP = (
             self.driveConst["kWheelDiameterInches"] * math.pi
         ) / self.driveConst["kEncoderCPR"]
 
-        self.leftEncoder.setDistancePerPulse(encoderDistPerP)
-        self.rightEncoder.setDistancePerPulse(encoderDistPerP)
+        self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
+        self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
 
-        # Setup Pigeon
-        # Docs: https://docs.ctre-phoenix.com/en/stable/ch11_BringUpPigeon.html?highlight=pigeon#pigeon-api
-        self.imu = Pigeon2(self.imuConst["can_id"])  # Create object
-
-        # Setup Pigeon pose
-        self.imu.configMountPose(
-            self.imuConst["yaw"],
-            self.imuConst["pitch"],
-            self.imuConst["roll"],
-        )
-
-    def getGyroHeading(self):
-        """
-        Returns the gyro heading.
-        """
-
-        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
+        self.ahrs = AHRS.create_spi()  # creates navx object
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -162,24 +140,27 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         Zeroes the heading of the robot.
         """
-        # This is most likey the wrong was to do
-        # this but I can't find the reset command
-        self.imu.configMountPose(
-            self.imuConst["yaw"],
-            self.imuConst["pitch"],
-            self.imuConst["roll"],
-        )
+        self.ahrs.reset()
 
-    def getHeading(self):
+    def getHeading(self) -> float:
         """
         Returns the heading of the robot.
         :returns: the robot's heading in degrees, from 180 to 180
         """
-        return geometry.Rotation2d.fromDegrees(self.imu.getYaw())
+        return geometry.Rotation2d.fromDegrees(self.ahrs.getYaw()).degrees()
 
-    def getTurnRate(self):
+    def getPitch(self):
+        """
+        Returns the angle of the robot
+        """
+        return geometry.Rotation2d.fromDegrees(self.ahrs.getPitch())
+
+    def getTurnRate(self) -> float:
         """
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.imu.GetRawGyro()
+
+        # See here for turning bug
+        # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
+        return self.ahrs.getRawGyroY()
