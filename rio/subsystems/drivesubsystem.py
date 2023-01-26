@@ -16,13 +16,16 @@ from ctre import Pigeon2
 from wpimath import geometry
 
 # NetworkTables
-import ntcore
+from ntcore import NetworkTableInstance
 
 
 class DriveSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
         """Creates a new DriveSubsystem"""
         super().__init__()
+        # Configure networktables
+        self.nt = NetworkTableInstance.getDefault()
+        self.sd = self.nt.getTable("SmartDashboard")
 
         # Get hardware constants
         constants = getConstants("robot_hardware")  # All the robot hardware consts
@@ -183,3 +186,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         :returns: The turn rate of the robot, in degrees per second
         """
         return self.imu.GetRawGyro()
+
+    def periodic(self) -> None:
+        self.sd.putNumber("Drivetrain/Left Motor Speed", self.leftMotors.get())
+        self.sd.putNumber("Drivetrain/Right Motor Speed", self.rightMotors.get())
