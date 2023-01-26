@@ -76,19 +76,19 @@ function updateColors() {
 	const ids = ['#connectstate', '#robotstate', '#robotAddress'];
 	ids.forEach((v, _) => {
 		if ($(v).text() == "Unknown") {
-			$(v).css('background-color', '#cc241d');
+			$(v).css('background', 'linear-gradient(to right, #504945, #cc241d)');
 		} else if ($(v).text() == "Disconnected") {
-			$(v).css('background-color', '#cc241d');
+			$(v).css('background', 'linear-gradient(to right, #504945, #cc241d)');
 		} else {
-			$(v).css('background-color', '#689d6a');
+			$(v).css('background', 'linear-gradient(to right, #504945, #689d6a)');
 		}
 	});
 
 	let pattern = /-dirty$/;
 	if (pattern.test($("#git-hash-area").text())) {
-		$("#git-hash-area").css('background-color', '#cc241d');
+		$("#git-hash-area").css('background', 'linear-gradient(to right, #504945, #cc241d)');
 	} else {
-		$("#git-hash-area").css('background-color', '#504945');
+		$("#git-hash-area").css('background', '#504945');
 	}
 }
 
