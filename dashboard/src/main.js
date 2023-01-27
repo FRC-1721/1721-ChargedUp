@@ -117,10 +117,10 @@ function updateColors() {
 	highlightColor(/-dirty$/, "#git-hash-area", 'linear-gradient(to right, #504945, #cc241d)');
 
 	// Programmers
-	highlightColor(/SimUser$/, "#builder-area", 'linear-gradient(to right, #504945, #ff14f3)'); // First one is fine to overwrite.
-	highlightColor(/joe/, "#builder-area", 'linear-gradient(to right, #504945, #24e2ff)', false);
-	highlightColor(/dylan/, "#builder-area", 'linear-gradient(to right, #504945, #ff8b33)', false);
-	highlightColor(/kredcool/, "#builder-area", 'linear-gradient(to right, #504945, #ffeb33)', false);
+	highlightColor(/SimUser$/, "#builder-area", 'linear-gradient(to right, #504945, #d3869b)'); // First one is fine to overwrite.
+	highlightColor(/joe/, "#builder-area", 'linear-gradient(to right, #504945, #831598)', false);
+	highlightColor(/dylan/, "#builder-area", 'linear-gradient(to right, #504945, #fe8019)', false);
+	highlightColor(/kredcool/, "#builder-area", 'linear-gradient(to right, #504945, #fabd2f)', false);
 
 	// Branches
 	highlightColor(/event/, "#git-branch-area", 'linear-gradient(to right, #504945, #689d6a)');
