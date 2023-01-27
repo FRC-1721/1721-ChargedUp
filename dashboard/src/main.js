@@ -78,6 +78,14 @@ function onValueChanged(key, value, isNew) {
 	}
 }
 
+function highlightColor(patt, loc, css, overwrite = true, norm = '#504945') {
+	if (patt.test($(loc).text())) {
+		$(loc).css('background', css);
+	} else if (overwrite) {
+		$(loc).css('background', norm);
+	}
+}
+
 function updateColors() {
 	const ids = ['#connectstate', '#robotstate', '#robotAddress'];
 	ids.forEach((v, _) => {
@@ -90,12 +98,18 @@ function updateColors() {
 		}
 	});
 
-	let pattern = /-dirty$/;
-	if (pattern.test($("#git-hash-area").text())) {
-		$("#git-hash-area").css('background', 'linear-gradient(to right, #504945, #cc241d)');
-	} else {
-		$("#git-hash-area").css('background', '#504945');
-	}
+	// Custom formatting
+	highlightColor(/-dirty$/, "#git-hash-area", 'linear-gradient(to right, #504945, #cc241d)');
+
+	// Programmers
+	highlightColor(/SimUser$/, "#builder-area", 'linear-gradient(to right, #504945, #ff14f3)'); // First one is fine to overwrite.
+	highlightColor(/joe/, "#builder-area", 'linear-gradient(to right, #504945, #24e2ff)', false);
+	highlightColor(/dylan/, "#builder-area", 'linear-gradient(to right, #504945, #ff8b33)', false);
+	highlightColor(/kredcool/, "#builder-area", 'linear-gradient(to right, #504945, #ffeb33)', false);
+
+	// Branches
+	highlightColor(/event/, "#git-branch-area", 'linear-gradient(to right, #504945, #689d6a)');
+	highlightColor(/sim/, "#git-branch-area", 'linear-gradient(to right, #504945, #cc241d)', false);
 }
 
 
