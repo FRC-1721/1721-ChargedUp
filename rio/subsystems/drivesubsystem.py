@@ -168,7 +168,7 @@ class DriveSubsystem(commands2.SubsystemBase):
     def periodic(self) -> None:
         """Runs every loop"""
 
-        self.sd.putNumber("time", int(DriverStation.getMatchTime()))
+        self.sd.putNumber("Audio/MatchTime", int(DriverStation.getMatchTime()))
 
         # See here for turning bug
         # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066

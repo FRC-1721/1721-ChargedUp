@@ -73,7 +73,7 @@ function onValueChanged(key, value, isNew) {
 		$(this).text(NetworkTables.getValue($(this).data('key')));
 	});
 
-	if (key.includes("/SmartDashboard/time")) {
+	if (key.includes("/SmartDashboard/Audio")) {
 		countDownAlerts(key, value);
 	}
 }
@@ -89,12 +89,12 @@ function highlightColor(patt, loc, css, overwrite = true, norm = '#504945') {
 		$('#aut-sel').empty();
 		options.forEach((v, i) => {
 			$('<input type="radio" class="aut-opts" name="auto-selector"></input>')
-							.attr('id', 'opt' + i)
-							.data('opt', v)
-							.appendTo($('#aut-sel'));
+				.attr('id', 'opt' + i)
+				.data('opt', v)
+				.appendTo($('#aut-sel'));
 			$('<label></label>').attr('for', 'opt' + i)
-							.text(v)
-							.appendTo($('#aut-sel'));
+				.text(v)
+				.appendTo($('#aut-sel'));
 
 		});
 	}
@@ -136,8 +136,8 @@ function getRandomInt(min, max) {
 
 let img, joe, dvd;
 
-let bounceJoe = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0,753), getRandomInt(0,341)];
-let bounceDvd = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0,681), getRandomInt(0,328)];
+let bounceJoe = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 753), getRandomInt(0, 341)];
+let bounceDvd = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 681), getRandomInt(0, 328)];
 let running = true;
 
 function preload() {
@@ -148,8 +148,8 @@ function preload() {
 }
 
 function setup() {
-    let canvas = createCanvas(777, 377);
-    canvas.parent("info-field-canvas");
+	let canvas = createCanvas(777, 377);
+	canvas.parent("info-field-canvas");
 	frameRate(24);
 }
 
