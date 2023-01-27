@@ -84,6 +84,21 @@ function highlightColor(patt, loc, css, overwrite = true, norm = '#504945') {
 	} else if (overwrite) {
 		$(loc).css('background', norm);
 	}
+	if (key == "/SmartDashboard/Autonomous/options") {
+		var options = NetworkTables.getValue("/SmartDashboard/Autonomous/options");
+		$('#aut-sel').empty();
+		options.forEach((v, i) => {
+			$('<input type="radio" class="aut-opts" name="auto-selector"></input>')
+							.attr('id', 'opt' + i)
+							.data('opt', v)
+							.appendTo($('#aut-sel'));
+			$('<label></label>').attr('for', 'opt' + i)
+							.text(v)
+							.appendTo($('#aut-sel'));
+
+		});
+	}
+
 }
 
 function updateColors() {
@@ -121,11 +136,9 @@ function getRandomInt(min, max) {
 
 let img, joe, dvd;
 
-let wav135;
-
-let bounceJoe = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 753), getRandomInt(0, 341)];
-let bounceDvd = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 681), getRandomInt(0, 328)];
-let running = false;
+let bounceJoe = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0,753), getRandomInt(0,341)];
+let bounceDvd = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0,681), getRandomInt(0,328)];
+let running = true;
 
 function preload() {
 	// Images
@@ -135,8 +148,8 @@ function preload() {
 }
 
 function setup() {
-	let canvas = createCanvas(777, 377);
-	canvas.parent("info-two");
+    let canvas = createCanvas(777, 377);
+    canvas.parent("info-field-canvas");
 	frameRate(24);
 }
 
@@ -173,7 +186,7 @@ function draw() {
 
 
 function mousePressed() {
-	if (5 < mouseX < 25 && 5 < mouseY < 25) {
+	if (5 < mouseX && mouseX < 25 && 5 < mouseY && mouseX < 25) {
 		running = !running;
 	}
 }
