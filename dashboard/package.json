@@ -11,6 +11,7 @@
   "author": "dublUayaychtee",
   "license": "ISC",
   "devDependencies": {
+    "@parcel/resolver-glob": "^2.8.3",
     "cssnano": "^5.1.14",
     "parcel": "^2.8.3",
     "postcss": "^8.4.21",
