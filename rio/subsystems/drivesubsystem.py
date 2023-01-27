@@ -89,12 +89,13 @@ class DriveSubsystem(commands2.SubsystemBase):
         # Setup the conversion factors for the motor controllers
         # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
         # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
-        factor = (self.driveConst["kWheelDiameterInches"] * math.pi) / (
-            self.driveConst["kGearRatio"]
+        factor = 1 / (
+            (self.driveConst["kWheelDiameterMeters"] * math.pi)
+            / (self.driveConst["kGearRatio"])
         )
 
-        self.leftEncoder.setPositionConversionFactor(factor)
-        self.rightEncoder.setPositionConversionFactor(factor)
+        self.leftEncoder.setPositionConversionFactor(1 / 21.43)
+        self.rightEncoder.setPositionConversionFactor(1 / 21.43)
 
         # Gyro
         self.ahrs = AHRS.create_spi()  # creates navx object
@@ -130,6 +131,9 @@ class DriveSubsystem(commands2.SubsystemBase):
         # Resets the timer for this motor's MotorSafety
         self.drive.feed()
 
+        # Reset the encoders
+        self.resetEncoders()
+
     def getPose(self):
         """Returns the current position of the robot using it's odometry."""
         return self.odometry.getPose()
@@ -143,8 +147,9 @@ class DriveSubsystem(commands2.SubsystemBase):
 
     def resetEncoders(self):
         """Resets the drive encoders to currently read a position of 0."""
-        self.leftEncoder.reset()
-        self.rightEncoder.reset()
+        print("Reset encoders")
+        self.leftEncoder.setPosition(0)
+        self.rightEncoder.setPosition(0)
 
     def getAverageEncoderDistance(self):
         """
@@ -212,8 +217,12 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.odometry.update(
             self.ahrs.getRotation2d(),
             self.leftEncoder.getPosition(),
-            self.rightEncoder.getPosition(),
+            -self.rightEncoder.getPosition(),
         )
 
         self.sd.putNumber("Pose/Pose x", self.getPose().x)
         self.sd.putNumber("Pose/Pose y", self.getPose().y)
+
+        print(
+            f"({self.getPose().x}, {self.getPose().y}) Current encoder is ({self.leftEncoder.getPosition()}, {self.rightEncoder.getPosition()})"
+        )

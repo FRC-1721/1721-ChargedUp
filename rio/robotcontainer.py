@@ -99,6 +99,12 @@ class RobotContainer:
             )
         )
 
+        commands2.button.JoystickButton(self.driverController, 1).onTrue(
+            commands2.InstantCommand(
+                (lambda: self.robotDrive.resetEncoders()), [self.robotDrive]
+            )
+        )
+
         # Stabilize robot to drive straight with gyro (software diff lock)
         commands2.button.JoystickButton(
             self.driverController, self.driveConsts["DiffLock"]
