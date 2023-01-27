@@ -5,8 +5,8 @@
 
 drivetrain:
   max_velocity: 1.5         # Updated Never by Nobody
-  kEncoderCPR: 1024         # Updated Never by Nobody
-  kWheelDiameterInches: 6   # Updated Never by Nobody
+  kGearRatio: 3.5714        # Updated 1/26 by Joe
+  kWheelDiameterInches: 6   # Updated 1/26 by Joe
 
   # All pose coordinates are in meters.
   leftMotor:

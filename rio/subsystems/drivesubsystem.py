@@ -89,12 +89,12 @@ class DriveSubsystem(commands2.SubsystemBase):
         # Setup the conversion factors for the motor controllers
         # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
         # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
-        encoderDistPerP = (
-            self.driveConst["kWheelDiameterInches"] * math.pi
-        ) / self.driveConst["kEncoderCPR"]
-
-        self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
-        self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
+        factor = (
+            (self.driveConst["kWheelDiameterInches"] * math.pi)
+            / self.driveConst["kGearRatio"],
+        )
+        self.leftEncoder.setPositionConversionFactor(factor)
+        self.rightEncoder.setPositionConversionFactor(factor)
 
         # Gyro
         self.ahrs = AHRS.create_spi()  # creates navx object
@@ -209,16 +209,13 @@ class DriveSubsystem(commands2.SubsystemBase):
         Called periodically when it can be called. Updates the robot's
         odometry with sensor data.
         """
-        # real bot gear ratio is 3 to 1
-        # kitbot gear ratio is 50 to 14
         self.odometry.update(
             self.ahrs.getRotation2d(),
             self.leftEncoder.getPosition(),
             self.rightEncoder.getPosition(),
         )
 
-        self.leftEncoder.setPositionConversionFactor(0.09)  # this is about correct
-        self.sd.putNumber("data/pose x", self.getPose().x)
-        self.sd.putNumber("data/pose y", self.getPose().y)
+        self.sd.putNumber("Pose/Pose x", self.getPose().x)
+        self.sd.putNumber("Pose/Pose y", self.getPose().y)
 
         print(self.getPose().x)
