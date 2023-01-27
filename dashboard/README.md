@@ -6,10 +6,10 @@
  - Make sure Robot Simulation is running
  - Install npm
 
-Install parcel
+Install deps
 
 ```shell
-npm install --save-dev parcel
+npm ci
 ```
 
 Build webpage

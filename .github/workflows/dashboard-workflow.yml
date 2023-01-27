@@ -30,7 +30,7 @@ jobs:
         run: curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.1/install.sh | bash
 
       - name: Install npm deps
-        run: cd dashboard && npm install
+        run: cd dashboard && npm ci
 
       - name: Install pipenv
         run: |
