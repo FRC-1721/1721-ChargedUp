@@ -76,14 +76,7 @@ function onValueChanged(key, value, isNew) {
 	if (key.includes("/SmartDashboard/Audio")) {
 		countDownAlerts(key, value);
 	}
-}
 
-function highlightColor(patt, loc, css, overwrite = true, norm = '#504945') {
-	if (patt.test($(loc).text())) {
-		$(loc).css('background', css);
-	} else if (overwrite) {
-		$(loc).css('background', norm);
-	}
 	if (key == "/SmartDashboard/Autonomous/options") {
 		var options = NetworkTables.getValue("/SmartDashboard/Autonomous/options");
 		$('#aut-sel').empty();
@@ -98,7 +91,14 @@ function highlightColor(patt, loc, css, overwrite = true, norm = '#504945') {
 
 		});
 	}
+}
 
+function highlightColor(patt, loc, css, overwrite = true, norm = '#504945') {
+	if (patt.test($(loc).text())) {
+		$(loc).css('background', css);
+	} else if (overwrite) {
+		$(loc).css('background', norm);
+	}
 }
 
 function updateColors() {
