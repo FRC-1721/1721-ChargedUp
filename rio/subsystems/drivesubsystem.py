@@ -89,10 +89,10 @@ class DriveSubsystem(commands2.SubsystemBase):
         # Setup the conversion factors for the motor controllers
         # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
         # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
-        factor = (
-            (self.driveConst["kWheelDiameterInches"] * math.pi)
-            / self.driveConst["kGearRatio"],
+        factor = (self.driveConst["kWheelDiameterInches"] * math.pi) / (
+            self.driveConst["kGearRatio"]
         )
+
         self.leftEncoder.setPositionConversionFactor(factor)
         self.rightEncoder.setPositionConversionFactor(factor)
 
@@ -217,5 +217,3 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         self.sd.putNumber("Pose/Pose x", self.getPose().x)
         self.sd.putNumber("Pose/Pose y", self.getPose().y)
-
-        print(self.getPose().x)
