@@ -1,13 +1,13 @@
 # Constants for the robot PID
 
 drive:
-  kStabilizationP: 1
-  kStabilizationI: 0.5
+  kStabilizationP: 0.011
+  kStabilizationI: 0.0001
   kStabilizationD: 0
 
-  kTurnP: 1
-  kTurnI: 0
-  kTurnD: 0
+  kTurnP: 0.007
+  kTurnI: 0.006
+  kTurnD: 0.001
 
   kMaxTurnRateDegPerS: 100
   kMaxTurnAccelerationDegPerSSquared: 300

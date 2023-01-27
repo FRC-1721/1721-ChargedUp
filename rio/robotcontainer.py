@@ -121,7 +121,7 @@ class RobotContainer:
                 0,
                 # Pipe the output to the turning controls
                 lambda output: self.robotDrive.arcadeDrive(
-                    -self.driveConsts["ForwardAxis"],
+                    -self.driverController.getRawAxis(self.driveConsts["ForwardAxis"]),
                     output,
                 ),
                 # Require the robot drive

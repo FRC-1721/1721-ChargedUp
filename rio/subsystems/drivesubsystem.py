@@ -207,7 +207,7 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # See here for turning bug
         # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
-        return self.ahrs.getRawGyroY()
+        return self.ahrs.getRawGyroZ()
 
     def periodic(self):
         """
@@ -222,7 +222,3 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         self.sd.putNumber("Pose/Pose x", self.getPose().x)
         self.sd.putNumber("Pose/Pose y", self.getPose().y)
-
-        print(
-            f"({self.getPose().x}, {self.getPose().y}) Current encoder is ({self.leftEncoder.getPosition()}, {self.rightEncoder.getPosition()})"
-        )
