@@ -9,8 +9,10 @@ ksVolts: 0.22
 kvVoltSecondsPerMeter: 1.98
 kaVoltSecondsSquaredPerMeter: 0.2
 
-# P term
-kPDriveVel: 8.5
+# Driving
+kRamP: 0.001
+kRamI: 0
+kRamD: 0
 
 # The max velocity and acceleration for our autonomous.
 kMaxSpeedMetersPerSecond: 3

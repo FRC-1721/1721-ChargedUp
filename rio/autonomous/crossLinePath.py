@@ -45,9 +45,9 @@ class CrossLinePath(commands2.RamseteCommand):
             # A reference to a method which will return a DifferentialDriveWheelSpeeds object.
             drive.getWheelSpeeds,
             # The turn controller for the left side of the drivetrain.
-            PIDController(const["kPDriveVel"], 0, 0),
+            PIDController(const["kRamP"], const["kRamI"], const["kRamD"]),
             # The turn controller for the right side of the drivetrain.
-            PIDController(const["kPDriveVel"], 0, 0),
+            PIDController(const["kRamP"], const["kRamI"], const["kRamD"]),
             # A reference to a method which will set a specified
             # voltage to each motor. The command will pass the two parameters.
             drive.tankDriveVolts,

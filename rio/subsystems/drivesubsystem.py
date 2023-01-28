@@ -89,13 +89,12 @@ class DriveSubsystem(commands2.SubsystemBase):
         # Setup the conversion factors for the motor controllers
         # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
         # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
-        factor = 1 / (
-            (self.driveConst["kWheelDiameterMeters"] * math.pi)
-            / (self.driveConst["kGearRatio"])
+        self.leftEncoder.setPositionConversionFactor(
+            1 / self.driveConst["encoderConversionFactor"]
         )
-
-        self.leftEncoder.setPositionConversionFactor(1 / 21.43)
-        self.rightEncoder.setPositionConversionFactor(1 / 21.43)
+        self.rightEncoder.setPositionConversionFactor(
+            1 / self.driveConst["encoderConversionFactor"]
+        )
 
         # Gyro
         self.ahrs = AHRS.create_spi()  # creates navx object
@@ -147,9 +146,16 @@ class DriveSubsystem(commands2.SubsystemBase):
 
     def resetEncoders(self):
         """Resets the drive encoders to currently read a position of 0."""
-        print("Reset encoders")
         self.leftEncoder.setPosition(0)
         self.rightEncoder.setPosition(0)
+
+        # https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/differential-drive-odometry.html#resetting-the-robot-pose
+        self.odometry.resetPosition(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            -self.rightEncoder.getPosition(),
+            Pose2d(),
+        )
 
     def getAverageEncoderDistance(self):
         """

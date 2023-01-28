@@ -4,9 +4,8 @@
 # of arms, and similar should go here.
 
 drivetrain:
-  max_velocity: 1.5              # Updated Never by Nobody
-  kGearRatio: 3.5714             # Updated 1/26 by Joe
-  kWheelDiameterMeters: 0.1524   # Updated 1/27 by Joe
+  max_velocity: 1.5               # Updated Never by Nobody
+  encoderConversionFactor: 21.43  # Updated 1/27 by Joe
 
   # All pose coordinates are in meters.
   leftMotor:
