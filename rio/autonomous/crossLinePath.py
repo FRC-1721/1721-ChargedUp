@@ -26,7 +26,8 @@ class CrossLinePath(commands2.RamseteCommand):
         driveKinematics = DifferentialDriveKinematics(const["kTrackWidthMeters"])
 
         constraints = PathConstraints(5, 1)
-        trajectory = PathPlanner.loadPath("New Path", constraints, reversed=False)
+        # auto 1 goes stright back
+        trajectory = PathPlanner.loadPath("auto 1", constraints, reversed=False)
 
         super().__init__(
             trajectory.asWPILibTrajectory(),
