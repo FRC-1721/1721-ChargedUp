@@ -91,6 +91,10 @@ function onValueChanged(key, value, isNew) {
 
 		});
 	}
+
+	if (key.includes("/SmartDashboard/Pose/Pose")) {
+		updateRobotPos(NetworkTables.getValue("/SmartDashboard/Pose/Pose x"), NetworkTables.getValue("/SmartDashboard/Pose/Pose y"))
+	}
 }
 
 function highlightColor(patt, loc, css, overwrite = true, norm = '#504945') {
@@ -135,6 +139,7 @@ function getRandomInt(min, max) {
 }
 
 let img, joe, dvd;
+let posX, posY;
 
 let bounceJoe = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 753), getRandomInt(0, 341)];
 let bounceDvd = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 681), getRandomInt(0, 328)];
@@ -158,6 +163,7 @@ function draw() {
 	image(img, 0, 0);
 	image(dvd, bounceDvd[2], bounceDvd[3]);
 	image(joe, bounceJoe[2], bounceJoe[3]);
+	rect(posX * 0.46977025392987, posY * 0.46977025392987, 20, 20);
 	if (running) {
 		bounceJoe[2] += bounceJoe[0] ? 3 : -3;
 		bounceJoe[3] += bounceJoe[1] ? 3 : -3;
@@ -184,11 +190,15 @@ function draw() {
 	}
 }
 
-
 function mousePressed() {
 	if (5 < mouseX && mouseX < 25 && 5 < mouseY && mouseX < 25) {
 		running = !running;
 	}
+}
+
+function updateRobotPos(x, y) {
+	posX = x;
+	posY = y;
 }
 
 window.preload = preload;
