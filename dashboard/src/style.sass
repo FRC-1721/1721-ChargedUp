@@ -108,6 +108,15 @@ main
     margin-top: 1rem
     height: 4rem
 
+    input
+        display: none
+
+        &:checked+label
+            background: #802
+
+            &:hover
+                background: #913
+
     label
         flex: 1
         display: flex
@@ -126,16 +135,6 @@ main
 
     label:first-of-type:last-of-type
         border-radius: 1rem
-
-    input
-        display: none
-
-    input, label
-        &:checked+label
-            background: #802
-
-            &:hover
-                background: #913
 
 #info-field
     margin-top: 1rem

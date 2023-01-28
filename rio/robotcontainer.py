@@ -161,10 +161,6 @@ class RobotContainer:
             "Test",
             CrossLinePath(self.robotDrive).withTimeout(15),
         )
-        self.autoChooser.addOption(
-            "Test2",
-            CrossLinePath(self.robotDrive).withTimeout(15),
-        )
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
         # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.
