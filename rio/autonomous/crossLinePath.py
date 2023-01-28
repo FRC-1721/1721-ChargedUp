@@ -27,7 +27,7 @@ class CrossLinePath(commands2.RamseteCommand):
 
         constraints = PathConstraints(5, 1)
         # auto 1 goes stright back
-        trajectory = PathPlanner.loadPath("auto 1", constraints, reversed=False)
+        trajectory = PathPlanner.loadPath("New Path", constraints, reversed=False)
 
         super().__init__(
             trajectory.asWPILibTrajectory(),

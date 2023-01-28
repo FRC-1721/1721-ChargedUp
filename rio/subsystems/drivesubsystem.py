@@ -73,8 +73,8 @@ class DriveSubsystem(commands2.SubsystemBase):
             self.rightMotor1,
             self.rightMotor2,
         )
-        # self.rightMotors.setInverted(self.rightCosnt["Inverted"])
-        self.rightMotors.setInverted(False)
+        self.rightMotors.setInverted(self.rightCosnt["Inverted"])
+        # self.rightMotors.setInverted(False)
 
         # This fixes a bug in rev firmware involving flash settings.
         self.leftMotor1.setInverted(False)
@@ -239,3 +239,4 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         self.sd.putNumber("Pose/Pose x", self.getPose().x)
         self.sd.putNumber("Pose/Pose y", self.getPose().y)
+        self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())
