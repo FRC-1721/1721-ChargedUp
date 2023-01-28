@@ -120,7 +120,7 @@ function updateColors() {
 	highlightColor(/SimUser$/, "#builder-area", 'linear-gradient(to right, #504945, #d3869b)'); // First one is fine to overwrite.
 	highlightColor(/joe/, "#builder-area", 'linear-gradient(to right, #504945, #831598)', false);
 	highlightColor(/dylan/, "#builder-area", 'linear-gradient(to right, #504945, #fe8019)', false);
-	highlightColor(/kredcool/, "#builder-area", 'linear-gradient(to right, #504945, #fabd2f)', false);
+	highlightColor(/kredcool/, "#builder-area", 'linear-gradient(to right, #504945, #67ab24)', false);
 
 	// Branches
 	highlightColor(/event/, "#git-branch-area", 'linear-gradient(to right, #504945, #689d6a)');
