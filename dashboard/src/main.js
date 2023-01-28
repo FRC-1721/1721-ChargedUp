@@ -18,6 +18,10 @@ $(document).on('input', '.dub-slider', function () {
 	NetworkTables.putValue($(this).data('key'), parseFloat($(this).val()));
 });
 
+$(document).on('change', '.aut-opts', function () {
+	NetworkTables.putValue('/SmartDashboard/Autonomous/active', $(this).data('opt'));
+	console.log($(this));
+})
 
 function onRobotConnection(connected) {
 	$('#robotstate').text(connected ? "Connected" : "Disconnected");

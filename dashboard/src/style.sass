@@ -127,15 +127,13 @@ main
         &:hover
             background: #504845
 
-    &:first-child
-        label
+        &:first-of-type
             border-radius: 1rem 0 0 1rem
 
-    &:last-child
-        label
+        &:last-of-type
             border-radius: 0 1rem 1rem 0
 
-    label:first-child, label:last-child
+    label:first-of-type:last-of-type
         border-radius: 1rem
 
 #info-field
