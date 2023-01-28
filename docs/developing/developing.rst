@@ -19,7 +19,7 @@ if pose x/y cords match actual.
   :language: YAML
 
 .. figure:: resources/AProgrammer.jpg
-   :width: 80%
+   :width: 50%
    :alt: Figure of a programmer
 
    A programmer in his natural habitat

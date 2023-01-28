@@ -1,5 +1,10 @@
-,**Qty**, **Unit Cost** , **Total Cost** 
-**Example Subsytem**,,,
-Example Part,1, $100.00 , $100.00 
+,**Qty**,**Unit Cost**,**Total Cost**
+**Electronics**,,,
+RoboRio 2,1,$485.00,$485.00
+navX2,1,$107.00,$107.00
 ,,,
-,,, $100.00 
+**Drivetrain**,,,
+,,,
+**Arm**,,,
+,,,
+,,,$592.00
