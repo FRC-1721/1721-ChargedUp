@@ -108,15 +108,14 @@ main
     margin-top: 1rem
     height: 4rem
 
-    label
+    button
         flex: 1
         display: flex
         align-items: center
         justify-content: center
         background: #3c3836
-
-        &:hover
-            background: #504845
+        border: none
+        color: #ebdbb2
 
         &:first-of-type
             border-radius: 1rem 0 0 1rem
@@ -124,18 +123,8 @@ main
         &:last-of-type
             border-radius: 0 1rem 1rem 0
 
-    label:first-of-type:last-of-type
+    button:first-of-type:last-of-type
         border-radius: 1rem
-
-    input
-        display: none
-
-    input, label
-        &:checked+label
-            background: #802
-
-            &:hover
-                background: #913
 
 #info-field
     margin-top: 1rem

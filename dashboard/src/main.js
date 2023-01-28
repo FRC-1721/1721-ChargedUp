@@ -18,9 +18,9 @@ $(document).on('input', '.dub-slider', function () {
 	NetworkTables.putValue($(this).data('key'), parseFloat($(this).val()));
 });
 
-$(document).on('change', '.aut-opts', function () {
-	NetworkTables.putValue('/SmartDashboard/Autonomous/active', $("label[for='" + $(this).attr('id') + "']").text());
-})
+$(document).on('click', '#aut-sel > button', function() {
+	NetworkTables.putValue('/SmartDashboard/Autonomous/active', $(this).html());
+});
 
 function onRobotConnection(connected) {
 	$('#robotstate').text(connected ? "Connected" : "Disconnected");
@@ -84,19 +84,22 @@ function onValueChanged(key, value, isNew) {
 		var options = NetworkTables.getValue("/SmartDashboard/Autonomous/options");
 		$('#aut-sel').empty();
 		options.forEach((v, i) => {
-			$('<input type="radio" class="aut-opts" name="auto-selector"></input>')
-				.attr('id', 'opt' + i)
-				.data('opt', v)
+			$('<button></button>').attr('for', 'opt' + i)
+				.html(v)
 				.appendTo($('#aut-sel'));
-			$('<label></label>').attr('for', 'opt' + i)
-				.text(v)
-				.appendTo($('#aut-sel'));
-
 		});
 	}
 
+	$("#aut-sel > button").each(function () {
+		if ($(this).html() == NetworkTables.getValue("/SmartDashboard/Autonomous/active")) {
+			$(this).css("background", "#802");
+		} else {
+			$(this).css("background", "#3c3836");
+		}
+	});
+
 	if (key.includes("/SmartDashboard/Pose/Pose")) {
-		updateRobotPos(NetworkTables.getValue("/SmartDashboard/Pose/Pose x"), NetworkTables.getValue("/SmartDashboard/Pose/Pose y"))
+		updateRobotPos(NetworkTables.getValue(key), key.substr(key.length - 1));
 	}
 }
 
@@ -142,7 +145,7 @@ function getRandomInt(min, max) {
 }
 
 let img, joe, dvd;
-let posX, posY;
+let posX, posY, posT;
 
 let bounceJoe = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 753), getRandomInt(0, 341)];
 let bounceDvd = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 681), getRandomInt(0, 328)];
@@ -169,7 +172,7 @@ function draw() {
 	push();
 	translate(posX * 0.46977025392987, 377 - (posY * 0.46977025392987));
 	rectMode(CENTER);
-	rotate(radians(180));
+	rotate(radians(180 + posT));
 	rect(0, 0, 24, 34);
 	pop();
 	rectMode(CORNER);
@@ -205,9 +208,8 @@ function mousePressed() {
 	}
 }
 
-function updateRobotPos(x, y) {
-	posX = x;
-	posY = y;
+function updateRobotPos(v, i) {
+	window["pos" + i.toUpperCase()] = v;
 }
 
 window.preload = preload;
