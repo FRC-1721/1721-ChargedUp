@@ -172,6 +172,9 @@ class RobotContainer:
             key_entry = self.build_table.getEntry(str(key))
             key_entry.setString(str(data[key]))
 
+        self.ntmov = self.sd.getSubTable("Test")
+        self.ntmov.putNumber("test", 2)
+
     def getAutonomousCommand(self) -> commands2.Command:
         """
         Use this to pass the autonomous command to the main :class:`.Robot` class.

@@ -7,6 +7,9 @@ import commands2
 import math
 import logging
 
+from ntcore import NetworkTableInstance
+from wpilib import DriverStation
+
 # Constants
 from constants.constants import getConstants
 
@@ -21,6 +24,9 @@ class DriveSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
         """Creates a new DriveSubsystem"""
         super().__init__()
+        # Configure networktables
+        self.nt = NetworkTableInstance.getDefault()
+        self.sd = self.nt.getTable("SmartDashboard")
 
         # Get hardware constants
         constants = getConstants("robot_hardware")  # All the robot hardware consts
@@ -157,6 +163,12 @@ class DriveSubsystem(commands2.SubsystemBase):
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
+        return self.imu.GetRawGyro()
+
+    def periodic(self) -> None:
+        """Runs every loop"""
+
+        self.sd.putNumber("Audio/MatchTime", int(DriverStation.getMatchTime()))
 
         # See here for turning bug
         # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
