@@ -19,8 +19,7 @@ $(document).on('input', '.dub-slider', function () {
 });
 
 $(document).on('change', '.aut-opts', function () {
-	NetworkTables.putValue('/SmartDashboard/Autonomous/active', $(this).data('opt'));
-	console.log($(this));
+	NetworkTables.putValue('/SmartDashboard/Autonomous/active', $("label[for='" + $(this).attr('id') + "']").text());
 })
 
 function onRobotConnection(connected) {
@@ -167,7 +166,13 @@ function draw() {
 	image(img, 0, 0);
 	image(dvd, bounceDvd[2], bounceDvd[3]);
 	image(joe, bounceJoe[2], bounceJoe[3]);
-	rect(posX * 0.46977025392987, posY * 0.46977025392987, 20, 20);
+	push();
+	translate(posX * 0.46977025392987, 377 - (posY * 0.46977025392987));
+	rectMode(CENTER);
+	rotate(radians(180));
+	rect(0, 0, 24, 34);
+	pop();
+	rectMode(CORNER);
 	if (running) {
 		bounceJoe[2] += bounceJoe[0] ? 3 : -3;
 		bounceJoe[3] += bounceJoe[1] ? 3 : -3;
