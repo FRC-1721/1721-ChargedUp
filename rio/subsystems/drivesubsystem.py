@@ -128,7 +128,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         # Set the voltage of the right side. It's
         # inverted with a negative sign because it's motors need to spin in the negative direction
         # to move forward.
-        self.rightMotors.setVoltage(-rightVolts)
+        self.rightMotors.setVoltage(rightVolts)
 
         print(f"({leftVolts}, {rightVolts})")
 

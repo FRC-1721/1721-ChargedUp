@@ -20,8 +20,8 @@ kMaxAccelerationMetersPerSecondSquared: 3
 
 # Baseline values for a RAMSETE follower in units of meters
 # and seconds. These are recommended, but may be changes if wished.
-kRamseteB: 2
-kRamseteZeta: 0.7
+kRamseteB: 1 # 2
+kRamseteZeta: 0.35 # 0.7
 
 # The number of motors on the robot.
 kDrivetrainMotorCount: 4
