@@ -123,11 +123,10 @@ class DriveSubsystem(commands2.SubsystemBase):
     def tankDriveVolts(self, leftVolts, rightVolts):
         """Control the robot's drivetrain with voltage inputs for each side."""
         # Set the voltage of the left side.
+        # inverting this delays the KP issue but doesn't fix it
         self.leftMotors.setVoltage(leftVolts)
 
-        # Set the voltage of the right side. It's
-        # inverted with a negative sign because it's motors need to spin in the negative direction
-        # to move forward.
+        # Set the voltage of the right side.
         self.rightMotors.setVoltage(rightVolts)
 
         print(f"({leftVolts}, {rightVolts})")
