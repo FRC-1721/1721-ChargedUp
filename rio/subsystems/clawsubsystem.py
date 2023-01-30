@@ -45,3 +45,10 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.PID.setI(self.pidConst["ki"])
         self.PID.setD(self.pidConst["kd"])
         self.PID.setFF(self.pidConst["ff"])
+
+    def clamp(self, volts, time):
+        self.timer = wpilib.timer()
+        self.timer.start()
+        self.motor.setVoltage(volts)
+        if self.timer.hasElapsed(time) == time:
+            self.motor.setVoltage = 0
