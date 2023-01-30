@@ -23,7 +23,7 @@ drivetrain:
     EncoderReversed: True    # Updated Never by Nobody
     Inverted: True           # Updated Never by Nobody
 
-  imu: # pigeon ids
+  navX: # NavX ids
     can_id: 0                # Updated 1/13 by Keegan
     yaw: 0                   # Updated 1/13 by Keegan
     pitch: 0                 # Updated 1/13 by Keegan

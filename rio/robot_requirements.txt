@@ -10,4 +10,5 @@ robotpy-commands-v2
 robotpy-ctre
 robotpy-hal
 robotpy-rev
+robotpy-navx
 wpilib

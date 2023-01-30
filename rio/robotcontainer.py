@@ -66,9 +66,11 @@ class RobotContainer:
             commands.flybywire.FlyByWire(
                 self.robotDrive,
                 lambda: -self.driverController.getRawAxis(
-                    self.driveConsts["ForwardAxis"]
+                    self.driveConsts["ForwardAxis"],
                 ),
-                lambda: self.driverController.getRawAxis(self.driveConsts["SteerAxis"]),
+                lambda: self.driverController.getRawAxis(
+                    self.driveConsts["SteerAxis"],
+                ),
             )
         )
 
@@ -94,8 +96,7 @@ class RobotContainer:
             )
         )
 
-        # Stabilize robot to drive straight with gyro when left bumper is held
-        # TODO: Load button from config file
+        # Stabilize robot to drive straight with gyro (software diff lock)
         commands2.button.JoystickButton(
             self.driverController, self.driveConsts["DiffLock"]
         ).whileTrue(
@@ -111,26 +112,33 @@ class RobotContainer:
                 0,
                 # Pipe the output to the turning controls
                 lambda output: self.robotDrive.arcadeDrive(
-                    -self.driverController.getLeftY(), output
+                    -self.driveConsts["ForwardAxis"],
+                    output,
                 ),
                 # Require the robot drive
                 [self.robotDrive],
             )
         )
 
-        # Turn to 90 degrees when the 'X' button is pressed, with a 5 second timeout
-        # TODO: Load button from config file
+        # Turn to 90 degrees, with a 5 second timeout
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["Turn90"]
-        ).onTrue(commands.turntoangle.TurnToAngle(90, self.robotDrive).withTimeout(5))
+            self.driverController,
+            self.driveConsts["Turn90"],
+        ).onTrue(
+            commands.turntoangle.TurnToAngle(
+                90,
+                self.robotDrive,
+            ).withTimeout(5)
+        )
 
-        # Turn to -90 degrees with a profile when the Circle button is pressed, with a 5 second timeout
-        # TODO: Load button from config file
+        # Turn to -90 degrees with a profile, with a 5 second timeout
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["TurnAnti90"]
+            self.driverController,
+            self.driveConsts["TurnAnti90"],
         ).onTrue(
             commands.turntoangleprofiled.TurnToAngleProfiled(
-                -90, self.robotDrive
+                -90,
+                self.robotDrive,
             ).withTimeout(5)
         )
 
@@ -163,6 +171,9 @@ class RobotContainer:
         for key in data:
             key_entry = self.build_table.getEntry(str(key))
             key_entry.setString(str(data[key]))
+
+        self.ntmov = self.sd.getSubTable("Test")
+        self.ntmov.putNumber("test", 2)
 
     def getAutonomousCommand(self) -> commands2.Command:
         """
