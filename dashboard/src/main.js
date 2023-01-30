@@ -22,6 +22,20 @@ $(document).on('click', '#aut-sel > button', function() {
 	NetworkTables.putValue('/SmartDashboard/Autonomous/active', $(this).html());
 });
 
+$("#p-sw").change(function () {
+	if (this.checked) {
+		$("*").addClass('pink');
+		$("#p-sw-l").removeClass('pink');
+		$("#p-sw-s").removeClass('pink');
+		$('#p-sw-l').css('background', '#c3768b');
+		$('#p-sw-s').css('background', '#b3667b');
+	} else {
+		$("*").removeClass('pink');
+		$('#p-sw-l').css('background', '');
+		$('#p-sw-s').css('background', '');
+	}
+})
+
 function onRobotConnection(connected) {
 	$('#robotstate').text(connected ? "Connected" : "Disconnected");
 	$('#robotAddress').text(connected ? NetworkTables.getRobotAddress() : "Disconnected");

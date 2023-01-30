@@ -7,6 +7,10 @@
     font-size: 12px
     box-sizing: border-box
 
+.pink
+    background: #d3869b !important
+    color: #282828 !important
+
 body
     background: #282828
 
@@ -75,8 +79,8 @@ main
 
     &-area
         padding: .7rem
+        padding-left: 1rem
         flex: 2
-        border-left: 4px solid #504945
 
 #info-one
     display: flex
@@ -99,6 +103,37 @@ main
         > .table-info > .table-label
             width: 120px
             flex: none
+
+footer
+    height: 5rem
+    display: flex
+    align-items: center
+    flex-direction: row
+    justify-content: right
+.p-sw-text
+    height: 80%
+#p-sw-l
+    margin-left: 12px
+    margin-right: 20px
+    width: 4.5rem
+    height: 1.5rem
+    position: relative
+    background: #1d2021
+#p-sw
+    display: none
+#p-sw:checked + #p-sw-s
+    -webkit-transform: translateX(3rem)
+    -ms-transform: translateX(3rem)
+    transform: translateX(3rem)
+#p-sw-s
+    position: absolute
+    top: 0
+    left: 0
+    height: 1.5rem
+    width: 1.5rem
+    -webkit-transition: .4s
+    transition: .4s
+    background: #504945
 
 #aut-sel
     display: flex
