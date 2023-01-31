@@ -109,7 +109,7 @@ footer
     display: flex
     align-items: center
     flex-direction: row
-    justify-content: right
+    justify-content: space-between
 
 .p-sw-text
     height: 80%
@@ -129,6 +129,33 @@ footer
     transform: translateX(3rem)
 
 #p-sw-s
+    position: absolute
+    top: 0
+    left: 0
+    height: 1.5rem
+    width: 1.5rem
+    -webkit-transition: .4s
+    transition: .4s
+    background: #504945
+
+.e-sw-text
+    height: 80%
+    margin-left: 20px
+    margin-right: 12px
+
+#e-sw-l
+    width: 4.5rem
+    height: 1.5rem
+    position: relative
+    background: #1d2021
+
+#e-sw
+    display: none
+
+#e-sw:checked + #e-sw-s
+    transform: translateX(3rem)
+
+#e-sw-s
     position: absolute
     top: 0
     left: 0

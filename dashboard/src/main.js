@@ -2,6 +2,9 @@
 
 import { countDownAlerts } from "./audioAlerts";
 
+let epilepsy = false;
+let epilepsyAmount = 0;
+
 
 $(document).ready(function () {
 	// sets a function that will be called when the websocket connects/disconnects
@@ -35,7 +38,18 @@ $("#p-sw").change(function () {
 		$('#p-sw-l').css('background', '');
 		$('#p-sw-s').css('background', '');
 	}
-})
+});
+
+$("#e-sw").change(function () {
+	if (this.checked) {
+		$('*').addClass('epilepsy');
+		epilepsy = true;
+	} else {
+		$('.epilepsy').css('filter', '');
+		$('*').removeClass('epilepsy');
+		epilepsy = false;
+	}
+});
 
 function onRobotConnection(connected) {
 	$('#robotstate').text(connected ? "Connected" : "Disconnected");
@@ -210,7 +224,7 @@ function draw() {
 		rect(5, 5, 5, 20);
 		rect(20, 5, 5, 20);
 	} else {
-		triangle(5, 5, 25, 15, 5, 25);
+		triangle(5, 5, 25, 15, 5, 25); 
 	}
 	if (bounceJoe[2] < 0 || bounceJoe[2] > 753) {
 		bounceJoe[0] = !bounceJoe[0];
@@ -226,6 +240,16 @@ function draw() {
 		49
 		bounceDvd[1] = !bounceDvd[1];
 	}
+
+	// Epilepsy
+	if (epilepsy) {
+		epilepsyAmount += 5;
+		epilepsyAmount = epilepsyAmount > 360 ? 0 : epilepsyAmount;
+		$('.epilepsy').css('filter', 'hue-rotate(' + epilepsyAmount + 'deg)');
+	} else {
+		epilepsyAmount = 0;
+	}
+	console.log(epilepsy, epilepsyAmount);
 }
 
 function mousePressed() {
