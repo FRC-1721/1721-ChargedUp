@@ -3,7 +3,7 @@
 import { countDownAlerts } from "./audioAlerts";
 
 
-$(function () {
+$(document).ready(function () {
 	// sets a function that will be called when the websocket connects/disconnects
 	NetworkTables.addWsConnectionListener(onNetworkTablesConnection, true);
 
@@ -18,8 +18,9 @@ $(document).on('input', '.dub-slider', function () {
 	NetworkTables.putValue($(this).data('key'), parseFloat($(this).val()));
 });
 
-$(document).on('click', '#aut-sel > button', function() {
-	NetworkTables.putValue('/SmartDashboard/Autonomous/active', $(this).html());
+$(document).on('click', '#aut-sel > button', function () {
+	// YOU NEED to put the value in Autonomous/selected NOT Autonomous/active or it won't stay
+	NetworkTables.putValue('/SmartDashboard/Autonomous/selected', $(this).html());
 });
 
 $("#p-sw").change(function () {
@@ -94,11 +95,11 @@ function onValueChanged(key, value, isNew) {
 		countDownAlerts(key, value);
 	}
 
-	if (key == "/SmartDashboard/Autonomous/options") {
+	if (key === "/SmartDashboard/Autonomous/options") {
 		var options = NetworkTables.getValue("/SmartDashboard/Autonomous/options");
 		$('#aut-sel').empty();
 		options.forEach((v, i) => {
-			$('<button></button>').attr('for', 'opt' + i)
+			$('<button></button>').attr('id', 'opt' + i)
 				.html(v)
 				.appendTo($('#aut-sel'));
 		});
@@ -158,9 +159,13 @@ function getRandomInt(min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
+// img -> background image
+// joe, dvd -> floating distraction images
 let img, joe, dvd;
 let posX, posY, posT;
 
+// floating distraction images position data
+//               moving right (bool), moving down (bool) , posX                , posY
 let bounceJoe = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 753), getRandomInt(0, 341)];
 let bounceDvd = [Math.random() < 0.5, Math.random() < 0.5, getRandomInt(0, 681), getRandomInt(0, 328)];
 let running = true;
