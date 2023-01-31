@@ -12,7 +12,7 @@ from constants.constants import getConstants
 from rev import CANSparkMax, CANSparkMaxLowLevel
 
 
-class ArmSubsystem(commands2.SubsystemBase):
+class ClawSubsystem(commands2.SubsystemBase):
     def __init__(self) -> None:
         """
         Creates a new Claw subsystem
@@ -46,9 +46,11 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.PID.setD(self.pidConst["kd"])
         self.PID.setFF(self.pidConst["ff"])
 
-    def clamp(self, volts, time):
-        self.timer = wpilib.timer()
-        self.timer.start()
-        self.motor.setVoltage(volts)
-        if self.timer.hasElapsed(time) == time:
-            self.motor.setVoltage = 0
+    def setCurrentlimit(self, current):
+        self.motor.setSmartCurrentLimit(current)
+
+    def grab(self):
+        self.motor.set(1)
+
+    def release(self):
+        self.motor.set(0)

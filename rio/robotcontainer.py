@@ -14,11 +14,13 @@ from constants.constants import getConstants
 
 # Subsystems
 import subsystems.drivesubsystem
+import subsystems.clawsubsystem
 
 # Commands
 import commands.turntoangle
 import commands.turntoangleprofiled
 import commands.flybywire
+import commands.clamp
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -49,6 +51,7 @@ class RobotContainer:
 
         # The robot's subsystems
         self.robotDrive = subsystems.drivesubsystem.DriveSubsystem()
+        self.clawSubsystem = subsystems.clawsubsystem.ClawSubsystem()
 
         # The driver's controller
         self.driverController = commands2.button.CommandJoystick(
@@ -141,6 +144,11 @@ class RobotContainer:
                 self.robotDrive,
             ).withTimeout(5)
         )
+
+        commands2.button.JoystickButton(
+            self.driverController,
+            self.driveConsts["grab"],
+        ).onTrue(commands.clamp.Clamp(self.clawSubsystem).withTimeout(5))
 
     def configureAutonomous(self):
         # Create a sendable chooser
