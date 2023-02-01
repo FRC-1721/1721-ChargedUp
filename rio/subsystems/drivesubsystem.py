@@ -237,6 +237,8 @@ class DriveSubsystem(commands2.SubsystemBase):
             -self.rightEncoder.getPosition(),
         )
 
+        self.sd.putNumber("Audio/MatchTime", int(wpilib.DriverStation.getMatchTime()))
+
         self.sd.putNumber("Pose/Pose x", self.getPose().x)
         self.sd.putNumber("Pose/Pose y", self.getPose().y)
         self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())
