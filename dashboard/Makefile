@@ -3,6 +3,7 @@
 
 ROOT := $(PWD)
 STAGEDIR := $(ROOT)/dist/
+DASH_HASH := $(shell git describe --tags --always)
 
 all: help
 
@@ -19,6 +20,9 @@ help:
 
 build:
 	npm run build
+	sed -i -e 's/<p><\/p>/<script src="\/networktables\/networktables.js"><\/script><script src="\/networktables\/utils.js"><\/script>/g' dist/index.html
+	sed -i -e "s/<p id=\"dash-hash\">[0-9a-fiot]*<\/p>/<p id=\"dash-hash\">$(DASH_HASH)<\/p>/g" dist/index.html
+#<p>idiot</p>
 
 run:
 	npm run run
