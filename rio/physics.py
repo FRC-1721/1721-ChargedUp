@@ -16,10 +16,17 @@ import dataclasses
 import math
 import typing
 
+# Constants
+from constants.constants import getConstants
+
 
 class PhysicsEngine:
     def __init__(self, physics_controller: PhysicsInterface, robot: "MyRobot"):
+        # Controller
         self.physics_controller = physics_controller
+
+        # Consts
+        constants = getConstants("robot_physics")
 
         # Drivetrain motors (only simulating 2 out of 4)
         self.l_motor = robot.container.robotDrive.leftMotor1
@@ -30,21 +37,21 @@ class PhysicsEngine:
 
         # Virtual drivetrain, all of these are blank numbers!
         system = LinearSystemId.identifyDrivetrainSystem(
-            3,
-            1.5,
-            3.5,
-            1.5,
+            constants["kV_linear"],
+            constants["kA_linear"],
+            constants["kV_angular"],
+            constants["kA_angular"],
         )
 
         self.drivesim = wpilib.simulation.DifferentialDrivetrainSim(
             system,
             # The robot's trackwidth, which is the distance between the wheels on the left side
             # and those on the right side. The units is meters.
-            0.9,  # Tune me!
+            constants["kTrackWidth"],
             DCMotor.NEO(4),
-            10.71,
+            constants["kGearRatio"],
             # The radius of the drivetrain wheels in meters.
-            0.4788,
+            constants["kWheelDist"],
         )
 
     def update_sim(self, now: float, tm_diff: float) -> None:
