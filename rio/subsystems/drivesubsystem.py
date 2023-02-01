@@ -111,6 +111,11 @@ class DriveSubsystem(commands2.SubsystemBase):
             self.rightEncoder.getPosition(),
         )
 
+        # Simulation, these are only used in simulation!
+        self.simPose = Pose2d(0, 0, Rotation2d.fromDegrees(0))
+        self.simLVelocity = 0
+        self.simRVelocity = 0
+
     def arcadeDrive(self, fwd: float, rot: float):
         """
         Drives the robot using arcade controls.
@@ -139,13 +144,19 @@ class DriveSubsystem(commands2.SubsystemBase):
 
     def getPose(self):
         """Returns the current position of the robot using it's odometry."""
-        return self.odometry.getPose()
+        if wpilib.RobotBase.isReal():
+            return self.odometry.getPose()
+        else:
+            return self.simPose
 
     def getWheelSpeeds(self):
         """Return an object which represents the wheel speeds of our drivetrain."""
-        speeds = DifferentialDriveWheelSpeeds(
-            self.leftEncoder.getVelocity(), self.rightEncoder.getVelocity()
-        )
+        if wpilib.RobotBase.isReal():
+            speeds = DifferentialDriveWheelSpeeds(
+                self.leftEncoder.getVelocity(), self.rightEncoder.getVelocity()
+            )
+        else:  # only in sim
+            speeds = DifferentialDriveWheelSpeeds(self.simLVelocity, self.simRVelocity)
         return speeds
 
     def resetEncoders(self):
@@ -235,7 +246,6 @@ class DriveSubsystem(commands2.SubsystemBase):
             self.leftEncoder.getPosition(),
             -self.rightEncoder.getPosition(),
         )
-
         self.sd.putNumber("Pose/Pose x", self.getPose().x)
         self.sd.putNumber("Pose/Pose y", self.getPose().y)
         self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())

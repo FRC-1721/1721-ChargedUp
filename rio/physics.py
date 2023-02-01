@@ -25,6 +25,9 @@ class PhysicsEngine:
         # Controller
         self.physics_controller = physics_controller
 
+        # Robot
+        self.robot = robot
+
         # Consts
         constants = getConstants("robot_physics")
 
@@ -83,15 +86,16 @@ class PhysicsEngine:
         else:
             r_v = 0
 
-        self.drivesim.setInputs(l_v, r_v)
+        self.drivesim.setInputs(l_v, r_v * 0.80)
         self.drivesim.update(tm_diff)
 
         self.l_encoder.setPosition(self.drivesim.getLeftPosition())
-        # self.l_encoder.setVelocity(self.drivesim.getLeftVelocity())
+        self.robot.container.robotDrive.simLVelocity = self.drivesim.getLeftVelocity()
         self.r_encoder.setPosition(self.drivesim.getRightPosition())
-        # self.r_encoder.setVelocity(self.drivesim.getRightVelocity())
+        self.robot.container.robotDrive.simRVelocity = self.drivesim.getRightVelocity()
 
         pose = self.drivesim.getPose()
         field.setRobotPose(pose)
+        self.robot.container.robotDrive.simPose = pose
 
         # print(field.getRobotPose())
