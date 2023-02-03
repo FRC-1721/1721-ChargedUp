@@ -129,7 +129,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         # Set the voltage of the right side.
         self.rightMotors.setVoltage(rightVolts)
 
-        print(f"({leftVolts}, {rightVolts})")
+        # print(f"({leftVolts}, {rightVolts})")
 
         # Resets the timer for this motor's MotorSafety
         self.drive.feed()
