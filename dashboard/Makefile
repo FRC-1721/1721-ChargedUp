@@ -20,7 +20,9 @@ help:
 
 build:
 	npm run build
-	sed -i -e 's/<p><\/p>/<script src="\/networktables\/networktables.js"><\/script><script src="\/networktables\/utils.js"><\/script>/g' dist/index.html
+	sed -i -e 's/<p><\/p>/<script src="\/networktables\/networktables.js"><\/script><p><\/p>/g' dist/index.html
+	sed -i -e 's/<p><\/p>/<script src="\/networktables\/utils.js"><\/script><p><\/p>/g' dist/index.html
+	sed -i -e 's/<p><\/p>/<script src="\/networktables\/camera.js"><\/script>/g' dist/index.html
 	sed -i -e "s/<p id=\"dash-hash\">[0-9a-fiot]*<\/p>/<p id=\"dash-hash\">$(DASH_HASH)<\/p>/g" dist/index.html
 #<p>idiot</p>
 

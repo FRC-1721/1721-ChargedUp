@@ -5,7 +5,7 @@ import { countDownAlerts } from "./audioAlerts";
 let epilepsy = false;
 let epilepsyAmount = 0;
 
-$(document).ready(function () {
+$(function () {
     // sets a function that will be called when the websocket connects/disconnects
     NetworkTables.addWsConnectionListener(onNetworkTablesConnection, true);
 
@@ -14,6 +14,36 @@ $(document).ready(function () {
 
     // sets a function that will be called when any NetworkTables key/value changes
     NetworkTables.addGlobalListener(onValueChanged, true);
+
+    loadCameraOnConnect({
+        container: "#cam1", // id of camera div
+        proto: null, // url scheme
+        host: "10.17.21.11", // ip
+        port: 5800,
+        image_url: "/",
+        data_url: "/",
+        wait_img: require("./assets/no_signal.png"),
+        error_img: require("./assets/error.png"),
+        attrs: {
+            width: 320,
+            height: 240,
+        },
+    });
+
+    loadCameraOnConnect({
+        container: "#cam2",
+        proto: null,
+        host: "10.17.21.13",
+        port: 5800,
+        image_url: "/",
+        data_url: "/",
+        wait_img: require("./assets/no_signal.png"),
+        error_img: require("./assets/error.png"),
+        attrs: {
+            width: 320,
+            height: 240,
+        },
+    });
 });
 
 $(document).on("input", ".dub-slider", function () {
@@ -39,17 +69,6 @@ $("#p-sw").change(function () {
         $("*").removeClass("pink");
         $("#p-sw-l").css("background", "");
         $("#p-sw-s").css("background", "");
-    }
-});
-
-$("#e-sw").change(function () {
-    if (this.checked) {
-        $("*").addClass("epilepsy");
-        epilepsy = true;
-    } else {
-        $(".epilepsy").css("filter", "");
-        $("*").removeClass("epilepsy");
-        epilepsy = false;
     }
 });
 
@@ -239,6 +258,7 @@ let bounceDvd = [
     getRandomInt(0, 681),
     getRandomInt(0, 328),
 ];
+
 let running = true;
 
 function preload() {
@@ -250,7 +270,7 @@ function preload() {
 
 function setup() {
     let canvas = createCanvas(777, 377);
-    canvas.parent("info-field-canvas");
+    canvas.parent("field-canvas");
     frameRate(24);
 }
 
