@@ -271,66 +271,67 @@ function preload() {
 function setup() {
     let canvas = createCanvas(777, 377);
     canvas.parent("field-canvas");
-    frameRate(24);
+    frameRate(15);
 }
 
 function draw() {
     background(220);
     image(img, 0, 0);
-    image(dvd, bounceDvd[2], bounceDvd[3]);
-    image(joe, bounceJoe[2], bounceJoe[3]);
 
-    if (posX == undefined) {
-        posX = NetworkTables.getValue("/SmartDashboard/Pose/Pose x");
-        posY = NetworkTables.getValue("/SmartDashboard/Pose/Pose y");
-        posT = NetworkTables.getValue("/SmartDashboard/Pose/Pose t");
-    }
+    posX = NetworkTables.getValue("/SmartDashboard/Pose/Pose x");
+    posY = NetworkTables.getValue("/SmartDashboard/Pose/Pose y");
+    posT = NetworkTables.getValue("/SmartDashboard/Pose/Pose t");
 
     rectMode(CENTER);
     push();
     translate(posX * 0.46977025392987, 377 - posY * 0.46977025392987);
+    translate(posX * 98.046638401, -posY * 98.046638401);
     rotate(radians(180 + posT));
+    rotate(-posT);
     rect(0, 0, 24, 34);
+    fill(color("#504945"));
+    rect(0, 0, 34, 24);
+    fill(color("#802"));
+    rect(17, 0, 17, 24);
     pop();
     rectMode(CORNER);
-    if (running) {
-        bounceJoe[2] += bounceJoe[0] ? 3 : -3;
-        bounceJoe[3] += bounceJoe[1] ? 3 : -3;
-        bounceDvd[2] += bounceDvd[0] ? 4 : -4;
-        bounceDvd[3] += bounceDvd[1] ? 4 : -4;
-        rect(5, 5, 5, 20);
-        rect(20, 5, 5, 20);
-    } else {
-        triangle(5, 5, 25, 15, 5, 25);
-    }
-    if (bounceJoe[2] < 0 || bounceJoe[2] > 753) {
-        bounceJoe[0] = !bounceJoe[0];
-    }
-    if (bounceJoe[3] < 0 || bounceJoe[3] > 341) {
-        bounceJoe[1] = !bounceJoe[1];
-    }
-    if (bounceDvd[2] < 0 || bounceDvd[2] > 681) {
-        96;
-        bounceDvd[0] = !bounceDvd[0];
-    }
-    if (bounceDvd[3] < 0 || bounceDvd[3] > 328) {
-        49;
-        bounceDvd[1] = !bounceDvd[1];
+
+    if ($("#p-sw").is(":checked")) {
+        image(dvd, bounceDvd[2], bounceDvd[3]);
+        image(joe, bounceJoe[2], bounceJoe[3]);
+        if (running) {
+            bounceJoe[2] += bounceJoe[0] ? 3 : -3;
+            bounceJoe[3] += bounceJoe[1] ? 3 : -3;
+            bounceDvd[2] += bounceDvd[0] ? 4 : -4;
+            bounceDvd[3] += bounceDvd[1] ? 4 : -4;
+            rect(5, 5, 5, 20);
+            rect(20, 5, 5, 20);
+        } else {
+            triangle(5, 5, 25, 15, 5, 25);
+        }
+        if (bounceJoe[2] < 0 || bounceJoe[2] > 753) {
+            bounceJoe[0] = !bounceJoe[0];
+        }
+        if (bounceJoe[3] < 0 || bounceJoe[3] > 341) {
+            bounceJoe[1] = !bounceJoe[1];
+        }
+        if (bounceDvd[2] < 0 || bounceDvd[2] > 681) {
+            96;
+            bounceDvd[0] = !bounceDvd[0];
+        }
+        if (bounceDvd[3] < 0 || bounceDvd[3] > 328) {
+            49;
+            bounceDvd[1] = !bounceDvd[1];
+        }
     }
 
     // Epilepsy
     if (epilepsy) {
-        epilepsyAmount += 5;
+        epilepsyAmount += 10;
         epilepsyAmount = epilepsyAmount > 360 ? 0 : epilepsyAmount;
         $(".epilepsy").css("filter", "hue-rotate(" + epilepsyAmount + "deg)");
     } else {
         epilepsyAmount = 0;
-    }
-}
-
-function mousePressed() {
-    if (5 < mouseX && mouseX < 25 && 5 < mouseY && mouseX < 25) {
-        running = !running;
     }
 }
 
@@ -341,5 +342,5 @@ function updateRobotPos(v, i) {
 window.preload = preload;
 window.setup = setup;
 window.draw = draw;
-window.mousePressed = mousePressed;
+//window.mousePressed = mousePressed;
 //window.keyPressed = keyPressed;

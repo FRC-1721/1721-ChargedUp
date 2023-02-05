@@ -242,3 +242,8 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.sd.putNumber("Pose/Pose x", self.getPose().x)
         self.sd.putNumber("Pose/Pose y", self.getPose().y)
         self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())
+
+        self.sd.putNumber("Temp/L1", self.leftMotor1.getMotorTemperature())
+        self.sd.putNumber("Temp/L2", self.leftMotor2.getMotorTemperature())
+        self.sd.putNumber("Temp/R1", self.rightMotor1.getMotorTemperature())
+        self.sd.putNumber("Temp/R2", self.rightMotor2.getMotorTemperature())
