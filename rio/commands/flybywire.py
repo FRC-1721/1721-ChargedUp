@@ -26,14 +26,27 @@ class FlyByWire(commands2.CommandBase):
 
     def execute(self) -> None:
         self.drivetrain.arcadeDrive(
-            self.dampen(self.forward()) * -1,
-            self.dampen(self.rotation()),
+            self.exponential_dampen(self.forward()) * -1,
+            self.piecewise_dampen(self.rotation()),
         )
 
-    def dampen(self, x):
+    def exponential_dampen(self, x):
         """
         Uses a simple math function
         to dampen the user input.
         """
 
         return x**3 * -1
+
+    def piecewise_dampen(self, x):
+        """
+        Uses multiple different equations to define
+        a dampened user input
+        """
+
+        x = x * -1  # invert
+
+        if abs(x) < 0.9:
+            return (x**3) / 1.2
+        else:
+            return x**5
