@@ -214,7 +214,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.imu.GetRawGyro()
+        return self.ahrs.getRate()
 
     def periodic(self) -> None:
         """Runs every loop"""
