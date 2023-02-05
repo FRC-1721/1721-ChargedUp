@@ -158,11 +158,22 @@ function onValueChanged(key, value, isNew) {
     }
 }
 
-function highlightColor(patt, loc, css, overwrite = true, norm = "#504945") {
-    if (patt.test($(loc).text())) {
-        $(loc).css("background", css);
+function highlightColor(id, hex, norm = "#504945") {
+    if (hex === norm) {
+        $(id).css("background", "norm");
+    } else {
+        $(id).css(
+            "background",
+            "linear-gradient(to right, " + norm + ", " + hex + ")"
+        );
+    }
+}
+
+function checkSenTableVal(patt, id, hex, overwrite = true, norm = "#504945") {
+    if (patt.test($(id).text())) {
+        highlightColor(id, hex);
     } else if (overwrite) {
-        $(loc).css("background", norm);
+        highlightColor(id, norm);
     }
 }
 
@@ -170,67 +181,45 @@ function updateColors() {
     const ids = ["#connectstate", "#robotstate", "#robotAddress"];
     ids.forEach((v, _) => {
         if ($(v).text() == "Unknown") {
-            $(v).css(
-                "background",
-                "linear-gradient(to right, #504945, #cc241d)"
-            );
+            highlightColor(v, "#cc241d");
         } else if ($(v).text() == "Disconnected") {
-            $(v).css(
-                "background",
-                "linear-gradient(to right, #504945, #cc241d)"
-            );
+            highlightColor(v, "#cc241d");
         } else {
-            $(v).css(
-                "background",
-                "linear-gradient(to right, #504945, #689d6a)"
-            );
+            highlightColor(v, "#689d6a");
         }
     });
 
     // Custom formatting
-    highlightColor(
-        /-dirty$/,
-        "#git-hash-area",
-        "linear-gradient(to right, #504945, #cc241d)"
-    );
+    checkSenTableVal(/-dirty$/, "#git-hash-area", "#cc241d");
 
     // Programmers
-    highlightColor(
-        /SimUser$/,
-        "#builder-area",
-        "linear-gradient(to right, #504945, #d3869b)"
-    ); // First one is fine to overwrite.
-    highlightColor(
-        /joe/,
-        "#builder-area",
-        "linear-gradient(to right, #504945, #831598)",
-        false
-    );
-    highlightColor(
-        /dylan/,
-        "#builder-area",
-        "linear-gradient(to right, #504945, #fe8019)",
-        false
-    );
-    highlightColor(
-        /kredcool/,
-        "#builder-area",
-        "linear-gradient(to right, #504945, #67ab24)",
-        false
-    );
+    checkSenTableVal(/SimUser$/, "#builder-area", "#d3869b"); // First one is fine to overwrite.
+    checkSenTableVal(/joe/, "#builder-area", "#831598", false);
+    checkSenTableVal(/dylan/, "#builder-area", "#fe8019", false);
+    checkSenTableVal(/kredcool/, "#builder-area", "#67ab24", false);
 
     // Branches
-    highlightColor(
+    checkSenTableVal(
         /event/,
         "#git-branch-area",
         "linear-gradient(to right, #504945, #689d6a)"
     );
-    highlightColor(
+    checkSenTableVal(
         /sim/,
         "#git-branch-area",
         "linear-gradient(to right, #504945, #cc241d)",
         false
     );
+
+    // Checks if DashHash™ is the same as the Robot's git hash
+    if (
+        $("#git-hash-area").text().slice(0, $("#dash-hash").text().length) ===
+        $("#dash-hash").text()
+    ) {
+        highlightColor("#dash-hash", "#504945");
+    } else {
+        highlightColor("#dash-hash", "#fabd2f");
+    }
 }
 
 // p5.js canvas
