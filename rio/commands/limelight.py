@@ -13,9 +13,7 @@ class limeLight(commands2.Command):
         tagID = self.tables.getEntry("tid").getString(Id)
         return tagID
 
-
-ll = limeLight()
-
-ll.getTag
-
-print(ll)
+    def getBotPos(self):
+        Pos = "No Id Found"
+        tagID = self.tables.getEntry("botpose_targetspace").getString(Pos)
+        return tagID
