@@ -53,4 +53,7 @@ class ClawSubsystem(commands2.SubsystemBase):
         self.motor.set(1)
 
     def release(self):
+        self.motor.set(-1)
+
+    def stop(self):
         self.motor.set(0)

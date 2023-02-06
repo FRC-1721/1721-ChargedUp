@@ -3,7 +3,7 @@ import commands2
 from subsystems.clawsubsystem import ClawSubsystem
 
 
-class Clamp(commands2.CommandBase):
+class Unclamp(commands2.CommandBase):
     def __init__(self, clawSubsystem: ClawSubsystem) -> None:
         super().__init__()
 
@@ -16,7 +16,7 @@ class Clamp(commands2.CommandBase):
         self.clawSusystem.setCurrentlimit(0.1)
 
     def initialize(self) -> None:
-        self.clawSusystem.grab()
+        self.clawSusystem.release()
 
     def end(self, interrupted: bool) -> None:
         self.clawSusystem.stop()

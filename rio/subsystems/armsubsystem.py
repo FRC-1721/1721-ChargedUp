@@ -73,3 +73,15 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.PID.setI(self.pidConst["ki"])
         self.PID.setD(self.pidConst["kd"])
         self.PID.setFF(self.pidConst["ff"])
+
+    def setCurrentlimit(self, current):
+        self.backMotor.setSmartCurrentLimit(current)
+
+    def extend(self):
+        self.backMotor.set(1)
+
+    def retract(self):
+        self.backMotor.set(-1)
+
+    def stop(self):
+        self.backMotor.set(0)

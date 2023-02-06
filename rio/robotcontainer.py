@@ -15,12 +15,16 @@ from constants.constants import getConstants
 # Subsystems
 import subsystems.drivesubsystem
 import subsystems.clawsubsystem
+import subsystems.armsubsystem
 
 # Commands
 import commands.turntoangle
 import commands.turntoangleprofiled
 import commands.flybywire
 import commands.clamp
+import commands.unclamp
+import commands.extend
+import commands.retract
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -47,15 +51,22 @@ class RobotContainer:
         self.controlConsts = getConstants("robot_controls")
         self.hardConsts = getConstants("robot_hardware")
         self.pidConsts = getConstants("robot_pid")
-        self.driveConsts = self.controlConsts["driver"]
+        self.driverConsts = self.controlConsts["main mode"]["driver"]
+        self.operatorConsts = self.controlConsts["main mode"]["operator"]
 
         # The robot's subsystems
         self.robotDrive = subsystems.drivesubsystem.DriveSubsystem()
         self.clawSubsystem = subsystems.clawsubsystem.ClawSubsystem()
+        self.armSubsystem = subsystems.armsubsystem.ArmSubsystem()
 
         # The driver's controller
         self.driverController = commands2.button.CommandJoystick(
-            self.driveConsts["controller_port"]
+            self.driverConsts["controller_port"]
+        )
+
+        # The operators controller
+        self.operatorController = commands2.button.CommandJoystick(
+            self.operatorConsts["controller_port"]
         )
 
         # Configure the button bindings
@@ -69,10 +80,10 @@ class RobotContainer:
             commands.flybywire.FlyByWire(
                 self.robotDrive,
                 lambda: -self.driverController.getRawAxis(
-                    self.driveConsts["ForwardAxis"],
+                    self.driverConsts["ForwardAxis"],
                 ),
                 lambda: self.driverController.getRawAxis(
-                    self.driveConsts["SteerAxis"],
+                    self.driverConsts["SteerAxis"],
                 ),
             )
         )
@@ -88,7 +99,7 @@ class RobotContainer:
         """
         # Drive at half speed when the right bumper is held
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["HalfSpeedButton"]
+            self.driverController, self.driverConsts["HalfSpeedButton"]
         ).onTrue(
             commands2.InstantCommand(
                 (lambda: self.robotDrive.setMaxOutput(0.5)), [self.robotDrive]
@@ -101,7 +112,7 @@ class RobotContainer:
 
         # Stabilize robot to drive straight with gyro (software diff lock)
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["DiffLock"]
+            self.driverController, self.driverConsts["DiffLock"]
         ).whileTrue(
             commands2.PIDCommand(
                 wpimath.controller.PIDController(
@@ -115,7 +126,7 @@ class RobotContainer:
                 0,
                 # Pipe the output to the turning controls
                 lambda output: self.robotDrive.arcadeDrive(
-                    -self.driveConsts["ForwardAxis"],
+                    -self.driverConsts["ForwardAxis"],
                     output,
                 ),
                 # Require the robot drive
@@ -126,7 +137,7 @@ class RobotContainer:
         # Turn to 90 degrees, with a 5 second timeout
         commands2.button.JoystickButton(
             self.driverController,
-            self.driveConsts["Turn90"],
+            self.driverConsts["Turn90"],
         ).onTrue(
             commands.turntoangle.TurnToAngle(
                 90,
@@ -137,7 +148,7 @@ class RobotContainer:
         # Turn to -90 degrees with a profile, with a 5 second timeout
         commands2.button.JoystickButton(
             self.driverController,
-            self.driveConsts["TurnAnti90"],
+            self.driverConsts["TurnAnti90"],
         ).onTrue(
             commands.turntoangleprofiled.TurnToAngleProfiled(
                 -90,
@@ -146,9 +157,24 @@ class RobotContainer:
         )
 
         commands2.button.JoystickButton(
-            self.driverController,
-            self.driveConsts["grab"],
+            self.operatorController,
+            self.operatorConsts["Clamp"],
         ).onTrue(commands.clamp.Clamp(self.clawSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Unclamp"],
+        ).onTrue(commands.unclamp.Unclamp(self.clawSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Extend"],
+        ).onTrue(commands.extend.Extend(self.armSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Retract"],
+        ).onTrue(commands.retract.Retract(self.armSubsystem).withTimeout(5))
 
     def configureAutonomous(self):
         # Create a sendable chooser
