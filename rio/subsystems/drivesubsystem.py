@@ -239,3 +239,11 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.sd.putNumber("Pose/Pose x", self.getPose().x)
         self.sd.putNumber("Pose/Pose y", self.getPose().y)
         self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())
+
+    def lock(self):
+        # TODO this is template CHANGE IT
+        self.leftMotor1.set(0.4)
+        self.leftMotor2.set(-0.42)
+
+        self.rightMotor1.set(0.4)
+        self.rightMotor2.set(0.42)
