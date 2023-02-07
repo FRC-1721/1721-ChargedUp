@@ -19,7 +19,6 @@ from subsystems.drivesubsystem import DriveSubsystem
 from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
-from commands.diffLock import DiffLock
 
 # Autonomous
 from autonomous.crossLinePath import CrossLinePath
@@ -106,10 +105,28 @@ class RobotContainer:
             )
         )
 
-        # TODO uncomment and fix this because it currently errors
-        # commands2.button.JoystickButton(
-        #     self.driverController, self.driveConsts["DiffLock"]
-        # ).onTrue(commands.diffLock.Difflock(self.robotDrive).withTimeout(5))
+        commands2.button.JoystickButton(
+            self.driverController, self.driveConsts["DiffLock"]
+        ).onTrue(
+            commands2.PIDCommand(
+                wpimath.controller.PIDController(
+                    self.pidConsts["drive"]["kStabilizationP"],
+                    self.pidConsts["drive"]["kStabilizationI"],
+                    self.pidConsts["drive"]["kStabilizationD"],
+                ),
+                # Close the loop on the turn rate
+                self.robotDrive.getTurnRate,
+                # Setpoint is 0
+                0,
+                # Pipe the output to the turning controls
+                lambda output: self.robotDrive.arcadeDrive(
+                    -self.driverController.getRawAxis(self.driveConsts["ForwardAxis"]),
+                    output,
+                ),
+                # Require the robot drive
+                [self.robotDrive],
+            )
+        )
 
         # Turn to 90 degrees, with a 5 second timeout
         commands2.button.JoystickButton(
