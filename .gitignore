@@ -11,19 +11,11 @@ _build
 .pytest_cache
 
 # dashboard build files
-<<<<<<< HEAD
 dashboard/www/main.js*
 
 # dashboard packages
 node_modules
 _staging
-=======
-dashboard/.cache
-dashboard/.parcel-cache
-dashboard/dist/*
-#dashboard packages
-dashboard/node_modules
->>>>>>> main
 
 # Tools
 .SysId/
