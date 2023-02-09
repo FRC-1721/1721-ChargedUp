@@ -36,7 +36,7 @@ class ClawSubsystem(commands2.SubsystemBase):
         # TODO: These should to be replaced with CAN motor controllers
         self.encoder = wpilib.Encoder(
             self.clawConst["EncoderPorts"],
-            self.clawConst["EncodarmerReversed"],
+            self.clawConst["EncoderReversed"],
         )
 
         # Pid values
