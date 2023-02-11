@@ -32,13 +32,13 @@ arm:
   backMotor: # the extension motor
     MotorPort: 5             # Updated 1/22 by Keegan
     Inverted: False          # Updated 1/22 by Keegan
-    EncoderPorts: 1          # Updated 1/22 by Keegan
+    EncoderPorts: 5          # Updated 2/11 by Keegan
     EncoderReversed: False   # Updated 1/22 by Keegan
 
   middleMotor: # the screw motor
     MotorPort: 6             # Updated 1/22 by Keegan
     Inverted: False          # Updated 1/22 by Keegan
-    EncoderPorts: 2          # Updated 1/22 by Keegan
+    EncoderPorts: 6          # Updated 1/11 by Keegan
     EncoderReversed: False   # Updated 1/22 by Keegan
 
   kWheelDiameterInches: 1    # Updated 1/22 by Keegan
@@ -48,5 +48,5 @@ arm:
 claw:
   MotorPort: 7             # Updated 1/22 by Keegan
   Inverted: False          # Updated 1/22 by Keegan
-  EncoderPorts: 3          # Updated 1/22 by Keegan
+  EncoderPorts: 7          # Updated 2/11 by Keegan
   EncoderReversed: False   # Updated 1/22 by Keegan

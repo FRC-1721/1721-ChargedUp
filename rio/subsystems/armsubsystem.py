@@ -24,7 +24,7 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.armConst = constants["arm"]  # All the arm consts
         self.backCosnt = self.armConst["backMotor"]  # back specific
         self.middleCosnt = self.armConst["middleMotor"]  # middle specific
-        self.pidConst = pidConstants["arms"]
+        self.pidConst = pidConstants["arm"]
 
         # The motor on the back of the drive. (The arm extension motor)
         self.backMotor = CANSparkMax(
@@ -32,7 +32,7 @@ class ArmSubsystem(commands2.SubsystemBase):
             CANSparkMaxLowLevel.MotorType.kBrushless,
         )
 
-        self.backMotors.setInverted(self.backCosnt["Inverted"])
+        self.backMotor.setInverted(self.backCosnt["Inverted"])
 
         # The motor on the middle of the drive. (The screw motor)
         self.middleMotor = CANSparkMax(
@@ -40,7 +40,7 @@ class ArmSubsystem(commands2.SubsystemBase):
             CANSparkMaxLowLevel.MotorType.kBrushless,
         )
 
-        self.middleMotors.setInverted(self.middleCosnt["Inverted"])
+        self.middleMotor.setInverted(self.middleCosnt["Inverted"])
 
         # TODO: Replace with proper motorconfigs
         self.backMotor.setInverted(False)
