@@ -46,8 +46,10 @@ class FlyByWire(commands2.CommandBase):
 
         x = x * -1  # invert
 
-        if abs(x) < 0.9:
-            return x / 2
-        else:
-            return x
-        # return x * -1
+        # if abs(x) < 0.9:
+        #     return x / 2
+        # if abs(x) < 0.99:
+        #     return x / 3
+        # else:
+        #     return x
+        return x / 1.75
