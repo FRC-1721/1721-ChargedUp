@@ -19,14 +19,14 @@ class FlyByWire(commands2.CommandBase):
 
         self.drivetrain = drivetrain  # This is a 'local' instance of drivetrain
         self.forward = forward  # Forward command
-        self.rotation = rotation * 0.9  # Rotation command
+        self.rotation = rotation  # Rotation command
 
         # Adding drivetrain as a requirement ensures no other command will interrupt us
         self.addRequirements([self.drivetrain])
 
     def execute(self) -> None:
         self.drivetrain.arcadeDrive(
-            self.exponential_dampen(self.forward()) * -1,
+            self.exponential_dampen(self.forward() * 0.9) * -1,
             self.piecewise_dampen(self.rotation()),
         )
 
