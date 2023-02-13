@@ -19,7 +19,7 @@ class FlyByWire(commands2.CommandBase):
 
         self.drivetrain = drivetrain  # This is a 'local' instance of drivetrain
         self.forward = forward  # Forward command
-        self.rotation = rotation  # Rotation command
+        self.rotation = rotation * 0.9  # Rotation command
 
         # Adding drivetrain as a requirement ensures no other command will interrupt us
         self.addRequirements([self.drivetrain])
@@ -44,12 +44,4 @@ class FlyByWire(commands2.CommandBase):
         a dampened user input
         """
 
-        x = x * -1  # invert
-
-        # if abs(x) < 0.9:
-        #     return x / 2
-        # if abs(x) < 0.99:
-        #     return x / 3
-        # else:
-        #     return x
-        return x / 1.75
+        return x / 1.75 * -1

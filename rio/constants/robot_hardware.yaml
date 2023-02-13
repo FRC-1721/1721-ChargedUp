@@ -11,7 +11,7 @@ drivetrain:
   leftMotor:
     Motor1Port: 2                # Updated 1/12 by Keegan
     Motor2Port: 1                # Updated 1/12 by Keegan 
-    EncoderPorts: [0, 1]         # Updated Never by Nobody
+    EncoderPorts: [4, 1]         # Updated 2/12 by Keegan
     EncoderReversed: False       # Updated Never by Nobody
     Inverted: False              # Updated Never by Nobody
 
