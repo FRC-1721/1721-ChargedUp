@@ -7,6 +7,8 @@ import commands2
 import math
 import logging
 
+from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.kinematics import DifferentialDriveOdometry, DifferentialDriveWheelSpeeds
 from ntcore import NetworkTableInstance
 from wpilib import DriverStation
 
@@ -68,6 +70,7 @@ class DriveSubsystem(commands2.SubsystemBase):
             self.rightMotor2,
         )
         self.rightMotors.setInverted(self.rightCosnt["Inverted"])
+        # self.rightMotors.setInverted(False)
 
         # This fixes a bug in rev firmware involving flash settings.
         self.leftMotor1.setInverted(False)
@@ -87,14 +90,22 @@ class DriveSubsystem(commands2.SubsystemBase):
         # Setup the conversion factors for the motor controllers
         # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
         # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
-        encoderDistPerP = (
-            self.driveConst["kWheelDiameterInches"] * math.pi
-        ) / self.driveConst["kEncoderCPR"]
+        self.leftEncoder.setPositionConversionFactor(
+            1 / self.driveConst["encoderConversionFactor"]
+        )
+        self.rightEncoder.setPositionConversionFactor(
+            1 / self.driveConst["encoderConversionFactor"]
+        )
 
-        self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
-        self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
-
+        # Gyro
         self.ahrs = AHRS.create_spi()  # creates navx object
+
+        # Robot odometry
+        self.odometry = DifferentialDriveOdometry(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            self.rightEncoder.getPosition(),
+        )
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -105,10 +116,46 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         self.drive.arcadeDrive(fwd, rot)
 
+    def tankDriveVolts(self, leftVolts, rightVolts):
+        """Control the robot's drivetrain with voltage inputs for each side."""
+        # Set the voltage of the left side.
+        # inverting this delays the KP issue but doesn't fix it
+        self.leftMotors.setVoltage(leftVolts)
+
+        # Set the voltage of the right side.
+        self.rightMotors.setVoltage(rightVolts)
+
+        # print(f"({leftVolts}, {rightVolts})")
+
+        # Resets the timer for this motor's MotorSafety
+        self.drive.feed()
+
+        # Reset the encoders
+        self.resetEncoders()
+
+    def getPose(self):
+        """Returns the current position of the robot using it's odometry."""
+        return self.odometry.getPose()
+
+    def getWheelSpeeds(self):
+        """Return an object which represents the wheel speeds of our drivetrain."""
+        speeds = DifferentialDriveWheelSpeeds(
+            self.leftEncoder.getVelocity(), -self.rightEncoder.getVelocity()
+        )
+        return speeds
+
     def resetEncoders(self):
         """Resets the drive encoders to currently read a position of 0."""
-        self.leftEncoder.reset()
-        self.rightEncoder.reset()
+        self.leftEncoder.setPosition(0)
+        self.rightEncoder.setPosition(0)
+
+        # https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/differential-drive-odometry.html#resetting-the-robot-pose
+        self.odometry.resetPosition(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            -self.rightEncoder.getPosition(),
+            Pose2d(),
+        )
 
     def getAverageEncoderDistance(self):
         """
@@ -163,7 +210,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.imu.GetRawGyro()
+        return self.ahrs.getRate()
 
     def periodic(self) -> None:
         """Runs every loop"""
@@ -172,4 +219,19 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # See here for turning bug
         # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
-        return self.ahrs.getRawGyroY()
+        return self.ahrs.getRawGyroZ()
+
+    def periodic(self):
+        """
+        Called periodically when it can be called. Updates the robot's
+        odometry with sensor data.
+        """
+        self.odometry.update(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            -self.rightEncoder.getPosition(),
+        )
+
+        self.sd.putNumber("Pose/Pose x", self.getPose().x)
+        self.sd.putNumber("Pose/Pose y", self.getPose().y)
+        self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())

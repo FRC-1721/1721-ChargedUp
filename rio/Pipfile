@@ -8,6 +8,7 @@ robotpy = {extras = ["rev", "ctre", "commands2", "navx"], version = "2023.2.1"}
 wpilib = {extras = ["all"], version = "2023.2.1.0"}
 pyyaml = "6.0"
 black = "*"
+robotpy-pathplannerlib = "*"
 
 [dev-packages]
 black = "*"
