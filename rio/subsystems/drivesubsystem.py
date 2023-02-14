@@ -30,10 +30,6 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.nt = NetworkTableInstance.getDefault()
         self.sd = self.nt.getTable("SmartDashboard")
 
-        # network tables
-        self.nt = NetworkTableInstance.getDefault()
-        self.sd = self.nt.getTable("SmartDashboard")
-
         # Get hardware constants
         constants = getConstants("robot_hardware")  # All the robot hardware consts
         self.driveConst = constants["drivetrain"]  # All the drivetrain consts
