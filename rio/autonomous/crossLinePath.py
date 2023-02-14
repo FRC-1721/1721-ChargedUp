@@ -25,9 +25,8 @@ class CrossLinePath(commands2.RamseteCommand):
         const = getConstants("robot_autonomous")
         driveKinematics = DifferentialDriveKinematics(const["kTrackWidthMeters"])
 
-        constraints = PathConstraints(5, 1)
-        # auto 1 goes stright back
-        trajectory = PathPlanner.loadPath("New Path", constraints, reversed=False)
+        constraints = PathConstraints(0.5, 0.1)
+        trajectory = PathPlanner.loadPath("Top Func", constraints, reversed=False)
 
         super().__init__(
             trajectory.asWPILibTrajectory(),

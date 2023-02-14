@@ -14,14 +14,24 @@ from constants.constants import getConstants
 
 # Subsystems
 from subsystems.drivesubsystem import DriveSubsystem
+from subsystems.clawsubsystem import ClawSubsystem
+from subsystems.armsubsystem import ArmSubsystem
 
 # Commands
 from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
+from commands.turntoangle import TurnToAngle
+from commands.turntoangleprofiled import TurnToAngleProfiled
+from commands.flybywire import FlyByWire
+from commands.clamp import Clamp
+from commands.unclamp import Unclamp
+from commands.extend import Extend
+from commands.retract import Retract
+
 
 # Autonomous
-from autonomous.crossLinePath import CrossLinePath
+from autonomous.curvyAuto import CurvyAuto
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -48,14 +58,22 @@ class RobotContainer:
         self.controlConsts = getConstants("robot_controls")
         self.hardConsts = getConstants("robot_hardware")
         self.pidConsts = getConstants("robot_pid")
-        self.driveConsts = self.controlConsts["driver"]
+        self.driverConsts = self.controlConsts["main mode"]["driver"]
+        self.operatorConsts = self.controlConsts["main mode"]["operator"]
 
         # The robot's subsystems
         self.robotDrive = DriveSubsystem()
+        self.clawSubsystem = ClawSubsystem()
+        self.armSubsystem = ArmSubsystem()
 
         # The driver's controller
         self.driverController = commands2.button.CommandJoystick(
-            self.driveConsts["controller_port"]
+            self.driverConsts["controller_port"]
+        )
+
+        # The operators controller
+        self.operatorController = commands2.button.CommandJoystick(
+            self.operatorConsts["controller_port"]
         )
 
         # Configure the button bindings
@@ -69,16 +87,16 @@ class RobotContainer:
             FlyByWire(
                 self.robotDrive,
                 lambda: -self.driverController.getRawAxis(
-                    self.driveConsts["ForwardAxis"],
+                    self.driverConsts["ForwardAxis"],
                 ),
                 lambda: self.driverController.getRawAxis(
-                    self.driveConsts["SteerAxis"],
+                    self.driverConsts["SteerAxis"],
                 ),
             )
         )
 
-        # self.sd.putNumber("someNumber", 1234)
-        # print(self.FMSinfo.getNumber("StationNumber", -1))
+    # self.sd.putNumber("someNumber", 1234)
+    # print(self.FMSinfo.getNumber("StationNumber", -1))
 
     def configureButtonBindings(self):
         """
@@ -88,7 +106,7 @@ class RobotContainer:
         """
         # Drive at half speed when the right bumper is held
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["HalfSpeedButton"]
+            self.driverController, self.driverConsts["HalfSpeedButton"]
         ).onTrue(
             commands2.InstantCommand(
                 (lambda: self.robotDrive.setMaxOutput(0.5)), [self.robotDrive]
@@ -105,9 +123,8 @@ class RobotContainer:
             )
         )
 
-        # Stabilize robot to drive straight with gyro (software diff lock)
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["DiffLock"]
+            self.driverController, self.driverConsts["DiffLock"]
         ).whileTrue(
             commands2.PIDCommand(
                 wpimath.controller.PIDController(
@@ -121,7 +138,7 @@ class RobotContainer:
                 0,
                 # Pipe the output to the turning controls
                 lambda output: self.robotDrive.arcadeDrive(
-                    -self.driverController.getRawAxis(self.driveConsts["ForwardAxis"]),
+                    -self.driverConsts["ForwardAxis"],
                     output,
                 ),
                 # Require the robot drive
@@ -132,7 +149,7 @@ class RobotContainer:
         # Turn to 90 degrees, with a 5 second timeout
         commands2.button.JoystickButton(
             self.driverController,
-            self.driveConsts["Turn90"],
+            self.driverConsts["Turn90"],
         ).onTrue(
             TurnToAngle(
                 90,
@@ -143,7 +160,7 @@ class RobotContainer:
         # Turn to -90 degrees with a profile, with a 5 second timeout
         commands2.button.JoystickButton(
             self.driverController,
-            self.driveConsts["TurnAnti90"],
+            self.driverConsts["TurnAnti90"],
         ).onTrue(
             TurnToAngleProfiled(
                 -90,
@@ -151,20 +168,33 @@ class RobotContainer:
             ).withTimeout(5)
         )
 
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Clamp"],
+        ).whileHeld(Clamp(self.clawSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Unclamp"],
+        ).whileHeld(Unclamp(self.clawSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Extend"],
+        ).whileHeld(Extend(self.armSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Retract"],
+        ).whileHeld(Retract(self.armSubsystem).withTimeout(5))
+
     def configureAutonomous(self):
         # Create a sendable chooser
         self.autoChooser = wpilib.SendableChooser()
 
         # Add options for chooser
         # self.autoChooser.setDefaultOption("Null Auto", NullAuto(self.drivetrain))
-        self.autoChooser.setDefaultOption(
-            "Test",
-            CrossLinePath(self.robotDrive).withTimeout(15),
-        )
-        self.autoChooser.addOption(
-            "Test2",
-            CrossLinePath(self.robotDrive).withTimeout(15),
-        )
+        self.autoChooser.setDefaultOption("Cury Auto", CurvyAuto().withTimeout(15))
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
         # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.

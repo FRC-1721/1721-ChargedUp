@@ -123,14 +123,13 @@ class DriveSubsystem(commands2.SubsystemBase):
     def tankDriveVolts(self, leftVolts, rightVolts):
         """Control the robot's drivetrain with voltage inputs for each side."""
         # Set the voltage of the left side.
+        # inverting this delays the KP issue but doesn't fix it
         self.leftMotors.setVoltage(leftVolts)
 
-        # Set the voltage of the right side. It's
-        # inverted with a negative sign because it's motors need to spin in the negative direction
-        # to move forward.
-        self.rightMotors.setVoltage(-rightVolts)
+        # Set the voltage of the right side.
+        self.rightMotors.setVoltage(rightVolts)
 
-        print(f"({leftVolts}, {rightVolts})")
+        # print(f"({leftVolts}, {rightVolts})")
 
         # Resets the timer for this motor's MotorSafety
         self.drive.feed()
@@ -145,7 +144,7 @@ class DriveSubsystem(commands2.SubsystemBase):
     def getWheelSpeeds(self):
         """Return an object which represents the wheel speeds of our drivetrain."""
         speeds = DifferentialDriveWheelSpeeds(
-            self.leftEncoder.getVelocity(), self.rightEncoder.getVelocity()
+            self.leftEncoder.getVelocity(), -self.rightEncoder.getVelocity()
         )
         return speeds
 
@@ -215,7 +214,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.imu.GetRawGyro()
+        return self.ahrs.getRate()
 
     def periodic(self) -> None:
         """Runs every loop"""
