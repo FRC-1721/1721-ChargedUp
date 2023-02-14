@@ -12,9 +12,6 @@ class Unclamp(commands2.CommandBase):
         # this gives us full control of the claw
         self.addRequirements([self.clawSusystem])
 
-        # TODO Change me
-        self.clawSusystem.setCurrentlimit(1)
-
     def initialize(self) -> None:
         self.clawSusystem.release()
 

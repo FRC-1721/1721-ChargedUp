@@ -171,22 +171,22 @@ class RobotContainer:
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Clamp"],
-        ).onTrue(Clamp(self.clawSubsystem).withTimeout(5))
+        ).whileHeld(Clamp(self.clawSubsystem).withTimeout(5))
 
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Unclamp"],
-        ).onTrue(Unclamp(self.clawSubsystem).withTimeout(5))
+        ).whileHeld(Unclamp(self.clawSubsystem).withTimeout(5))
 
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Extend"],
-        ).onTrue(Extend(self.armSubsystem).withTimeout(5))
+        ).whileHeld(Extend(self.armSubsystem).withTimeout(5))
 
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Retract"],
-        ).onTrue(Retract(self.armSubsystem).withTimeout(5))
+        ).whileHeld(Retract(self.armSubsystem).withTimeout(5))
 
     def configureAutonomous(self):
         # Create a sendable chooser

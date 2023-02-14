@@ -5,6 +5,8 @@ import wpilib
 import wpilib.drive
 import commands2
 
+from ntcore import NetworkTableInstance
+
 # Constants
 from constants.constants import getConstants
 
@@ -18,6 +20,10 @@ class ClawSubsystem(commands2.SubsystemBase):
         Creates a new Claw subsystem
         """
         super().__init__()
+
+        # Configure networktables
+        self.nt = NetworkTableInstance.getDefault()
+        self.sd = self.nt.getTable("SmartDashboard")
 
         # Get hardware constants
         constants = getConstants("robot_hardware")
@@ -54,3 +60,8 @@ class ClawSubsystem(commands2.SubsystemBase):
 
     def stop(self):
         self.motor.set(0)
+
+    def periodic(self) -> None:
+        """Runs periodic things"""
+
+        self.sd.putNumber("Thermals/Claw", self.motor.getMotorTemperature())
