@@ -220,6 +220,31 @@ function updateColors() {
     } else {
         highlightColor("#dash-hash", "#fabd2f");
     }
+
+	const ids = ['#connectstate', '#robotstate', '#robotAddress'];
+	ids.forEach((v, _) => {
+		if ($(v).text() == "Unknown") {
+			$(v).css('background', 'linear-gradient(to right, #504945, #cc241d)');
+		} else if ($(v).text() == "Disconnected") {
+			$(v).css('background', 'linear-gradient(to right, #504945, #cc241d)');
+		} else {
+			$(v).css('background', 'linear-gradient(to right, #504945, #689d6a)');
+		}
+	});
+
+	// Custom formatting
+	highlightColor(/-dirty$/, "#git-hash-area", 'linear-gradient(to right, #504945, #cc241d)');
+
+	// Programmers
+	highlightColor(/SimUser$/, "#builder-area", 'linear-gradient(to right, #504945, #d3869b)'); // First one is fine to overwrite.
+	highlightColor(/joe/, "#builder-area", 'linear-gradient(to right, #504945, #831598)', false);
+	highlightColor(/dylan/, "#builder-area", 'linear-gradient(to right, #504945, #fe8019)', false);
+
+
+	// Branches
+	highlightColor(/event/, "#git-branch-area", 'linear-gradient(to right, #504945, #689d6a)');
+	highlightColor(/sim/, "#git-branch-area", 'linear-gradient(to right, #504945, #cc241d)', false);
+
 }
 
 // p5.js canvas
@@ -332,4 +357,3 @@ window.preload = preload;
 window.setup = setup;
 window.draw = draw;
 //window.mousePressed = mousePressed;
-//window.keyPressed = keyPressed;
