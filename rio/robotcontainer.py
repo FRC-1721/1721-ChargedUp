@@ -63,42 +63,40 @@ class RobotContainer:
 
         # The robot's subsystems
         self.robotDrive = DriveSubsystem()
-        try:
-            self.clawSubsystem = ClawSubsystem()
-            self.armSubsystem = ArmSubsystem()
+        self.clawSubsystem = ClawSubsystem()
+        self.armSubsystem = ArmSubsystem()
 
-            # The operators controller
-            self.operatorController = commands2.button.CommandJoystick(
-                self.operatorConsts["controller_port"]
+        # The driver's controller
+        self.driverController = commands2.button.CommandJoystick(
+            self.driverConsts["controller_port"]
+        )
+
+        # The operators controller
+        self.operatorController = commands2.button.CommandJoystick(
+            self.operatorConsts["controller_port"]
+        )
+
+        # Configure the button bindings
+        self.configureButtonBindings()
+
+        # Setup all autonomous routines
+        self.configureAutonomous()
+
+        # Configure default commands
+        self.robotDrive.setDefaultCommand(
+            FlyByWire(
+                self.robotDrive,
+                lambda: -self.driverController.getRawAxis(
+                    self.driverConsts["ForwardAxis"],
+                ),
+                lambda: self.driverController.getRawAxis(
+                    self.driverConsts["SteerAxis"],
+                ),
             )
+        )
 
-            # Configure the button bindings
-            self.configureButtonBindings()
-
-            # Setup all autonomous routines
-            self.configureAutonomous()
-
-        except:
-            # The driver's controller
-            self.driverController = commands2.button.CommandJoystick(
-                self.driverConsts["controller_port"]
-            )
-
-            # Configure default commands
-            self.robotDrive.setDefaultCommand(
-                FlyByWire(
-                    self.robotDrive,
-                    lambda: -self.driverController.getRawAxis(
-                        self.driverConsts["ForwardAxis"],
-                    ),
-                    lambda: self.driverController.getRawAxis(
-                        self.driverConsts["SteerAxis"],
-                    ),
-                )
-            )
-
-        # self.sd.putNumber("someNumber", 1234)
-        # print(self.FMSinfo.getNumber("StationNumber", -1))
+    # self.sd.putNumber("someNumber", 1234)
+    # print(self.FMSinfo.getNumber("StationNumber", -1))
 
     def configureButtonBindings(self):
         """

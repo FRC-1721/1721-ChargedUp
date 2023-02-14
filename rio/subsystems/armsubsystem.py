@@ -48,24 +48,19 @@ class ArmSubsystem(commands2.SubsystemBase):
 
         # TODO: These need to be replaced with CAN motor controllers
         # The back-side arm encoder
-        self.backEncoder = wpilib.Encoder(
-            self.backCosnt["EncoderPorts"],
-            self.backCosnt["EncoderReversed"],
-        )
+        self.backEncoder = self.backMotor.getEncoder()
 
         # The middle-side arm encoder
-        self.middleEncoder = wpilib.Encoder(
-            self.middleCosnt["EncoderPorts"],
-            self.middleCosnt["EncoderReversed"],
-        )
+        self.middleEncoder = self.middleMotor.getEncoder()
 
         # Sets the distance per pulse for the encoders
-        encoderDistPerP = (
-            self.armConst["kWheelDiameterInches"] * math.pi
-        ) / self.armConst["kEncoderCPR"]
 
-        self.backEncoder.setDistancePerPulse(encoderDistPerP)
-        self.middleEncoder.setDistancePerPulse(encoderDistPerP)
+        # self.backEncoder.setPositionConversionFactor(
+        #     1 / self.backCosnt["encoderConversionFactor"]
+        # )
+        # self.middleEncoder.setPositionConversionFactor(
+        #     1 / self.middleCosnt["encoderConversionFactor"]
+        # )
 
         # Pid values
         self.PID = self.backMotor.getPIDController()

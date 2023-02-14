@@ -34,10 +34,7 @@ class ClawSubsystem(commands2.SubsystemBase):
         self.motor.setInverted(self.clawConst["Inverted"])
 
         # TODO: These should to be replaced with CAN motor controllers
-        self.encoder = wpilib.Encoder(
-            self.clawConst["EncoderPorts"],
-            self.clawConst["EncoderReversed"],
-        )
+        self.encoder = self.motor.getEncoder()
 
         # Pid values
         self.PID = self.motor.getPIDController()
