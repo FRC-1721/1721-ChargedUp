@@ -1,13 +1,16 @@
-from networktables import NetworkTables as NT
+from ntcore import NetworkTableInstance
 import wpilib
 import commands2
 import json
 
 
-class limeLight(commands2.Command):
+class limeLightCommands(commands2.Command):
     def __init__(self) -> None:
-        self.table = NT.getTable("limelight")  # info we recieve from the limelight
-        self.map = json.load(open("/frc2023.fmap", "r"))  # fmap file
+        self.binger = NetworkTableInstance.getDefault()
+        self.table = self.binger.getTable(
+            "limelight"
+        )  # info we recieve from the limelight
+        self.map = json.load(open("autonomous/frc2023.fmap", "r"))  # fmap file
 
     def getTag(self):
         """Tries to get any apriltag in view of limelight. returns 0 if no apriltag is found."""

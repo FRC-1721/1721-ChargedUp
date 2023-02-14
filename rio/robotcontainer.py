@@ -24,7 +24,7 @@ from commands.flybywire import FlyByWire
 from autonomous.crossLinePath import CrossLinePath
 
 # Autonomous
-from autonomous.limelight import limeLight
+from autonomous.limelight import limeLightCommands
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -164,7 +164,7 @@ class RobotContainer:
             "Test",
             CrossLinePath(self.robotDrive).withTimeout(15),
         )
-        self.autoChooser.addOption("Jack's Auto", limeLight().withTimeout(15))
+        self.autoChooser.addOption("Jack's Auto", limeLightCommands().withTimeout(15))
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
 
