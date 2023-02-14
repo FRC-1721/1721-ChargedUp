@@ -221,17 +221,7 @@ function updateColors() {
         highlightColor("#dash-hash", "#fabd2f");
     }
 
-	const ids = ['#connectstate', '#robotstate', '#robotAddress'];
-	ids.forEach((v, _) => {
-		if ($(v).text() == "Unknown") {
-			$(v).css('background', 'linear-gradient(to right, #504945, #cc241d)');
-		} else if ($(v).text() == "Disconnected") {
-			$(v).css('background', 'linear-gradient(to right, #504945, #cc241d)');
-		} else {
-			$(v).css('background', 'linear-gradient(to right, #504945, #689d6a)');
-		}
-	});
-
+	
 	// Custom formatting
 	highlightColor(/-dirty$/, "#git-hash-area", 'linear-gradient(to right, #504945, #cc241d)');
 

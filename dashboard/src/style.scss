@@ -91,11 +91,11 @@ main {
     display: grid;
     grid: 136px 3rem 1rem 377px / // rows
         auto auto 320px 320px 777px; // columns
-    grid-gap: 0.5rem;
+    grid-gap: 0.3rem;
 }
 
 .table {
-    border-radius: 1rem;
+    border-radius: .5rem;
 
     &-info {
         display: flex;
@@ -106,21 +106,21 @@ main {
 
         &:first-child {
             .table-label {
-                border-radius: 1rem 0 0 0;
+                border-radius: .5rem 0 0 0;
             }
 
             .table-area {
-                border-radius: 0 1rem 0 0;
+                border-radius: 0 .5rem 0 0;
             }
         }
 
         &:last-child {
             .table-label {
-                border-radius: 0 0 0 1rem;
+                border-radius: 0 0 0 .5rem;
             }
 
             .table-area {
-                border-radius: 0 0 1rem 0;
+                border-radius: 0 0 .5rem 0;
             }
         }
     }
@@ -143,7 +143,7 @@ main {
     grid-area: 1 / 1 / 2 / -1;
     display: flex;
     flex-direction: row;
-    gap: 0.5rem;
+    gap: 0.3rem;
     > .table {
         flex: 1;
 
@@ -160,13 +160,13 @@ main {
 
         &:first-of-type {
             > .table-info:first-of-type > .table-label {
-                border-radius: 1rem 0 0 0;
+                border-radius: .5rem 0 0 0;
             }
         }
 
         &:last-of-type {
             > .table-info:first-of-type > .table-area {
-                border-radius: 0 1rem 0 0;
+                border-radius: 0 .5rem 0 0;
             }
         }
     }
@@ -189,42 +189,42 @@ main {
         color: #ebdbb2;
 
         &:first-of-type {
-            border-radius: 0 0 0 1rem;
+            border-radius: 0 0 0 .5rem;
         }
 
         &:last-of-type {
-            border-radius: 0 0 1rem 0;
+            border-radius: 0 0 .5rem 0;
         }
     }
 
     button:first-of-type:last-of-type {
-        border-radius: 1rem;
+        border-radius: 0 0 .5rem .5rem;
     }
 }
 
 .spacer {
     grid-area: 3 / 1 / 3 / -1;
     background: #3c3836;
-    border-radius: 1rem;
+    border-radius: .5rem;
 }
 
 .test1 {
     grid-area: 4 / 1 / 5 / 2;
     background: #802;
-    border-radius: 1rem;
+    border-radius: .5rem;
 }
 
 .test2 {
     grid-area: 4 / 2 / 5 / 3;
     background: #802;
-    border-radius: 1rem;
+    border-radius: .5rem;
 }
 
 .cameras {
     grid-area: -2 / -4 / -1 / -2;
     display: grid;
     grid: 240 137 / 320 320;
-    grid-column-gap: 0.5rem;
+    grid-column-gap: 0.3rem;
 }
 
 #cam1 {
@@ -262,7 +262,7 @@ main {
 #raw-nt {
     margin: 1rem;
     background: #1d2021;
-    border-radius: 1rem;
+    border-radius: .5rem;
 
     #raw-title {
         color: #665c54;
