@@ -72,7 +72,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "@Software Team Simulator failed in {{ EVENT_PAYLOAD.pull_request.html_url }} !"
+          args: "<@Software Team> Simulator failed in {{ EVENT_PAYLOAD.pull_request.html_url }} !"
 
   unit_test:
     name: pyfrc Unit tests
@@ -108,4 +108,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "@Software Team Unit tests failed in {{ EVENT_PAYLOAD.pull_request.html_url }} !"
+          args: "<@Software Team> Unit tests failed in {{ EVENT_PAYLOAD.pull_request.html_url }} !"

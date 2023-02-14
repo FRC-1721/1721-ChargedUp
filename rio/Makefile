@@ -18,8 +18,10 @@ help:
 	@echo "   install           Install extra requirements"
 	@echo "   info              Get the robot current build info"
 	@echo "   download-python   Download python (new robots only)"
-	@echo "   inwstall-python   Install python (new robots only)"
+	@echo "   install-python   Install python (new robots only)"
 	@echo
+
+.PHONY: deploy
 
 # Shortcut for the simulator
 sim:
@@ -47,7 +49,7 @@ info:
 
 # Shortcuts for inital robot setup
 download-python:
-	robotpy-installer download
+	robotpy-installer download-python
 
 install-python:
 	robotpy-installer install-python
