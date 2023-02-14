@@ -23,6 +23,9 @@ from commands.flybywire import FlyByWire
 # Autonomous
 from autonomous.crossLinePath import CrossLinePath
 
+# Autonomous
+from autonomous.limelight import limeLight
+
 # NetworkTables
 from ntcore import NetworkTableInstance
 
@@ -161,9 +164,9 @@ class RobotContainer:
             "Test",
             CrossLinePath(self.robotDrive).withTimeout(15),
         )
+        self.autoChooser.addOption("Jack's Auto", limeLight().withTimeout(15))
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
-        # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.
 
     def configureNetworktables(self):
         # Configure networktables
