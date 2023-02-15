@@ -70,7 +70,13 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.PID.setFF(self.pidConst["ff"])
 
         # limit switch
-        self.backLimitSwitch = SparkMaxLimitSwitch.Type(0)
+
+        self.backReverseLimit = self.backMotor.getReverseLimitSwitch(
+            SparkMaxLimitSwitch.Type.kNormallyOpen
+        )
+        self.backForwardLimit = self.backMotor.getForwardLimitSwitch(
+            SparkMaxLimitSwitch.Type.kNormallyOpen
+        )
 
     def setCurrentlimit(self, current):
         self.backMotor.setSmartCurrentLimit(current)
@@ -94,5 +100,5 @@ class ArmSubsystem(commands2.SubsystemBase):
         # TODO tune this in order hold the arm in place
         self.backMotor.set(0)
 
-    # def periodic(self) -> None:
-    #     print(not (self.backLimitSwitch.get()))
+    def periodic(self) -> None:
+        print(self.backReverseLimit.get(), self.backForwardLimit.get())
