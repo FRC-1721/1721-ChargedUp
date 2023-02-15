@@ -10,7 +10,7 @@ import math
 from constants.constants import getConstants
 
 # Vendor Libs
-from rev import CANSparkMax, CANSparkMaxLowLevel
+from rev import CANSparkMax, CANSparkMaxLowLevel, SparkMaxLimitSwitch
 
 
 class ArmSubsystem(commands2.SubsystemBase):
@@ -69,6 +69,9 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.PID.setD(self.pidConst["kd"])
         self.PID.setFF(self.pidConst["ff"])
 
+        # limit switch
+        self.backLimitSwitch = SparkMaxLimitSwitch.Type(0)
+
     def setCurrentlimit(self, current):
         self.backMotor.setSmartCurrentLimit(current)
 
@@ -79,7 +82,7 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.middleMotor.set(-1)
 
     def stop(self):
-        self.middleMotor.set(0)
+        self.middleMotor.set(0.02)
 
     def up(self):
         self.backMotor.set(1)
@@ -89,4 +92,7 @@ class ArmSubsystem(commands2.SubsystemBase):
 
     def upstop(self):
         # TODO tune this in order hold the arm in place
-        self.backMotor.set(0.1)
+        self.backMotor.set(0)
+
+    # def periodic(self) -> None:
+    #     print(not (self.backLimitSwitch.get()))

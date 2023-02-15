@@ -14,7 +14,6 @@ class Down(commands2.CommandBase):
 
     def initialize(self) -> None:
         self.armsubsystem.down()
-        print("working piss off")
 
     def end(self, interrupted: bool) -> None:
         self.armsubsystem.upstop()

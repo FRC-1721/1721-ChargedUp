@@ -13,7 +13,7 @@ class Up(commands2.CommandBase):
         self.addRequirements([self.armsubsystem])
 
         # TODO Change me
-        self.armsubsystem.setCurrentlimit(1)
+        self.armsubsystem.setCurrentlimit(10)
 
     def initialize(self) -> None:
         self.armsubsystem.up()
