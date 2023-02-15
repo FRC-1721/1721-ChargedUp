@@ -19,7 +19,7 @@ from constants.constants import getConstants
 
 
 class CrossLinePath(commands2.RamseteCommand):
-    """A command that uss a ramsete controller to follow a preset path."""
+    """A command that uses a ramsete controller to follow a preset path."""
 
     def __init__(self, drive: DriveSubsystem) -> None:
         const = getConstants("robot_autonomous")

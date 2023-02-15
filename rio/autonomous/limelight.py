@@ -1,4 +1,7 @@
+from commands.turntoangle import TurnToAngle
+
 from ntcore import NetworkTableInstance
+
 
 from wpilib import RobotBase
 
@@ -7,12 +10,12 @@ import json
 
 
 class limeLightCommands(commands2.CommandBase):
-    def __init__(self) -> None:
-        super().__init__()
+    def __init__(self, drive) -> None:
         # Configure networktables
         self.nt = NetworkTableInstance.getDefault()
         self.ll = self.nt.getTable("limelight")
-
+        self.botPos = 0
+        self.drivesys = drive
         # Load map
         mapPath = "deploy/maps/frc2023.fmap"
         if RobotBase.isReal():
@@ -30,3 +33,8 @@ class limeLightCommands(commands2.CommandBase):
     def getBotPos(self):
         pos = self.table.getEntry("botpose_targetspace").getDoubleArray(0)
         return pos
+
+    def autoBotDrive(self):
+        self.botPos = self.getBotPos()
+        if self.botPos != 0:
+            TurnToAngle(6, self.drivesys)
