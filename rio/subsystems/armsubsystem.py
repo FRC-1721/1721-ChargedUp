@@ -89,4 +89,4 @@ class ArmSubsystem(commands2.SubsystemBase):
 
     def upstop(self):
         # TODO tune this in order hold the arm in place
-        self.backMotor.set(0.2)
+        self.backMotor.set(0.1)
