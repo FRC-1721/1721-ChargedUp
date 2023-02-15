@@ -19,13 +19,11 @@ main mode:
 
   operator: # using an "x-box" controller
     controller_port: 1
-    
-    # Axis
-    VerticalAxis: 0
-    ExtensionAxis: 4
 
     # Buttons
     Clamp: 3
     Unclamp: 1
     Extend: 4
     Retract: 2
+    Up: 6
+    Down: 5

@@ -28,6 +28,8 @@ from commands.clamp import Clamp
 from commands.unclamp import Unclamp
 from commands.extend import Extend
 from commands.retract import Retract
+from commands.up import Up
+from commands.down import Down
 
 
 # Autonomous
@@ -180,13 +182,23 @@ class RobotContainer:
 
         commands2.button.JoystickButton(
             self.operatorController,
-            self.operatorConsts["Extend"],
+            self.operatorConsts["Up"],
         ).whileHeld(Extend(self.armSubsystem).withTimeout(5))
 
         commands2.button.JoystickButton(
             self.operatorController,
-            self.operatorConsts["Retract"],
+            self.operatorConsts["Down"],
         ).whileHeld(Retract(self.armSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Extend"],
+        ).whileHeld(Up(self.armSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Retract"],
+        ).whileHeld(Down(self.armSubsystem).withTimeout(5))
 
     def configureAutonomous(self):
         # Create a sendable chooser

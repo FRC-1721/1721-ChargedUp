@@ -73,10 +73,19 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.backMotor.setSmartCurrentLimit(current)
 
     def extend(self):
-        self.backMotor.set(1)
+        self.middleMotor.set(1)
 
     def retract(self):
-        self.backMotor.set(-1)
+        self.middleMotor.set(-1)
 
     def stop(self):
-        self.backMotor.set(0)
+        self.middleMotor.set(0)
+
+    def up(self):
+        self.backMotor.set(1)
+
+    def down(self):
+        self.backMotor.set(-1)
+
+    def upstop(self):
+        self.backMotor.set(0.2)
