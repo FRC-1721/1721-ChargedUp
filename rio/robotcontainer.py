@@ -101,11 +101,7 @@ class RobotContainer:
 
         # Setup default commands
         self.clawSubsystem.setDefaultCommand(
-            Clamp(
-                self.clawSubsystem,
-                self.operatorController.getRawAxis(3)
-                or self.operatorController.getRawAxis(2),
-            )
+            Clamp(self.clawSubsystem, self.operatorController.getRawAxis(3))
         )
 
     def configureButtonBindings(self):
@@ -197,6 +193,15 @@ class RobotContainer:
             self.operatorController,
             self.operatorConsts["Retract"],
         ).whileHeld(Down(self.armSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Unclamp"],
+        ).whileHeld(
+            Clamp(
+                self.clawSubsystem, -self.operatorController.getRawAxis(2)
+            ).withTimeout(5)
+        )
 
     def configureAutonomous(self):
         # Create a sendable chooser

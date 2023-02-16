@@ -21,8 +21,7 @@ main mode:
     controller_port: 1
 
     # Buttons
-    Clamp: 3
-    Unclamp: 1
+    Unclamp: 7
     Extend: 4
     Retract: 2
     Up: 6
