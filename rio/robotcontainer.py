@@ -97,8 +97,16 @@ class RobotContainer:
             )
         )
 
-    # self.sd.putNumber("someNumber", 1234)
-    # print(self.FMSinfo.getNumber("StationNumber", -1))
+        # self.sd.putNumber("someNumber", 1234)
+        # print(self.FMSinfo.getNumber("StationNumber", -1))
+
+        # Setup default commands
+        self.clawSubsystem.setDefaultCommand(
+            Clamp(
+                self.operatorController.getRawAxis(3)
+                or self.operatorController.getRawAxis(2)
+            )
+        )
 
     def configureButtonBindings(self):
         """
@@ -169,16 +177,6 @@ class RobotContainer:
                 self.robotDrive,
             ).withTimeout(5)
         )
-
-        commands2.button.JoystickButton(
-            self.operatorController,
-            self.operatorConsts["Clamp"],
-        ).whileHeld(Clamp(self.clawSubsystem).withTimeout(5))
-
-        commands2.button.JoystickButton(
-            self.operatorController,
-            self.operatorConsts["Unclamp"],
-        ).whileHeld(Unclamp(self.clawSubsystem).withTimeout(5))
 
         commands2.button.JoystickButton(
             self.operatorController,

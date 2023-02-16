@@ -52,14 +52,8 @@ class ClawSubsystem(commands2.SubsystemBase):
     def setCurrentlimit(self, current):
         self.motor.setSmartCurrentLimit(current)
 
-    def grab(self):
-        self.motor.set(1)
-
-    def release(self):
-        self.motor.set(-1)
-
-    def stop(self):
-        self.motor.set(0)
+    def grab(self, speed):
+        self.motor.set(speed)
 
     def periodic(self) -> None:
         """Runs periodic things"""

@@ -78,21 +78,11 @@ class ArmSubsystem(commands2.SubsystemBase):
     def setCurrentlimit(self, current):
         self.backMotor.setSmartCurrentLimit(current)
 
-    def extend(self):
-        self.middleMotor.set(1)
+    def extension(self, speed):
+        self.backMotor(speed)
 
-    def retract(self):
-        self.middleMotor.set(-1)
+    def ascent(self, speed):
+        self.middleMotor.set(speed)
 
-    def stop(self):
-        self.middleMotor.set(0)
-
-    def up(self):
-        self.backMotor.set(1)
-
-    def down(self):
-        self.backMotor.set(-1)
-
-    def upstop(self):
-        # TODO tune this in order hold the arm in place
-        self.backMotor.set(0)
+    def periodic(self) -> None:
+        print("self.backEncoder:", self.backEncoder.getPosition())
