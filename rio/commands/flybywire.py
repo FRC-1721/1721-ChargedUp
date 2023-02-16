@@ -36,9 +36,7 @@ class FlyByWire(commands2.CommandBase):
         to dampen the user input.
         """
 
-        # return x / 1.3 * -1
-
-        return x / 2.9 * -1
+        return x / 1.3 * -1
 
     def piecewise_dampen(self, x):
         """
@@ -46,5 +44,4 @@ class FlyByWire(commands2.CommandBase):
         a dampened user input
         """
 
-        # return x / 1.75
-        return x / 2.25
+        return x / 1.75

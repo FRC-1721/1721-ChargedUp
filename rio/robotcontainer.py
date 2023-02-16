@@ -25,7 +25,6 @@ from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
 from commands.clamp import Clamp
-from commands.unclamp import Unclamp
 from commands.extend import Extend
 from commands.retract import Retract
 from commands.up import Up
@@ -103,8 +102,9 @@ class RobotContainer:
         # Setup default commands
         self.clawSubsystem.setDefaultCommand(
             Clamp(
+                self.clawSubsystem,
                 self.operatorController.getRawAxis(3)
-                or self.operatorController.getRawAxis(2)
+                or self.operatorController.getRawAxis(2),
             )
         )
 
