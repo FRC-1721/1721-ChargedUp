@@ -19,7 +19,7 @@ class CurvyAuto(commands2.SequentialCommandGroup):
         and goes back onto the switch
         """
         super().__init__(
-            Extend(1),
+            Extend(),
             WaitCommand(),
             Clamp(-1),
             WaitCommand(2),
