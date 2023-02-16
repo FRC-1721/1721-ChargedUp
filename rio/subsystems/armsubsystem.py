@@ -69,8 +69,11 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.PID.setD(self.pidConst["kd"])
         self.PID.setFF(self.pidConst["ff"])
 
-        # Hardware Limnits
+        # Hardware Limits
         self.spoolLimit = self.backMotor.getReverseLimitSwitch(
+            SparkMaxLimitSwitch.Type.kNormallyOpen
+        )
+        self.ledLimit = self.middleMotor.getReverseLimitSwitch(
             SparkMaxLimitSwitch.Type.kNormallyOpen
         )
         self.spoolLimit.enableLimitSwitch(True)
