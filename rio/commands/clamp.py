@@ -23,5 +23,5 @@ class Clamp(commands2.CommandBase):
         self.clawSusystem.grab(self.grabSpeed)
 
     def end(self, interrupted: bool) -> None:
-        self.clawSusystem.grab(self.grabSpeed)
+        self.clawSusystem.grab(0)
         return True
