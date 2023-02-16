@@ -208,16 +208,39 @@ main {
     border-radius: .5rem;
 }
 
+.temps {
+    grid-area: 4 / 1 / 5 / 3;
+    display: flex;
+    flex-direction: row;
+    text-align: center;
+    font-size: 1.2rem;
+}
+
+#Claw {
+    flex: 4;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: #3c3836
+}
+
+.test1, .test2 {
+    flex: 5;
+    background: #504945;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+}
+
 .test1 {
-    grid-area: 4 / 1 / 5 / 2;
-    background: #802;
-    border-radius: .5rem;
+    border-radius: .5rem 0 0 .5rem;
 }
 
 .test2 {
-    grid-area: 4 / 2 / 5 / 3;
-    background: #802;
-    border-radius: .5rem;
+    border-radius: 0 .5rem .5rem 0;
 }
 
 .cameras {
@@ -225,6 +248,28 @@ main {
     display: grid;
     grid: 240 137 / 320 320;
     grid-column-gap: 0.3rem;
+}
+
+.diff {
+    position: absolute;
+    background: #802;
+        width: 100%;
+
+    &M {
+        height: 4px;
+        top: 50%;
+        transform: translateY(-2px);
+    }
+
+    &F {
+        height: 0;
+        bottom: 50%;
+    }
+
+    &B {
+        height: 0;
+        top: 50%;
+    }
 }
 
 #cam1 {

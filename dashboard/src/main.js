@@ -142,6 +142,10 @@ function onValueChanged(key, value, isNew) {
         });
     }
 
+    if (key.includes("Thermals/")) {
+        $("#" + /[^/]*$/.exec(key)[0]).html(/[^/]*$/.exec(key)[0] + " Temp<br>" + value)
+    }
+
     $("#aut-sel > button").each(function () {
         if (
             $(this).html() ==
@@ -155,6 +159,27 @@ function onValueChanged(key, value, isNew) {
 
     if (key.includes("/SmartDashboard/Pose/Pose")) {
         updateRobotPos(NetworkTables.getValue(key), key.substr(key.length - 1));
+    }
+
+    if (key.includes("Pose/Diff")) {
+        if (key.includes("DiffL")) {
+            if (value >= 0) {
+                $(".diffL.diffF").css("height", Math.abs(value * 12.5) + "%")
+                $(".diffL.diffB").css("height", "0")
+            } else {
+                $(".diffL.diffF").css("height", "0")
+                $(".diffL.diffB").css("height", Math.abs(value * 12.5) + "%")
+            }
+        }
+        if (key.includes("DiffR")) {
+            if (value >= 0) {
+                $(".diffR.diffF").css("height", Math.abs(value * 12.5) + "%")
+                $(".diffR.diffB").css("height", "0")
+            } else {
+                $(".diffR.diffF").css("height", "0")
+                $(".diffR.diffB").css("height", Math.abs(value * 12.5) + "%")
+            }
+        }
     }
 }
 
