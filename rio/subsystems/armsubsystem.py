@@ -77,6 +77,7 @@ class ArmSubsystem(commands2.SubsystemBase):
             SparkMaxLimitSwitch.Type.kNormallyOpen
         )
         self.spoolLimit.enableLimitSwitch(True)
+        self.ledLimit.enableLimitSwitch(True)
 
     def setCurrentlimit(self, current):
         self.backMotor.setSmartCurrentLimit(current)
