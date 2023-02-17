@@ -38,6 +38,7 @@ clean:
 
 stage: build
 	cp entrypoint.sh $(STAGEDIR)
+        cp run.bat $(STAGEDIR)
 
 deploy: stage
 	@echo "═══════════════════════════════════════════════════════════════════════════════════════"
