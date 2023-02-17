@@ -10,7 +10,7 @@ import math
 from constants.constants import getConstants
 
 # Vendor Libs
-from rev import CANSparkMax, CANSparkMaxLowLevel
+from rev import CANSparkMax, CANSparkMaxLowLevel, SparkMaxLimitSwitch
 
 
 class ArmSubsystem(commands2.SubsystemBase):
@@ -69,14 +69,26 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.PID.setD(self.pidConst["kd"])
         self.PID.setFF(self.pidConst["ff"])
 
+        # Hardware Limits
+        self.spoolLimit = self.backMotor.getReverseLimitSwitch(
+            SparkMaxLimitSwitch.Type.kNormallyOpen
+        )
+        self.ledForwardLimit = self.middleMotor.getForwardLimitSwitch(
+            SparkMaxLimitSwitch.Type.kNormallyOpen
+        )
+        self.ledBackwardLimit = self.middleMotor.getReverseLimitSwitch(
+            SparkMaxLimitSwitch.Type.kNormallyOpen
+        )
+
+        self.spoolLimit.enableLimitSwitch(True)
+        self.ledForwardLimit.enableLimitSwitch(True)
+        self.ledBackwardLimit.enableLimitSwitch(True)
+
     def setCurrentlimit(self, current):
         self.backMotor.setSmartCurrentLimit(current)
 
-    def extend(self):
-        self.backMotor.set(1)
+    def extension(self, speed):
+        self.backMotor.set(speed)
 
-    def retract(self):
-        self.backMotor.set(-1)
-
-    def stop(self):
-        self.backMotor.set(0)
+    def ascent(self, speed):
+        self.middleMotor.set(speed)

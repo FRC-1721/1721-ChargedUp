@@ -32,6 +32,7 @@ arm:
   backMotor: # the extension motor
     MotorPort: 5             # Updated 1/22 by Keegan
     Inverted: False          # Updated 1/22 by Keegan
+    LimitSwitch: 0           # Updated 2/15 by Keegan TODO Change this
     # encoderConversionFactor:
 
   middleMotor: # the screw motor

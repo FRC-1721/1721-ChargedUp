@@ -1,4 +1,5 @@
 import commands2
+import typing
 
 from subsystems.armsubsystem import ArmSubsystem
 
@@ -16,8 +17,8 @@ class Extend(commands2.CommandBase):
         self.armSusystem.setCurrentlimit(1)
 
     def initialize(self) -> None:
-        self.armSusystem.extend()
+        self.armSusystem.extension(1)  # this is required otherwise it breaks everything
 
     def end(self, interrupted: bool) -> None:
-        self.armSusystem.stop()
+        self.armSusystem.extension(0)
         return True

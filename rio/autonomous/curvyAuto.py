@@ -7,7 +7,7 @@ from commands2 import WaitCommand
 from autonomous.crossLinePath import CrossLinePath
 from commands.extend import Extend
 from commands.retract import Retract
-from commands.unclamp import Unclamp
+from commands.clamp import Clamp
 
 
 class CurvyAuto(commands2.SequentialCommandGroup):
@@ -21,9 +21,5 @@ class CurvyAuto(commands2.SequentialCommandGroup):
         super().__init__(
             Extend(),
             WaitCommand(),
-            Unclamp(),
-            WaitCommand(2),
-            Retract(),
-            WaitCommand(2),
-            CrossLinePath(2),
+            Clamp(-1),
         )

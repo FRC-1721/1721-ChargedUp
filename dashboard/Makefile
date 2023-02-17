@@ -24,7 +24,6 @@ build:
 	sed -i -e 's/<p><\/p>/<script src="\/networktables\/utils.js"><\/script><p><\/p>/g' dist/index.html
 	sed -i -e 's/<p><\/p>/<script src="\/networktables\/camera.js"><\/script>/g' dist/index.html
 	sed -i -e "s/idiot-dash-hash/$(DASH_HASH)/g" dist/index.html
-#<p>idiot</p>
 
 run:
 	npm run run
@@ -38,7 +37,7 @@ clean:
 
 stage: build
 	cp entrypoint.sh $(STAGEDIR)
-        cp run.bat $(STAGEDIR)
+	cp run.bat $(STAGEDIR)
 
 deploy: stage
 	@echo "═══════════════════════════════════════════════════════════════════════════════════════"

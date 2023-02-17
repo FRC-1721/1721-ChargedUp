@@ -25,9 +25,11 @@ from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
 from commands.clamp import Clamp
-from commands.unclamp import Unclamp
 from commands.extend import Extend
 from commands.retract import Retract
+from commands.up import Up
+from commands.down import Down
+from commands.holdPosition import HoldPosition
 
 
 # Autonomous
@@ -95,8 +97,8 @@ class RobotContainer:
             )
         )
 
-    # self.sd.putNumber("someNumber", 1234)
-    # print(self.FMSinfo.getNumber("StationNumber", -1))
+        # self.sd.putNumber("someNumber", 1234)
+        # print(self.FMSinfo.getNumber("StationNumber", -1))
 
     def configureButtonBindings(self):
         """
@@ -125,26 +127,30 @@ class RobotContainer:
 
         commands2.button.JoystickButton(
             self.driverController, self.driverConsts["DiffLock"]
-        ).whileTrue(
-            commands2.PIDCommand(
-                wpimath.controller.PIDController(
-                    self.pidConsts["drive"]["kStabilizationP"],
-                    self.pidConsts["drive"]["kStabilizationI"],
-                    self.pidConsts["drive"]["kStabilizationD"],
-                ),
-                # Close the loop on the turn rate
-                self.robotDrive.getTurnRate,
-                # Setpoint is 0
-                0,
-                # Pipe the output to the turning controls
-                lambda output: self.robotDrive.arcadeDrive(
-                    -self.driverConsts["ForwardAxis"],
-                    output,
-                ),
-                # Require the robot drive
-                [self.robotDrive],
-            )
-        )
+        ).whileTrue(HoldPosition(self.robotDrive))
+
+        # commands2.button.JoystickButton(
+        #     self.driverController, self.driverConsts["DiffLock"]
+        # ).whileTrue(
+        #     commands2.PIDCommand(
+        #         wpimath.controller.PIDController(
+        #             self.pidConsts["drive"]["kStabilizationP"],
+        #             self.pidConsts["drive"]["kStabilizationI"],
+        #             self.pidConsts["drive"]["kStabilizationD"],
+        #         ),
+        #         # Close the loop on the turn rate
+        #         self.robotDrive.getTurnRate,
+        #         # Setpoint is 0
+        #         0,
+        #         # Pipe the output to the turning controls
+        #         lambda output: self.robotDrive.arcadeDrive(
+        #             -self.driverConsts["ForwardAxis"],
+        #             output,
+        #         ),
+        #         # Require the robot drive
+        #         [self.robotDrive],
+        #     )
+        # )
 
         # Turn to 90 degrees, with a 5 second timeout
         commands2.button.JoystickButton(
@@ -168,25 +174,37 @@ class RobotContainer:
             ).withTimeout(5)
         )
 
-        commands2.button.JoystickButton(
-            self.operatorController,
-            self.operatorConsts["Clamp"],
-        ).whileHeld(Clamp(self.clawSubsystem).withTimeout(5))
+        self.armSubsystem.setDefaultCommand(Retract(self.armSubsystem, -0.01))
 
         commands2.button.JoystickButton(
             self.operatorController,
-            self.operatorConsts["Unclamp"],
-        ).whileHeld(Unclamp(self.clawSubsystem).withTimeout(5))
-
-        commands2.button.JoystickButton(
-            self.operatorController,
-            self.operatorConsts["Extend"],
+            self.operatorConsts["Up"],
         ).whileHeld(Extend(self.armSubsystem).withTimeout(5))
 
         commands2.button.JoystickButton(
             self.operatorController,
-            self.operatorConsts["Retract"],
+            self.operatorConsts["Down"],
         ).whileHeld(Retract(self.armSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Extend"],
+        ).whileHeld(Up(self.armSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Retract"],
+        ).whileHeld(Down(self.armSubsystem).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Unclamp"],
+        ).whileHeld(Clamp(self.clawSubsystem, grabSpeed=-1).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Clamp"],
+        ).whileHeld(Clamp(self.clawSubsystem, grabSpeed=1).withTimeout(5))
 
     def configureAutonomous(self):
         # Create a sendable chooser
@@ -194,7 +212,7 @@ class RobotContainer:
 
         # Add options for chooser
         # self.autoChooser.setDefaultOption("Null Auto", NullAuto(self.drivetrain))
-        self.autoChooser.setDefaultOption("Cury Auto", CurvyAuto().withTimeout(15))
+        self.autoChooser.setDefaultOption("Curry Auto", CurvyAuto().withTimeout(15))
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
         # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.
