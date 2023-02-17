@@ -22,8 +22,4 @@ class CurvyAuto(commands2.SequentialCommandGroup):
             Extend(),
             WaitCommand(),
             Clamp(-1),
-            WaitCommand(2),
-            Retract(),
-            WaitCommand(2),
-            CrossLinePath(2),
         )

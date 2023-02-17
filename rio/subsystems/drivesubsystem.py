@@ -16,7 +16,7 @@ from wpilib import DriverStation
 from constants.constants import getConstants
 
 # Vendor Libs
-from rev import CANSparkMax, CANSparkMaxLowLevel
+from rev import CANSparkMax, CANSparkMaxLowLevel, RelativeEncoder
 from ctre import Pigeon2
 from wpimath import geometry
 from navx import AHRS
@@ -91,6 +91,10 @@ class DriveSubsystem(commands2.SubsystemBase):
         # The right-side drive encoder
         self.rightEncoder = self.rightMotor1.getEncoder()
 
+        # PID Controllers
+        self.lPID = self.leftMotor1.getPIDController()
+        self.rPID = self.rightMotor1.getPIDController()
+
         # Setup the conversion factors for the motor controllers
         # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
         # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
@@ -110,6 +114,12 @@ class DriveSubsystem(commands2.SubsystemBase):
             self.leftEncoder.getPosition(),
             self.rightEncoder.getPosition(),
         )
+
+        # Enable braking
+        self.rightMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.rightMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.leftMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.leftMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake)
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -168,14 +178,14 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         return (self.leftEncoder.getDistance() + self.rightEncoder.getDistance()) / 2.0
 
-    def getLeftEncoder(self) -> wpilib.Encoder:
+    def getLeftEncoder(self) -> RelativeEncoder:
         """
         Gets the left drive encoder.
         :returns: the left drive encoder
         """
         return self.leftEncoder
 
-    def getRightEncoder(self) -> wpilib.Encoder:
+    def getRightEncoder(self) -> RelativeEncoder:
         """
         Gets the right drive encoder.
 

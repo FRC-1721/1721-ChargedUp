@@ -29,6 +29,7 @@ from commands.extend import Extend
 from commands.retract import Retract
 from commands.up import Up
 from commands.down import Down
+from commands.holdPosition import HoldPosition
 
 
 # Autonomous
@@ -126,26 +127,30 @@ class RobotContainer:
 
         commands2.button.JoystickButton(
             self.driverController, self.driverConsts["DiffLock"]
-        ).whileTrue(
-            commands2.PIDCommand(
-                wpimath.controller.PIDController(
-                    self.pidConsts["drive"]["kStabilizationP"],
-                    self.pidConsts["drive"]["kStabilizationI"],
-                    self.pidConsts["drive"]["kStabilizationD"],
-                ),
-                # Close the loop on the turn rate
-                self.robotDrive.getTurnRate,
-                # Setpoint is 0
-                0,
-                # Pipe the output to the turning controls
-                lambda output: self.robotDrive.arcadeDrive(
-                    -self.driverConsts["ForwardAxis"],
-                    output,
-                ),
-                # Require the robot drive
-                [self.robotDrive],
-            )
-        )
+        ).whileTrue(HoldPosition(self.robotDrive))
+
+        # commands2.button.JoystickButton(
+        #     self.driverController, self.driverConsts["DiffLock"]
+        # ).whileTrue(
+        #     commands2.PIDCommand(
+        #         wpimath.controller.PIDController(
+        #             self.pidConsts["drive"]["kStabilizationP"],
+        #             self.pidConsts["drive"]["kStabilizationI"],
+        #             self.pidConsts["drive"]["kStabilizationD"],
+        #         ),
+        #         # Close the loop on the turn rate
+        #         self.robotDrive.getTurnRate,
+        #         # Setpoint is 0
+        #         0,
+        #         # Pipe the output to the turning controls
+        #         lambda output: self.robotDrive.arcadeDrive(
+        #             -self.driverConsts["ForwardAxis"],
+        #             output,
+        #         ),
+        #         # Require the robot drive
+        #         [self.robotDrive],
+        #     )
+        # )
 
         # Turn to 90 degrees, with a 5 second timeout
         commands2.button.JoystickButton(
@@ -168,6 +173,8 @@ class RobotContainer:
                 self.robotDrive,
             ).withTimeout(5)
         )
+
+        self.armSubsystem.setDefaultCommand(Retract(self.armSubsystem, -0.01))
 
         commands2.button.JoystickButton(
             self.operatorController,
