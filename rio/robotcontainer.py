@@ -212,7 +212,8 @@ class RobotContainer:
 
         # Add options for chooser
         # self.autoChooser.setDefaultOption("Null Auto", NullAuto(self.drivetrain))
-        self.autoChooser.setDefaultOption("Curry Auto", CurvyAuto().withTimeout(15))
+        self.autoChooser.setDefaultOption("Curry Auto", CurvyAuto(self.armSubsystem))
+
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
         # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.
