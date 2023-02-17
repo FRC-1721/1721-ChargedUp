@@ -13,13 +13,16 @@ from commands.down import Down
 
 
 class CurvyAuto(commands2.SequentialCommandGroup):
-    def __init_(self, armSubsystem: ArmSubsystem) -> None:
+    def __init__(self, armSubsystem: ArmSubsystem) -> None:
         """
         extendo
         downo
         failo
         cryo
         """
+
+        self.addRequirements([armSubsystem])
+
         super().__init__(
             Extend(armSubsystem),
             WaitCommand(1),

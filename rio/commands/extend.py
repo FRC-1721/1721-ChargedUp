@@ -7,6 +7,7 @@ from subsystems.armsubsystem import ArmSubsystem
 class Extend(commands2.CommandBase):
     def __init__(self, armSubsystem: ArmSubsystem) -> None:
         super().__init__()
+        """Pushes the arm back out"""
 
         self.armSusystem = armSubsystem
 
