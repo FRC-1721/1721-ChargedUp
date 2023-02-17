@@ -164,7 +164,9 @@ class RobotContainer:
             "Test",
             CrossLinePath(self.robotDrive).withTimeout(15),
         )
-        self.autoChooser.addOption("Jack's Auto", limeLightCommands().withTimeout(15))
+        self.autoChooser.addOption(
+            "Jack's Auto", limeLightCommands(self.robotDrive).withTimeout(15)
+        )
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
 

@@ -24,7 +24,6 @@ project.
 
 class MyRobot(commands2.TimedCommandRobot):
 
-    super().__init__
     """
     Our default robot class, pass it to wpilib.run
     Command v2 robots are encouraged to inherit from TimedCommandRobot, which
