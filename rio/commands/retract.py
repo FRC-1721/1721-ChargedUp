@@ -16,7 +16,7 @@ class Retract(commands2.CommandBase):
         self.addRequirements([self.armSusystem])
 
         # TODO Change me
-        self.armSusystem.setCurrentlimit(2)
+        self.armSusystem.setCurrentlimit(1)
 
     def execute(self) -> None:
         self.armSusystem.extension(self.power)
