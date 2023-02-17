@@ -10,9 +10,6 @@ class Down(commands2.CommandBase):
 
         self.armsubsystem = armsubsystem
 
-        # this gives us full control of the claw
-        self.addRequirements([self.armsubsystem])
-
     def initialize(self) -> None:
         self.armsubsystem.ascent(-1)
 

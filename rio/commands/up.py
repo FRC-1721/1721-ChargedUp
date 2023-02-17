@@ -10,9 +10,6 @@ class Up(commands2.CommandBase):
 
         self.armsubsystem = armsubsystem
 
-        # this gives us full control of the claw
-        self.addRequirements([self.armsubsystem])
-
         # TODO Change me
         self.armsubsystem.setCurrentlimit(10)
 

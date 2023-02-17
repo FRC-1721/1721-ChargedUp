@@ -6,8 +6,7 @@ from commands2 import WaitCommand
 # commands and autonomous
 from autonomous.crossLinePath import CrossLinePath
 from commands.extend import Extend
-from commands.retract import Retract
-from commands.clamp import Clamp
+from commands.down import Down
 
 
 class CurvyAuto(commands2.SequentialCommandGroup):
@@ -20,6 +19,7 @@ class CurvyAuto(commands2.SequentialCommandGroup):
         """
         super().__init__(
             Extend(),
-            WaitCommand(),
-            Clamp(-1),
+            WaitCommand(1),
+            Down(),
+            WaitCommand(1),
         )
