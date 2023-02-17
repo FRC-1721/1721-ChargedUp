@@ -92,6 +92,3 @@ class ArmSubsystem(commands2.SubsystemBase):
 
     def ascent(self, speed):
         self.middleMotor.set(speed)
-
-    def periodic(self) -> None:
-        print("self.backEncoder:", self.backEncoder.getPosition())
