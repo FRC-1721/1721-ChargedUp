@@ -17,7 +17,7 @@ class Extend(commands2.CommandBase):
         self.armSusystem.setCurrentlimit(1)
 
     def initialize(self) -> None:
-        self.armSusystem.extension(speed=1)
+        self.armSusystem.extension(1)  # this is required otherwise it breaks everything
 
     def end(self, interrupted: bool) -> None:
         self.armSusystem.extension(0)

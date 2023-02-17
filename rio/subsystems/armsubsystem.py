@@ -88,7 +88,7 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.backMotor.setSmartCurrentLimit(current)
 
     def extension(self, speed):
-        self.backMotor(speed)
+        self.backMotor.set(speed)
 
     def ascent(self, speed):
         self.middleMotor.set(speed)

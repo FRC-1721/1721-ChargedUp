@@ -99,11 +99,6 @@ class RobotContainer:
         # self.sd.putNumber("someNumber", 1234)
         # print(self.FMSinfo.getNumber("StationNumber", -1))
 
-        # Setup default commands
-        self.clawSubsystem.setDefaultCommand(
-            Clamp(self.clawSubsystem, self.operatorController.getRawAxis(3))
-        )
-
     def configureButtonBindings(self):
         """
         Use this method to define your button->command mappings. Buttons can be created via the button
@@ -197,11 +192,12 @@ class RobotContainer:
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Unclamp"],
-        ).whileHeld(
-            Clamp(
-                self.clawSubsystem, -self.operatorController.getRawAxis(2)
-            ).withTimeout(5)
-        )
+        ).whileHeld(Clamp(self.clawSubsystem, grabSpeed=-1).withTimeout(5))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Clamp"],
+        ).whileHeld(Clamp(self.clawSubsystem, grabSpeed=1).withTimeout(5))
 
     def configureAutonomous(self):
         # Create a sendable chooser
