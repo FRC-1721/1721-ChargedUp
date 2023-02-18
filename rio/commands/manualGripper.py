@@ -8,10 +8,7 @@ class ManualGripper(commands2.CommandBase):
     def __init__(
         self,
         clawSubsystem: ClawSubsystem,
-        grabForce: typing.Callable[
-            [],
-            float,
-        ],
+        grabForce: float,
         currentLimit: int = 3,
     ) -> None:
         """Manually operates the claw."""
@@ -30,7 +27,7 @@ class ManualGripper(commands2.CommandBase):
 
     def initialize(self) -> None:
         # Set the force
-        self.clawSusystem.grab(self.grabForce())
+        self.clawSusystem.grab(self.grabForce)
 
     def end(self, interrupted: bool) -> None:
         # Stop setting the force

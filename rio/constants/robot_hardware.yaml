@@ -33,7 +33,7 @@ arm:
     MotorPort: 5                 # Updated 1/22 by Keegan
     Inverted: False              # Updated 1/22 by Keegan
     LimitSwitch: 0               # Updated 2/15 by Keegan TODO Change this
-    ConversionFactor: 0.0102     # Updated 1/18 by Joe
+    ConversionFactor: 1          # Updated 1/18 by Joe
 
   ladderMotor: # Drives the lead screw to run the lift up and down
     MotorPort: 6             # Updated 1/22 by Keegan

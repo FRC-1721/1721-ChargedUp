@@ -23,8 +23,8 @@ class CurvyAuto(commands2.SequentialCommandGroup):
         # self.addRequirements([armSubsystem])
 
         super().__init__(
-            ManualArm(armSubsystem, elevatorPower=1, ladderPower=0),
+            ManualArm(armSubsystem, elevFine=1, laddFine=0),
             WaitCommand(1),
-            ManualArm(armSubsystem, elevatorPower=0, ladderPower=-0.4),
+            ManualArm(armSubsystem, elevFine=0, laddFine=-0.4),
             WaitCommand(1),
         )

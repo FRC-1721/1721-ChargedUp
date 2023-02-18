@@ -92,7 +92,7 @@ class ArmSubsystem(commands2.SubsystemBase):
         """
 
         self.elevPID.setReference(extension, CANSparkMax.ControlType.kPosition)
-        # self.laddPID.setReference(angle, CANSparkMax.ControlType.kPosition)
+        self.laddPID.setReference(angle, CANSparkMax.ControlType.kPosition)
 
     def extension(self, speed):
         """
@@ -117,5 +117,4 @@ class ArmSubsystem(commands2.SubsystemBase):
         if self.ledBackwardLimit.get():
             self.ladderEncoder.setPosition(0)
 
-        # print(self.elevatorEncoder.getPosition())
-        print(self.elevPID.getD())
+        # print(self.ladderEncoder.getPosition())

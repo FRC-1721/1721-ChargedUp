@@ -93,7 +93,7 @@ class RobotContainer:
         self.armSubsystem.setDefaultCommand(
             ManualArm(
                 self.armSubsystem,
-                lambda: self.operatorController.getRawAxis(
+                lambda: -self.operatorController.getRawAxis(
                     1,
                 ),
                 lambda: self.operatorController.getRawAxis(
@@ -162,6 +162,24 @@ class RobotContainer:
             self.operatorController,
             self.operatorConsts["Clamp"],
         ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=1))
+
+        # This is temporary low goal!
+        commands2.button.JoystickButton(
+            self.operatorController,
+            1,
+        ).toggleOnTrue(
+            ManualArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+                45,  # Random!
+                182,  # Random too!
+            )
+        )
 
     def configureAutonomous(self):
         # Create a sendable chooser
