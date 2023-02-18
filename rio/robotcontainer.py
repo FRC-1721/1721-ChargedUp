@@ -71,7 +71,7 @@ class RobotContainer:
         )
 
         # Configure the button bindings
-        # self.configureButtonBindings()
+        self.configureButtonBindings()
 
         # Setup all autonomous routines
         self.configureAutonomous()
@@ -156,12 +156,12 @@ class RobotContainer:
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Unclamp"],
-        ).whileHeld(ManualGripper(self.clawSubsystem, grabForce=-1))
+        ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=-1))
 
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Clamp"],
-        ).whileHeld(ManualGripper(self.clawSubsystem, grabForce=1))
+        ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=1))
 
     def configureAutonomous(self):
         # Create a sendable chooser
