@@ -80,15 +80,25 @@ class ArmSubsystem(commands2.SubsystemBase):
             SparkMaxLimitSwitch.Type.kNormallyOpen
         )
 
+        # Limits
         self.spoolLimit.enableLimitSwitch(True)
         self.ledForwardLimit.enableLimitSwitch(True)
         self.ledBackwardLimit.enableLimitSwitch(True)
 
-    def setCurrentlimit(self, current):
-        self.backMotor.setSmartCurrentLimit(current)
+        # Current limits
+        self.backMotor.setSmartCurrentLimit(8)
 
     def extension(self, speed):
+        """
+        This is the spool motor, it controls
+        how much rope we let out.
+        """
         self.backMotor.set(speed)
 
     def ascent(self, speed):
+        """
+        This is the lead screw motor, it controls
+        where on the screw the fulcrum of the lift
+        is
+        """
         self.middleMotor.set(speed)

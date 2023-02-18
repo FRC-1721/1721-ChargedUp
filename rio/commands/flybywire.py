@@ -7,7 +7,8 @@ class FlyByWire(commands2.CommandBase):
     """
     FlyByWire uses pure joystick inputs
     to direct the robot. Tradionally, this
-    is the most direct way to command the robot."""
+    is the most direct way to command the robot.
+    """
 
     def __init__(
         self,

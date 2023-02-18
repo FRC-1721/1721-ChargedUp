@@ -24,11 +24,8 @@ from commands.flybywire import FlyByWire
 from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
-from commands.clamp import Clamp
-from commands.extend import Extend
-from commands.retract import Retract
-from commands.up import Up
-from commands.down import Down
+from commands.manualGripper import ManualGripper
+from commands.manualArm import ManualArm
 from commands.holdPosition import HoldPosition
 
 
@@ -97,8 +94,18 @@ class RobotContainer:
             )
         )
 
-        # self.sd.putNumber("someNumber", 1234)
-        # print(self.FMSinfo.getNumber("StationNumber", -1))
+        # The default command for the arm Subsystem is manual control
+        self.armSubsystem.setDefaultCommand(
+            ManualArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    0,
+                ),
+            )
+        )
 
     def configureButtonBindings(self):
         """
@@ -119,92 +126,47 @@ class RobotContainer:
             )
         )
 
-        commands2.button.JoystickButton(self.driverController, 1).onTrue(
-            commands2.InstantCommand(
-                (lambda: self.robotDrive.resetEncoders()), [self.robotDrive]
-            )
-        )
-
-        commands2.button.JoystickButton(
-            self.driverController, self.driverConsts["DiffLock"]
-        ).whileTrue(HoldPosition(self.robotDrive))
-
-        # commands2.button.JoystickButton(
-        #     self.driverController, self.driverConsts["DiffLock"]
-        # ).whileTrue(
-        #     commands2.PIDCommand(
-        #         wpimath.controller.PIDController(
-        #             self.pidConsts["drive"]["kStabilizationP"],
-        #             self.pidConsts["drive"]["kStabilizationI"],
-        #             self.pidConsts["drive"]["kStabilizationD"],
-        #         ),
-        #         # Close the loop on the turn rate
-        #         self.robotDrive.getTurnRate,
-        #         # Setpoint is 0
-        #         0,
-        #         # Pipe the output to the turning controls
-        #         lambda output: self.robotDrive.arcadeDrive(
-        #             -self.driverConsts["ForwardAxis"],
-        #             output,
-        #         ),
-        #         # Require the robot drive
-        #         [self.robotDrive],
+        # commands2.button.JoystickButton(self.driverController, 1).onTrue(
+        #     commands2.InstantCommand(
+        #         (lambda: self.robotDrive.resetEncoders()), [self.robotDrive]
         #     )
         # )
 
-        # Turn to 90 degrees, with a 5 second timeout
-        commands2.button.JoystickButton(
-            self.driverController,
-            self.driverConsts["Turn90"],
-        ).onTrue(
-            TurnToAngle(
-                90,
-                self.robotDrive,
-            ).withTimeout(5)
-        )
+        # commands2.button.JoystickButton(
+        #     self.driverController, self.driverConsts["DiffLock"]
+        # ).whileTrue(HoldPosition(self.robotDrive))
 
-        # Turn to -90 degrees with a profile, with a 5 second timeout
-        commands2.button.JoystickButton(
-            self.driverController,
-            self.driverConsts["TurnAnti90"],
-        ).onTrue(
-            TurnToAngleProfiled(
-                -90,
-                self.robotDrive,
-            ).withTimeout(5)
-        )
+        # # Turn to 90 degrees, with a 5 second timeout
+        # commands2.button.JoystickButton(
+        #     self.driverController,
+        #     self.driverConsts["Turn90"],
+        # ).onTrue(
+        #     TurnToAngle(
+        #         90,
+        #         self.robotDrive,
+        #     ).withTimeout(5)
+        # )
 
-        self.armSubsystem.setDefaultCommand(Retract(self.armSubsystem, -0.01))
-
-        commands2.button.JoystickButton(
-            self.operatorController,
-            self.operatorConsts["Up"],
-        ).whileHeld(Extend(self.armSubsystem).withTimeout(5))
-
-        commands2.button.JoystickButton(
-            self.operatorController,
-            self.operatorConsts["Down"],
-        ).whileHeld(Retract(self.armSubsystem).withTimeout(5))
-
-        commands2.button.JoystickButton(
-            self.operatorController,
-            self.operatorConsts["Extend"],
-        ).whileHeld(Up(self.armSubsystem).withTimeout(5))
-
-        commands2.button.JoystickButton(
-            self.operatorController,
-            self.operatorConsts["Retract"],
-        ).whileHeld(Down(self.armSubsystem).withTimeout(5))
+        # # Turn to -90 degrees with a profile, with a 5 second timeout
+        # commands2.button.JoystickButton(
+        #     self.driverController,
+        #     self.driverConsts["TurnAnti90"],
+        # ).onTrue(
+        #     TurnToAngleProfiled(
+        #         -90,
+        #         self.robotDrive,
+        #     ).withTimeout(5)
+        # )
 
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Unclamp"],
-        ).whileHeld(Clamp(self.clawSubsystem, grabSpeed=-1).withTimeout(5))
+        ).whileHeld(ManualGripper(self.clawSubsystem, grabForce=-1))
 
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Clamp"],
-        ).whileHeld(Clamp(self.clawSubsystem, grabSpeed=1).withTimeout(5))
+        ).whileHeld(ManualGripper(self.clawSubsystem, grabForce=1))
 
     def configureAutonomous(self):
         # Create a sendable chooser
