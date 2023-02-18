@@ -22,6 +22,7 @@ from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.manualGripper import ManualGripper
 from commands.manualArm import ManualArm
+from commands.findZero import FindZero
 
 
 # Autonomous
@@ -121,38 +122,6 @@ class RobotContainer:
             )
         )
 
-        # commands2.button.JoystickButton(self.driverController, 1).onTrue(
-        #     commands2.InstantCommand(
-        #         (lambda: self.robotDrive.resetEncoders()), [self.robotDrive]
-        #     )
-        # )
-
-        # commands2.button.JoystickButton(
-        #     self.driverController, self.driverConsts["DiffLock"]
-        # ).whileTrue(HoldPosition(self.robotDrive))
-
-        # # Turn to 90 degrees, with a 5 second timeout
-        # commands2.button.JoystickButton(
-        #     self.driverController,
-        #     self.driverConsts["Turn90"],
-        # ).onTrue(
-        #     TurnToAngle(
-        #         90,
-        #         self.robotDrive,
-        #     ).withTimeout(5)
-        # )
-
-        # # Turn to -90 degrees with a profile, with a 5 second timeout
-        # commands2.button.JoystickButton(
-        #     self.driverController,
-        #     self.driverConsts["TurnAnti90"],
-        # ).onTrue(
-        #     TurnToAngleProfiled(
-        #         -90,
-        #         self.robotDrive,
-        #     ).withTimeout(5)
-        # )
-
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Unclamp"],
@@ -163,10 +132,15 @@ class RobotContainer:
             self.operatorConsts["Clamp"],
         ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=1))
 
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["FindZero"],
+        ).whileTrue(FindZero(self.armSubsystem))
+
         # This is temporary low goal!
         commands2.button.JoystickButton(
             self.operatorController,
-            1,
+            self.operatorConsts["LowGoal"],
         ).toggleOnTrue(
             ManualArm(
                 self.armSubsystem,
@@ -177,7 +151,7 @@ class RobotContainer:
                     5,
                 ),
                 45,  # Random!
-                182,  # Random too!
+                170,  # Just as random!
             )
         )
 

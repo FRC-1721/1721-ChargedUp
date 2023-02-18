@@ -20,10 +20,10 @@ main mode:
   operator: # using an "x-box" controller
     controller_port: 1
 
-    # Buttons
+    # Hold Buttons
     Unclamp: 6
     Clamp: 5
-    Extend: 4
-    Retract: 2
-    Up: 3
-    Down: 1
+    FindZero: 8
+
+    # Presets
+    LowGoal: 1
