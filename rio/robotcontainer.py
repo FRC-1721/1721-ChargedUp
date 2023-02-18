@@ -71,7 +71,7 @@ class RobotContainer:
         )
 
         # Configure the button bindings
-        self.configureButtonBindings()
+        # self.configureButtonBindings()
 
         # Setup all autonomous routines
         self.configureAutonomous()
