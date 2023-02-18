@@ -76,7 +76,7 @@ class RobotContainer:
         # Setup all autonomous routines
         self.configureAutonomous()
 
-        # Configure default commands
+        # Default drive command
         self.robotDrive.setDefaultCommand(
             FlyByWire(
                 self.robotDrive,
