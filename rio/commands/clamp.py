@@ -17,7 +17,7 @@ class Clamp(commands2.CommandBase):
         self.addRequirements([self.clawSusystem])
 
         # TODO Change me
-        self.clawSusystem.setCurrentlimit(3)
+        self.clawSusystem.setCurrentlimit(5)
 
     def initialize(self) -> None:
         self.clawSusystem.grab(self.grabSpeed)
