@@ -4,9 +4,9 @@ import commands2
 from subsystems.armsubsystem import ArmSubsystem
 
 
-class ManualArm(commands2.CommandBase):
+class PresetArm(commands2.CommandBase):
     """
-    ManualArm controls the arm using manual human
+    PresetArm controls the arm using manual human
     controls only.
     """
 
@@ -23,6 +23,8 @@ class ManualArm(commands2.CommandBase):
             [],
             float,
         ],
+        targetElevator=0,
+        targetLadder=261,
     ) -> None:
         super().__init__()
 
@@ -33,24 +35,21 @@ class ManualArm(commands2.CommandBase):
         self.elevatorFineControl = elevFine
         self.ladderFineControl = laddFine
 
+        # General target
+        self.targElev = targetElevator
+        self.targLadd = targetLadder
+
         # Require exclusive control of this subsystem
         self.addRequirements([self.armSusystem])
 
     def execute(self) -> None:
         # Command both motors
-        self.armSusystem.extension(
-            self.deadZone(self.elevatorFineControl(), 0.1)
-        )  # For the spool
-
-        self.armSusystem.ascent(
-            self.deadZone(self.ladderFineControl(), 0.1)
-        )  # For the lead screw
-
-    def deadZone(self, input, zone):
-        if abs(input) > zone:
-            return input
-        else:
-            return 0
+        # self.armSusystem.extension(self.elevatorPower())  # For the spool
+        # self.armSusystem.ascent(self.elevatorFineControl())  # For the lead screw
+        self.armSusystem.gotoPosition(
+            self.targElev + (self.elevatorFineControl() * 15),
+            self.targLadd + (self.ladderFineControl() * 25),
+        )
 
     def end(self, interrupted: bool) -> None:
         self.armSusystem.extension(0)

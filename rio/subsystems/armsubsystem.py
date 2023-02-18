@@ -51,6 +51,9 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.ladderEncoder.setPositionConversionFactor(
             self.ladderConst["ConversionFactor"]
         )
+        # If we think we're perfectly at 0, we're prolly not.
+        if self.ladderEncoder.getPosition() == 0.0:
+            self.ladderEncoder.setPosition(261)
 
         # PID Values
         self.elevPID = self.elevatorMotor.getPIDController()

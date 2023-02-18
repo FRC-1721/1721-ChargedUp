@@ -25,5 +25,7 @@ main mode:
     Clamp: 5
     FindZero: 8
 
-    # Presets
+    # Presets/Modes
     LowGoal: 1
+    HighGoal: 4
+    ManualMode: 7

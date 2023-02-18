@@ -21,6 +21,7 @@ from commands.flybywire import FlyByWire
 from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.manualGripper import ManualGripper
+from commands.presetArm import PresetArm
 from commands.manualArm import ManualArm
 from commands.findZero import FindZero
 
@@ -92,7 +93,7 @@ class RobotContainer:
 
         # The default command for the arm Subsystem is manual control
         self.armSubsystem.setDefaultCommand(
-            ManualArm(
+            PresetArm(
                 self.armSubsystem,
                 lambda: -self.operatorController.getRawAxis(
                     1,
@@ -142,7 +143,7 @@ class RobotContainer:
             self.operatorController,
             self.operatorConsts["LowGoal"],
         ).toggleOnTrue(
-            ManualArm(
+            PresetArm(
                 self.armSubsystem,
                 lambda: -self.operatorController.getRawAxis(
                     1,
@@ -151,7 +152,41 @@ class RobotContainer:
                     5,
                 ),
                 45,  # Random!
-                170,  # Just as random!
+                150,  # Just as random!
+            )
+        )
+
+        # High Goal!
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["HighGoal"],
+        ).toggleOnTrue(
+            PresetArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+                94,  # Random!
+                135,  # Just as random!
+            )
+        )
+
+        # This is caleb's fully manual mode
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["ManualMode"],
+        ).toggleOnTrue(
+            ManualArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
             )
         )
 

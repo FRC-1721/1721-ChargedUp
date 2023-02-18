@@ -8,7 +8,7 @@ from subsystems.armsubsystem import ArmSubsystem
 
 # commands and autonomous
 from autonomous.crossLinePath import CrossLinePath
-from commands.manualArm import ManualArm
+from commands.presetArm import PresetArm
 
 
 class CurvyAuto(commands2.SequentialCommandGroup):
@@ -23,8 +23,8 @@ class CurvyAuto(commands2.SequentialCommandGroup):
         # self.addRequirements([armSubsystem])
 
         super().__init__(
-            ManualArm(armSubsystem, elevFine=1, laddFine=0),
+            PresetArm(armSubsystem, elevFine=1, laddFine=0),
             WaitCommand(1),
-            ManualArm(armSubsystem, elevFine=0, laddFine=-0.4),
+            PresetArm(armSubsystem, elevFine=0, laddFine=-0.4),
             WaitCommand(1),
         )

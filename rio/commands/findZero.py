@@ -19,9 +19,11 @@ class FindZero(commands2.CommandBase):
 
         self.armSubsystem = armSubsystem
 
+        self.addRequirements([self.armSubsystem])
+
     def execute(self) -> None:
-        self.armSubsystem.ascent(-0.12)
-        self.armSubsystem.extension(-0.12)
+        self.armSubsystem.ascent(-0.2)
+        self.armSubsystem.extension(-0.2)
 
     def end(self, interrupted: bool) -> None:
         pass
