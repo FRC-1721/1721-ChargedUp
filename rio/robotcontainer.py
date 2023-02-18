@@ -1,9 +1,6 @@
 # FRC 1721
 
 import wpilib
-import wpimath.controller
-
-import logging
 
 import commands2
 import commands2.cmd
@@ -23,10 +20,8 @@ from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
 from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
-from commands.flybywire import FlyByWire
 from commands.manualGripper import ManualGripper
 from commands.manualArm import ManualArm
-from commands.holdPosition import HoldPosition
 
 
 # Autonomous
