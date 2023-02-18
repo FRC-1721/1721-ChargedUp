@@ -44,7 +44,7 @@ Config Files
 ------------
 
 .. literalinclude:: ../../rio/constants/robot_hardware.yaml
-  :lines: 6-24
+  :lines: 6-30
   :language: YAML
 
 .. literalinclude:: ../../rio/constants/robot_pid.yaml
