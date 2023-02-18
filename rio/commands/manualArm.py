@@ -31,15 +31,16 @@ class ManualArm(commands2.CommandBase):
 
         # Requested powers
         self.elevatorPower = elevatorPower
-        self.ladderPower = elevatorPower
+        self.ladderPower = ladderPower
 
         # Require exclusive control of this subsystem
         self.addRequirements([self.armSusystem])
 
     def execute(self) -> None:
         # Command both motors
-        self.armSusystem.extension(self.elevatorPower)  # For the spool
-        self.armSusystem.ascent(self.ladderPower)  # For the lead screw
+        # self.armSusystem.extension(self.elevatorPower())  # For the spool
+        self.armSusystem.ascent(self.ladderPower())  # For the lead screw
+        self.armSusystem.gotoPosition(1 + self.elevatorPower(), 0)
 
     def end(self, interrupted: bool) -> None:
         self.armSusystem.extension(0)

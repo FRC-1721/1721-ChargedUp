@@ -20,7 +20,7 @@ class CurvyAuto(commands2.SequentialCommandGroup):
         cryo
         """
 
-        self.addRequirements([armSubsystem])
+        # self.addRequirements([armSubsystem])
 
         super().__init__(
             ManualArm(armSubsystem, elevatorPower=1, ladderPower=0),

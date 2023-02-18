@@ -17,7 +17,6 @@ from constants.constants import getConstants
 
 # Vendor Libs
 from rev import CANSparkMax, CANSparkMaxLowLevel, RelativeEncoder
-from ctre import Pigeon2
 from wpimath import geometry
 from navx import AHRS
 
