@@ -46,10 +46,15 @@ header {
         align-items: center;
     }
 
-    img {
+    img, a {
         height: 100%;
         mix-blend-mode: multiply;
         margin-right: 0.5rem;
+    }
+
+    a {
+        margin: 0;
+        cursor: default;
     }
 }
 
@@ -209,7 +214,7 @@ main {
 }
 
 .temps {
-    grid-area: 4 / 1 / 5 / 3;
+    grid-area: 4 / 1 / 5 / 4;
     display: flex;
     flex-direction: row;
     text-align: center;
@@ -243,13 +248,6 @@ main {
     border-radius: 0 .5rem .5rem 0;
 }
 
-.cameras {
-    grid-area: -2 / -4 / -1 / -2;
-    display: grid;
-    grid: 240 137 / 320 320;
-    grid-column-gap: 0.3rem;
-}
-
 .diff {
     position: absolute;
     background: #802;
@@ -272,24 +270,23 @@ main {
     }
 }
 
+#L1, #L2, #R1, #R2 {
+    z-index: 1000;
+}
+
+.cameras {
+    grid-area: -2 / -3 / -1 / -2;
+    display: grid;
+    grid: 240 137 / 320 320;
+    grid-column-gap: 0.3rem;
+}
+
 #cam1 {
     grid-area: 1 / 1 / 1 / 2;
 }
 
 .cam1-text {
     grid-area: 2 / 1 / 2 / 2;
-    font-size: 2rem;
-    display: inline;
-    align-self: center;
-    text-align: center;
-}
-
-#cam2 {
-    grid-area: 1 / 2 / 1 / 2;
-}
-
-.cam2-text {
-    grid-area: 2 / 2 / 2 / 3;
     font-size: 2rem;
     display: inline;
     align-self: center;
