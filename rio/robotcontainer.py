@@ -93,7 +93,7 @@ class RobotContainer:
         self.armSubsystem.setDefaultCommand(
             ManualArm(
                 self.armSubsystem,
-                lambda: -self.operatorController.getRawAxis(
+                lambda: self.operatorController.getRawAxis(
                     1,
                 ),
                 lambda: self.operatorController.getRawAxis(
@@ -188,9 +188,6 @@ class RobotContainer:
         for key in data:
             key_entry = self.build_table.getEntry(str(key))
             key_entry.setString(str(data[key]))
-
-        self.ntmov = self.sd.getSubTable("Test")
-        self.ntmov.putNumber("test", 2)
 
     def getAutonomousCommand(self) -> commands2.Command:
         """
