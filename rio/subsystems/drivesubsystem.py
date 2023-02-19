@@ -11,6 +11,7 @@ from wpimath.geometry import Pose2d, Rotation2d
 from wpimath.kinematics import DifferentialDriveOdometry, DifferentialDriveWheelSpeeds
 from ntcore import NetworkTableInstance
 from wpilib import DriverStation
+from wpilib import Field2d
 
 # Constants
 from constants.constants import getConstants
@@ -108,6 +109,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.ahrs = AHRS.create_spi()  # creates navx object
 
         # Robot odometry
+        self.field = Field2d()
         self.odometry = DifferentialDriveOdometry(
             self.ahrs.getRotation2d(),
             self.leftEncoder.getPosition(),
@@ -239,25 +241,25 @@ class DriveSubsystem(commands2.SubsystemBase):
         Called periodically when it can be called. Updates the robot's
         odometry with sensor data.
         """
+
         self.odometry.update(
             self.ahrs.getRotation2d(),
             self.leftEncoder.getPosition(),
             -self.rightEncoder.getPosition(),
         )
 
+        # Populates match time
         self.sd.putNumber("Audio/MatchTime", int(wpilib.DriverStation.getMatchTime()))
 
-        self.sd.putNumber("Pose/Pose x", self.getPose().x)
-        self.sd.putNumber("Pose/Pose y", self.getPose().y)
-        self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())
+        # Updates the pose on the field (networktables)
+        self.field.setRobotPose(self.odometry.getPose())
 
+        # Extra vis
         self.sd.putNumber("Pose/DiffL", self.getWheelSpeeds().left)
         self.sd.putNumber("Pose/DiffR", self.getWheelSpeeds().right)
 
+        # Thermals!
         self.sd.putNumber("Thermals/L1", self.leftMotor1.getMotorTemperature())
         self.sd.putNumber("Thermals/L2", self.leftMotor2.getMotorTemperature())
         self.sd.putNumber("Thermals/R1", self.rightMotor1.getMotorTemperature())
         self.sd.putNumber("Thermals/R2", self.rightMotor2.getMotorTemperature())
-        self.sd.putNumber("Pose/Pose x", self.getPose().x)
-        self.sd.putNumber("Pose/Pose y", self.getPose().y)
-        self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())
