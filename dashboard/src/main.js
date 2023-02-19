@@ -234,19 +234,19 @@ function updateColors() {
         highlightColor("#dash-hash", "#fabd2f");
     }
 
-	
-	// Custom formatting
-	highlightColor(/-dirty$/, "#git-hash-area", 'linear-gradient(to right, #504945, #cc241d)');
 
-	// Programmers
-	highlightColor(/SimUser$/, "#builder-area", 'linear-gradient(to right, #504945, #d3869b)'); // First one is fine to overwrite.
-	highlightColor(/joe/, "#builder-area", 'linear-gradient(to right, #504945, #831598)', false);
-	highlightColor(/dylan/, "#builder-area", 'linear-gradient(to right, #504945, #fe8019)', false);
+    // Custom formatting
+    highlightColor(/-dirty$/, "#git-hash-area", 'linear-gradient(to right, #504945, #cc241d)');
+
+    // Programmers
+    highlightColor(/SimUser$/, "#builder-area", 'linear-gradient(to right, #504945, #d3869b)'); // First one is fine to overwrite.
+    highlightColor(/joe/, "#builder-area", 'linear-gradient(to right, #504945, #831598)', false);
+    highlightColor(/dylan/, "#builder-area", 'linear-gradient(to right, #504945, #fe8019)', false);
 
 
-	// Branches
-	highlightColor(/event/, "#git-branch-area", 'linear-gradient(to right, #504945, #689d6a)');
-	highlightColor(/sim/, "#git-branch-area", 'linear-gradient(to right, #504945, #cc241d)', false);
+    // Branches
+    highlightColor(/event/, "#git-branch-area", 'linear-gradient(to right, #504945, #689d6a)');
+    highlightColor(/sim/, "#git-branch-area", 'linear-gradient(to right, #504945, #cc241d)', false);
 
 }
 
@@ -259,7 +259,7 @@ function getRandomInt(min, max) {
 // img -> background image
 // joe, dvd -> floating distraction images
 let img, joe, dvd;
-let posX, posY, posT;
+let posX, posY, posT, robotPos;
 
 // floating distraction images position data
 //               moving right (bool), moving down (bool) , posX                , posY
@@ -295,16 +295,16 @@ function draw() {
     background(220);
     image(img, 0, 0);
 
-    posX = NetworkTables.getValue("/SmartDashboard/Pose/Pose x");
-    posY = NetworkTables.getValue("/SmartDashboard/Pose/Pose y");
-    posT = NetworkTables.getValue("/SmartDashboard/Pose/Pose t");
+    robotPos = NetworkTables.getValue("/SmartDashboard/Field/Robot");
+    posX = robotPos[0];
+    posY = robotPos[1];
+    posT = robotPos[2];
 
     rectMode(CENTER);
     push();
     translate(posX * 0.46977025392987, 377 - posY * 0.46977025392987);
     translate(posX * 98.046638401, -posY * 98.046638401);
-    rotate(radians(180 + posT));
-    rotate(-posT);
+    rotate(degrees(posT));
     rect(0, 0, 24, 34);
     fill(color("#504945"));
     rect(0, 0, 34, 24);
