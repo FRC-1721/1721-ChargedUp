@@ -15,6 +15,7 @@ $(function () {
     // sets a function that will be called when any NetworkTables key/value changes
     NetworkTables.addGlobalListener(onValueChanged, true);
 
+    /* // Doesn't work, using img, src=<ip>
     loadCameraOnConnect({
         container: "#cam1", // id of camera div
         proto: null, // url scheme
@@ -29,21 +30,7 @@ $(function () {
             height: 240,
         },
     });
-
-    loadCameraOnConnect({
-        container: "#cam2",
-        proto: null,
-        host: "10.17.21.13",
-        port: 5800,
-        image_url: "/",
-        data_url: "/",
-        wait_img: require("./assets/no_signal.png"),
-        error_img: require("./assets/error.png"),
-        attrs: {
-            width: 320,
-            height: 240,
-        },
-    });
+    */
 });
 
 $(document).on("input", ".dub-slider", function () {
@@ -143,7 +130,8 @@ function onValueChanged(key, value, isNew) {
     }
 
     if (key.includes("Thermals/")) {
-        $("#" + /[^/]*$/.exec(key)[0]).html(/[^/]*$/.exec(key)[0] + " Temp<br>" + value)
+        $("#" + /[^/]*$/.exec(key)[0]).html(/[^/]*$/.exec(key)[0] + " Temp<br>" + value);
+        console.log("#" + /[^/]*$/.exec(key)[0], /[^/]*$/.exec(key)[0] + " Temp<br>" + value);
     }
 
     $("#aut-sel > button").each(function () {
@@ -164,20 +152,20 @@ function onValueChanged(key, value, isNew) {
     if (key.includes("Pose/Diff")) {
         if (key.includes("DiffL")) {
             if (value >= 0) {
-                $(".diffL.diffF").css("height", Math.abs(value * 12.5) + "%")
+                $(".diffL.diffF").css("height", Math.abs(value / 36) + "%")
                 $(".diffL.diffB").css("height", "0")
             } else {
                 $(".diffL.diffF").css("height", "0")
-                $(".diffL.diffB").css("height", Math.abs(value * 12.5) + "%")
+                $(".diffL.diffB").css("height", Math.abs(value / 36) + "%")
             }
         }
         if (key.includes("DiffR")) {
             if (value >= 0) {
-                $(".diffR.diffF").css("height", Math.abs(value * 12.5) + "%")
+                $(".diffR.diffF").css("height", Math.abs(value / 36) + "%")
                 $(".diffR.diffB").css("height", "0")
             } else {
                 $(".diffR.diffF").css("height", "0")
-                $(".diffR.diffB").css("height", Math.abs(value * 12.5) + "%")
+                $(".diffR.diffB").css("height", Math.abs(value / 36) + "%")
             }
         }
     }

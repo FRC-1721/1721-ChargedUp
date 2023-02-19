@@ -7,6 +7,7 @@ from subsystems.armsubsystem import ArmSubsystem
 class Retract(commands2.CommandBase):
     def __init__(self, armSubsystem: ArmSubsystem, power=-1) -> None:
         super().__init__()
+        """This pulls the spool in"""
 
         self.armSusystem = armSubsystem
         self.power = power
@@ -15,7 +16,7 @@ class Retract(commands2.CommandBase):
         self.addRequirements([self.armSusystem])
 
         # TODO Change me
-        self.armSusystem.setCurrentlimit(1)
+        self.armSusystem.setCurrentlimit(8)
 
     def execute(self) -> None:
         self.armSusystem.extension(self.power)

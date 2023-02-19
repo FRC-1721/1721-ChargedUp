@@ -4,7 +4,7 @@
 
 main mode:
   driver: # using a stick controller
-    controller_port: 0 # What usb port the driver controller is on
+    controller_port: 1 # What usb port the driver controller is on
 
     # Axis
     ForwardAxis: 1
@@ -18,11 +18,11 @@ main mode:
     grab: 5
 
   operator: # using an "x-box" controller
-    controller_port: 1
+    controller_port: 0
 
     # Buttons
-    Unclamp: 5
-    Clamp: 6
+    Unclamp: 6
+    Clamp: 5
     Extend: 4
     Retract: 2
     Up: 3

@@ -3,23 +3,29 @@ import commands2
 
 from commands2 import WaitCommand
 
+# sub syss
+from subsystems.armsubsystem import ArmSubsystem
+
 # commands and autonomous
 from autonomous.crossLinePath import CrossLinePath
 from commands.extend import Extend
-from commands.retract import Retract
-from commands.clamp import Clamp
+from commands.down import Down
 
 
 class CurvyAuto(commands2.SequentialCommandGroup):
-    def __init_(
-        self,
-    ) -> None:
+    def __init__(self, armSubsystem: ArmSubsystem) -> None:
         """
-        This is the auto that leaves the comunity
-        and goes back onto the switch
+        extendo
+        downo
+        failo
+        cryo
         """
+
+        self.addRequirements([armSubsystem])
+
         super().__init__(
-            Extend(),
-            WaitCommand(),
-            Clamp(-1),
+            Extend(armSubsystem),
+            WaitCommand(1),
+            Down(armSubsystem),
+            WaitCommand(1),
         )

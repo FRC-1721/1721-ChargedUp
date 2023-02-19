@@ -7,6 +7,7 @@ from subsystems.armsubsystem import ArmSubsystem
 class Extend(commands2.CommandBase):
     def __init__(self, armSubsystem: ArmSubsystem) -> None:
         super().__init__()
+        """Pushes the arm back out"""
 
         self.armSusystem = armSubsystem
 
@@ -14,10 +15,10 @@ class Extend(commands2.CommandBase):
         self.addRequirements([self.armSusystem])
 
         # TODO Change me
-        self.armSusystem.setCurrentlimit(1)
+        self.armSusystem.setCurrentlimit(20)
 
     def initialize(self) -> None:
-        self.armSusystem.extension(1)  # this is required otherwise it breaks everything
+        self.armSusystem.extension(1)
 
     def end(self, interrupted: bool) -> None:
         self.armSusystem.extension(0)
