@@ -12,3 +12,4 @@ robotpy-hal
 robotpy-rev
 robotpy-navx
 wpilib
+robotpy.pathplannerlib

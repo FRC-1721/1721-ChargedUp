@@ -2,9 +2,9 @@
 
 ## Getting Started
 
- - Make sure you have sed installed
- - Make sure Robot Simulation is running
- - Install npm
+-   Make sure you have sed installed
+-   Make sure Robot Simulation is running
+-   Install npm
 
 Install deps
 
@@ -19,6 +19,12 @@ npm run build
 
 # Or..
 make build
+```
+
+Build automatically on file changed in src/ (requires 'entr', `paru -S entr` `pamac install entr`)
+
+```
+make dev
 ```
 
 Run webpage

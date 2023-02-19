@@ -7,6 +7,8 @@ import commands2
 import math
 import logging
 
+from wpimath.geometry import Pose2d, Rotation2d
+from wpimath.kinematics import DifferentialDriveOdometry, DifferentialDriveWheelSpeeds
 from ntcore import NetworkTableInstance
 from wpilib import DriverStation
 
@@ -14,7 +16,7 @@ from wpilib import DriverStation
 from constants.constants import getConstants
 
 # Vendor Libs
-from rev import CANSparkMax, CANSparkMaxLowLevel
+from rev import CANSparkMax, CANSparkMaxLowLevel, RelativeEncoder
 from ctre import Pigeon2
 from wpimath import geometry
 from navx import AHRS
@@ -25,6 +27,10 @@ class DriveSubsystem(commands2.SubsystemBase):
         """Creates a new DriveSubsystem"""
         super().__init__()
         # Configure networktables
+        self.nt = NetworkTableInstance.getDefault()
+        self.sd = self.nt.getTable("SmartDashboard")
+
+        # network tables
         self.nt = NetworkTableInstance.getDefault()
         self.sd = self.nt.getTable("SmartDashboard")
 
@@ -68,6 +74,7 @@ class DriveSubsystem(commands2.SubsystemBase):
             self.rightMotor2,
         )
         self.rightMotors.setInverted(self.rightCosnt["Inverted"])
+        # self.rightMotors.setInverted(False)
 
         # This fixes a bug in rev firmware involving flash settings.
         self.leftMotor1.setInverted(False)
@@ -84,17 +91,35 @@ class DriveSubsystem(commands2.SubsystemBase):
         # The right-side drive encoder
         self.rightEncoder = self.rightMotor1.getEncoder()
 
+        # PID Controllers
+        self.lPID = self.leftMotor1.getPIDController()
+        self.rPID = self.rightMotor1.getPIDController()
+
         # Setup the conversion factors for the motor controllers
         # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
         # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
-        encoderDistPerP = (
-            self.driveConst["kWheelDiameterInches"] * math.pi
-        ) / self.driveConst["kEncoderCPR"]
+        self.leftEncoder.setPositionConversionFactor(
+            1 / self.driveConst["encoderConversionFactor"]
+        )
+        self.rightEncoder.setPositionConversionFactor(
+            1 / self.driveConst["encoderConversionFactor"]
+        )
 
-        self.leftEncoder.setPositionConversionFactor(encoderDistPerP)
-        self.rightEncoder.setPositionConversionFactor(encoderDistPerP)
-
+        # Gyro
         self.ahrs = AHRS.create_spi()  # creates navx object
+
+        # Robot odometry
+        self.odometry = DifferentialDriveOdometry(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            self.rightEncoder.getPosition(),
+        )
+
+        # Enable braking
+        self.rightMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.rightMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.leftMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.leftMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake)
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -105,10 +130,46 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         self.drive.arcadeDrive(fwd, rot)
 
+    def tankDriveVolts(self, leftVolts, rightVolts):
+        """Control the robot's drivetrain with voltage inputs for each side."""
+        # Set the voltage of the left side.
+        # inverting this delays the KP issue but doesn't fix it
+        self.leftMotors.setVoltage(leftVolts)
+
+        # Set the voltage of the right side.
+        self.rightMotors.setVoltage(rightVolts)
+
+        # print(f"({leftVolts}, {rightVolts})")
+
+        # Resets the timer for this motor's MotorSafety
+        self.drive.feed()
+
+        # Reset the encoders
+        self.resetEncoders()
+
+    def getPose(self):
+        """Returns the current position of the robot using it's odometry."""
+        return self.odometry.getPose()
+
+    def getWheelSpeeds(self):
+        """Return an object which represents the wheel speeds of our drivetrain."""
+        speeds = DifferentialDriveWheelSpeeds(
+            self.leftEncoder.getVelocity(), -self.rightEncoder.getVelocity()
+        )
+        return speeds
+
     def resetEncoders(self):
         """Resets the drive encoders to currently read a position of 0."""
-        self.leftEncoder.reset()
-        self.rightEncoder.reset()
+        self.leftEncoder.setPosition(0)
+        self.rightEncoder.setPosition(0)
+
+        # https://docs.wpilib.org/en/stable/docs/software/kinematics-and-odometry/differential-drive-odometry.html#resetting-the-robot-pose
+        self.odometry.resetPosition(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            -self.rightEncoder.getPosition(),
+            Pose2d(),
+        )
 
     def getAverageEncoderDistance(self):
         """
@@ -117,14 +178,14 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         return (self.leftEncoder.getDistance() + self.rightEncoder.getDistance()) / 2.0
 
-    def getLeftEncoder(self) -> wpilib.Encoder:
+    def getLeftEncoder(self) -> RelativeEncoder:
         """
         Gets the left drive encoder.
         :returns: the left drive encoder
         """
         return self.leftEncoder
 
-    def getRightEncoder(self) -> wpilib.Encoder:
+    def getRightEncoder(self) -> RelativeEncoder:
         """
         Gets the right drive encoder.
 
@@ -163,7 +224,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.imu.GetRawGyro()
+        return self.ahrs.getRate()
 
     def periodic(self) -> None:
         """Runs every loop"""
@@ -172,4 +233,32 @@ class DriveSubsystem(commands2.SubsystemBase):
 
         # See here for turning bug
         # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
-        return self.ahrs.getRawGyroY()
+        return self.ahrs.getRawGyroZ()
+
+    def periodic(self):
+        """
+        Called periodically when it can be called. Updates the robot's
+        odometry with sensor data.
+        """
+        self.odometry.update(
+            self.ahrs.getRotation2d(),
+            self.leftEncoder.getPosition(),
+            -self.rightEncoder.getPosition(),
+        )
+
+        self.sd.putNumber("Audio/MatchTime", int(wpilib.DriverStation.getMatchTime()))
+
+        self.sd.putNumber("Pose/Pose x", self.getPose().x)
+        self.sd.putNumber("Pose/Pose y", self.getPose().y)
+        self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())
+
+        self.sd.putNumber("Pose/DiffL", self.getWheelSpeeds().left)
+        self.sd.putNumber("Pose/DiffR", self.getWheelSpeeds().right)
+
+        self.sd.putNumber("Thermals/L1", self.leftMotor1.getMotorTemperature())
+        self.sd.putNumber("Thermals/L2", self.leftMotor2.getMotorTemperature())
+        self.sd.putNumber("Thermals/R1", self.rightMotor1.getMotorTemperature())
+        self.sd.putNumber("Thermals/R2", self.rightMotor2.getMotorTemperature())
+        self.sd.putNumber("Pose/Pose x", self.getPose().x)
+        self.sd.putNumber("Pose/Pose y", self.getPose().y)
+        self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())

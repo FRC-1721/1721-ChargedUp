@@ -52,7 +52,7 @@ jobs:
           python -m pip install --upgrade pipenv wheel
 
       - id: cache-pipenv
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.local/share/virtualenvs
           key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
@@ -72,7 +72,7 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "@Software Team Simulator failed in {{ EVENT_PAYLOAD.pull_request.html_url }} !"
+          args: "<@Software Team> Simulator failed in {{ EVENT_PAYLOAD.pull_request.html_url }} !"
 
   unit_test:
     name: pyfrc Unit tests
@@ -88,7 +88,7 @@ jobs:
           python -m pip install --upgrade pipenv wheel
 
       - id: cache-pipenv
-        uses: actions/cache@v1
+        uses: actions/cache@v3
         with:
           path: ~/.local/share/virtualenvs
           key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
@@ -108,4 +108,4 @@ jobs:
           DISCORD_WEBHOOK: ${{ secrets.DISCORD_WEBHOOK }}
         uses: Ilshidur/action-discord@master
         with:
-          args: "@Software Team Unit tests failed in {{ EVENT_PAYLOAD.pull_request.html_url }} !"
+          args: "<@Software Team> Unit tests failed in {{ EVENT_PAYLOAD.pull_request.html_url }} !"

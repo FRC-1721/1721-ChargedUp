@@ -34,7 +34,7 @@ class TurnToAngle(commands2.PIDCommand):
             # Set reference to target
             targetAngleDegrees,
             # Pipe output to turn robot
-            lambda output: drive.arcadeDrive(0, output),
+            lambda output: drive.arcadeDrive(0, -output),
             # Require the drive
             [drive],
         )

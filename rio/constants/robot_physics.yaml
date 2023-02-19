@@ -1,0 +1,19 @@
+# Constants for the physics simulation.
+
+kTrackWidth: 0.6096
+kWheelDist: 0.4788
+kGearRatio: 3
+
+# The max velocity and acceleration for our autonomous.
+kMaxSpeedMetersPerSecond: 3
+kMaxAccelerationMetersPerSecondSquared: 0.5
+kMaxVoltage: 10
+
+# sysid filtered results WE NEED TO DO THIS
+kS_linear: 1.0898
+kV_linear: 3.1382
+kA_linear: 1.7421
+
+kS_angular: 2.424
+kV_angular: 3.3557
+kA_angular: 1.461

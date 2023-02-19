@@ -11,6 +11,11 @@ _build
 .pytest_cache
 
 # dashboard build files
+dashboard/www/main.js*
+
+# dashboard packages
+node_modules
+_staging
 dashboard/.cache
 dashboard/.parcel-cache
 dashboard/dist/*
@@ -22,3 +27,8 @@ dashboard/node_modules
 .OutlineViewer/
 *.out
 sysid_data*
+
+# path plannter
+.pathplanner
+generatedCSV
+generatedJSON

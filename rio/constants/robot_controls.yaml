@@ -1,15 +1,29 @@
 # This file defines the input
 # and control scheme of the robot.
+# this is orginized into control modes
 
-driver:
-  controller_port: 0 # What usb port the driver controller is on
+main mode:
+  driver: # using a stick controller
+    controller_port: 1 # What usb port the driver controller is on
 
-  # Axis
-  ForwardAxis: 1
-  SteerAxis: 2
+    # Axis
+    ForwardAxis: 1
+    SteerAxis: 2
 
-  # Buttons
-  HalfSpeedButton: 1
-  DiffLock: 2
-  Turn90: 3
-  TurnAnti90: 4
+    # Buttons
+    HalfSpeedButton: 1
+    DiffLock: 2
+    Turn90: 3
+    TurnAnti90: 4
+    grab: 5
+
+  operator: # using an "x-box" controller
+    controller_port: 0
+
+    # Buttons
+    Unclamp: 6
+    Clamp: 5
+    Extend: 4
+    Retract: 2
+    Up: 3
+    Down: 1
