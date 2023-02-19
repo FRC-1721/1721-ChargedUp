@@ -19,6 +19,9 @@ class CurvyAuto(commands2.SequentialCommandGroup):
         failo
         cryo
         """
+
+        self.addRequirements([armSubsystem])
+
         super().__init__(
             PresetArm(armSubsystem, elevFine=1, laddFine=0),
             WaitCommand(1),

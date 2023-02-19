@@ -28,6 +28,7 @@ from commands.findZero import FindZero
 
 # Autonomous
 from autonomous.curvyAuto import CurvyAuto
+from autonomous.noauto import NoAuto
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -195,8 +196,8 @@ class RobotContainer:
         self.autoChooser = wpilib.SendableChooser()
 
         # Add options for chooser
-        # self.autoChooser.setDefaultOption("Null Auto", NullAuto(self.drivetrain))
-        self.autoChooser.setDefaultOption("Curry Auto", CurvyAuto(self.armSubsystem))
+        self.autoChooser.setDefaultOption("No Auto", NoAuto())
+        self.autoChooser.addOption("Curry Auto", CurvyAuto(self.armSubsystem))
 
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
