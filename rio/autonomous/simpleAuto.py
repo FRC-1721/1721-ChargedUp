@@ -8,8 +8,6 @@ from subsystems.armsubsystem import ArmSubsystem
 
 # commands and autonomous
 from autonomous.crossLinePath import CrossLinePath
-from commands.extend import Extend
-from commands.down import Down
 
 
 from subsystems.drivesubsystem import DriveSubsystem
