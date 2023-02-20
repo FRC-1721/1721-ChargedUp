@@ -9,15 +9,19 @@ Introduction
 
 |outreach|
 
-.. figure:: resources/missing.png
-  :width: 200
-  :alt: The Drivetrain
+.. figure:: resources/drivetrainConstruction.jpg
+  :height: 250
+  :alt: The Drivetrain Under Construction
 
   The drivetrain during construction
 
 The tank drivetrain is tried and tested, even by us! During :ref:`Prototyping` we 
 experimented with our kitbot drivetrain and used it as a solid base to train new members
-with.
+with. 
+
+The drivetrain is a 3x3 tank drive base, with all wheels powered, and the first two being omnidirectional.
+
+The drivetrain's top speed is estimated to be 45kts. Although it has not yet been in wide enough area to confirm.
 
 
 Prototyping
@@ -25,11 +29,13 @@ Prototyping
 
 |outreach|
 
-.. figure:: resources/missing.png
-  :width: 200
-  :alt: The Drivetrain
+.. figure:: resources/kitbot.jpg
+  :height: 250
+  :alt: Kitbot
 
   The kitbot/prototype drivetrain.
+
+In the pre season we prototyped using our kitbot and counterweights.
 
 
 Software

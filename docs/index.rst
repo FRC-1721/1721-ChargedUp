@@ -7,10 +7,11 @@
 
    introduction/introduction
    designReview/design_review
-   developing/developing
    subsystems/drivetrain
+   subsystems/arm
+   usage/operating
    wiring/wiring
    wiring/network
-   usage/operating
+   developing/developing
    checklist/event
    checklist/bom
