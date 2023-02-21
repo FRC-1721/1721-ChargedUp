@@ -227,7 +227,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         return self.ahrs.getRate()
 
-    def motorDrive(self, leftSpeed, rightSpeed):
+    def autoMovement(self, leftSpeed, rightSpeed):
         self.leftMotors.set(leftSpeed)
         self.rightMotors.set(rightSpeed)
 
