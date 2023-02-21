@@ -130,8 +130,9 @@ function onValueChanged(key, value, isNew) {
     }
 
     if (key.includes("Thermals/")) {
-        $("#" + /[^/]*$/.exec(key)[0]).html(/[^/]*$/.exec(key)[0] + " Temp<br>" + value);
-        console.log("#" + /[^/]*$/.exec(key)[0], /[^/]*$/.exec(key)[0] + " Temp<br>" + value);
+        $("#" + /[^/]*$/.exec(key)[0]).html(/[^/]*$/.exec(key)[0] + "<br>" + value);
+        console.log(key)
+        console.log("#" + /[^/]*$/.exec(key)[0], /[^/]*$/.exec(key)[0] +"<br>" + value);
     }
 
     $("#aut-sel > button").each(function () {
