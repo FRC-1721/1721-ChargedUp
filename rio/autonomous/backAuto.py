@@ -12,6 +12,6 @@ class BackAuto(commands2.SequentialCommandGroup):
         """
 
         super().__init__(
-            driveSubsystem.autoMovement(speedLeft, speedRight),
+            # driveSubsystem.autoMovement(speedLeft, speedRight),
             WaitCommand(1),
         )
