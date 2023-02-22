@@ -27,7 +27,7 @@ class limeLightCommands(commands2.CommandBase):
 
     def execute(self) -> None:
         aprilTag = self.getTag()
-        if aprilTag != None:
+        if type(aprilTag) != int:
             distX = aprilTag[0]
             DistY = aprilTag[1]
             rotZ = aprilTag[5]
@@ -40,7 +40,10 @@ class limeLightCommands(commands2.CommandBase):
             elif rotZ != 0:
                 TurnToAngle(rotZ, self.drivesys)  # prbably doesn't work
         else:
-            print("no apriltag found!")
+            if aprilTag == 0:
+                print("no apriltag found!")
+            elif aprilTag == 1:
+                print("error while getting position of aprilTag")
 
     def getTag(self):
         """
@@ -49,9 +52,11 @@ class limeLightCommands(commands2.CommandBase):
         """
 
         tagID = self.ll.getEntry("tid").getDouble(0)
-        tagPos = self.ll.getEntry("targetpose_robotspace").getDoubleArray(0)
+        if tagID != 0:
+            tagPos = self.ll.getEntry("targetpose_robotspace").getDoubleArray(1)
+            return tagPos
         # self.map["fiducials"][tagID - 1]["transform"] = tagPos
-        return tagPos
+        return tagID
 
     def getBotPos(self):
         pos = self.ll.getEntry("botpose_targetspace").getType()
