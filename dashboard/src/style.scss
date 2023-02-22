@@ -95,7 +95,7 @@ main {
     max-height: 100vh;
     display: grid;
     grid: 136px 3rem 1rem 377px / // rows
-        auto auto 503px 503px 777px; // columnss
+        auto auto 503px 377px 777px; // columnss
     grid-gap: 0.3rem;
 }
 
@@ -290,7 +290,7 @@ main {
 .cameras {
     grid-area: -2 / -4 / -1 / -2;
     display: grid;
-    grid: 100% / 50% 50%;
+    grid: auto / 503 auto;
     grid-column-gap: 0.3rem;
 
     img {
