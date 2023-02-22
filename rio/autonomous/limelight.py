@@ -27,33 +27,31 @@ class limeLightCommands(commands2.CommandBase):
 
     def execute(self) -> None:
         aprilTag = self.getTag()
-        distX = aprilTag[0]
-        DistY = aprilTag[1]
-        rotZ = aprilTag[
-            5
-        ]  # only rotatinal axis that matters unless we want apriltag tracking while balancing?
-        if distX > 10:
-            self.drivesys.arcadeDrive(10, 0)  # needs to be adjusted
-        if DistY > 0:
-            self.drivesys.arcadeDrive(10, 20)  # needs to be adjusted
-        elif DistY < 0:
-            self.drivesys.arcadeDrive(10, -20)  # needs to be adjusted
-        elif rotZ != 0:
-            TurnToAngle(rotZ, self.drivesys)  # prbably doesn't work
+        if aprilTag != None:
+            distX = aprilTag[0]
+            DistY = aprilTag[1]
+            rotZ = aprilTag[5]
+            if distX > 10:
+                self.drivesys.arcadeDrive(10, 0)  # needs to be adjusted
+            if DistY > 0:
+                self.drivesys.arcadeDrive(10, 20)  # needs to be adjusted
+            elif DistY < 0:
+                self.drivesys.arcadeDrive(10, -20)  # needs to be adjusted
+            elif rotZ != 0:
+                TurnToAngle(rotZ, self.drivesys)  # prbably doesn't work
+        else:
+            print("no apriltag found!")
 
-    def getTag(self, ID=None):
+    def getTag(self):
         """
         Tries to get any apriltag in view of limelight. returns 0 if no apriltag is found.
         If A Number is passed into ID, The limelight will only look for apriltags of that ID
         """
 
         tagID = self.ll.getEntry("tid").getDouble(0)
-        if (ID == None) or tagID == ID:
-            tagPos = self.ll.getEntry("targetpose_robotspace").getDoubleArray(0)
-            # self.map["fiducials"][tagID - 1]["transform"] = tagPos
-            return tagPos
-        else:
-            return 0
+        tagPos = self.ll.getEntry("targetpose_robotspace").getDoubleArray(0)
+        # self.map["fiducials"][tagID - 1]["transform"] = tagPos
+        return tagPos
 
     def getBotPos(self):
         pos = self.ll.getEntry("botpose_targetspace").getType()
