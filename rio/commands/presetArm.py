@@ -47,8 +47,8 @@ class PresetArm(commands2.CommandBase):
         # self.armSusystem.extension(self.elevatorPower())  # For the spool
         # self.armSusystem.ascent(self.elevatorFineControl())  # For the lead screw
         self.armSusystem.gotoPosition(
-            self.targElev + (self.elevatorFineControl() * 15),
-            self.targLadd + (self.ladderFineControl() * 25),
+            self.targElev + (self.elevatorFineControl * 15),
+            self.targLadd + (self.ladderFineControl * 25),
         )
 
     def end(self, interrupted: bool) -> None:
