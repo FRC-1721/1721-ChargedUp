@@ -21,10 +21,19 @@ class CurvyAuto(commands2.SequentialCommandGroup):
         """
 
         super().__init__(
-            PresetArm(armSubsystem, elevFine=1, laddFine=0),
+            PresetArm(
+                armSubsystem, elevFine=self.toCallable(1), laddFine=self.toCallable(0)
+            ),
             WaitCommand(1),
-            PresetArm(armSubsystem, elevFine=0, laddFine=-0.4),
+            PresetArm(
+                armSubsystem,
+                elevFine=self.toCallable(0),
+                laddFine=self.toCallable(-0.4),
+            ),
             WaitCommand(1),
         )
 
         self.addRequirements([armSubsystem])
+
+    def toCallable(self, i):
+        return i
