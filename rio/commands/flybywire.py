@@ -1,5 +1,6 @@
 import typing
 import commands2
+from wpilib import RobotBase
 from subsystems.drivesubsystem import DriveSubsystem
 
 
@@ -7,7 +8,8 @@ class FlyByWire(commands2.CommandBase):
     """
     FlyByWire uses pure joystick inputs
     to direct the robot. Tradionally, this
-    is the most direct way to command the robot."""
+    is the most direct way to command the robot.
+    """
 
     def __init__(
         self,
@@ -25,10 +27,16 @@ class FlyByWire(commands2.CommandBase):
         self.addRequirements([self.drivetrain])
 
     def execute(self) -> None:
-        self.drivetrain.arcadeDrive(
-            self.exponential_dampen(self.forward() * 0.9) * -1,
-            self.piecewise_dampen(self.rotation()),
-        )
+        if RobotBase.isReal():
+            self.drivetrain.arcadeDrive(
+                self.exponential_dampen(self.forward() * 0.9) * -1,
+                self.piecewise_dampen(self.rotation()),
+            )
+        else:
+            self.drivetrain.tankDriveVolts(
+                self.forward() + self.rotation(),
+                -self.forward() + self.rotation(),
+            )
 
     def exponential_dampen(self, x):
         """

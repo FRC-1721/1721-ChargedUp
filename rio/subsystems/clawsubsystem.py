@@ -29,7 +29,6 @@ class ClawSubsystem(commands2.SubsystemBase):
         constants = getConstants("robot_hardware")
         pidConstants = getConstants("robot_pid")
         self.clawConst = constants["claw"]
-        self.pidConst = pidConstants["claw"]
 
         # the claw motor
         self.motor = CANSparkMax(
@@ -38,16 +37,6 @@ class ClawSubsystem(commands2.SubsystemBase):
         )
 
         self.motor.setInverted(self.clawConst["Inverted"])
-
-        # TODO: These should to be replaced with CAN motor controllers
-        self.encoder = self.motor.getEncoder()
-
-        # Pid values
-        self.PID = self.motor.getPIDController()
-        self.PID.setP(self.pidConst["kp"])
-        self.PID.setI(self.pidConst["ki"])
-        self.PID.setD(self.pidConst["kd"])
-        self.PID.setFF(self.pidConst["ff"])
 
     def setCurrentlimit(self, current):
         self.motor.setSmartCurrentLimit(current)
