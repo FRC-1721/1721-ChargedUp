@@ -10,8 +10,8 @@
       "style": "0",
       "userScale": "2",
       "width": "1451",
-      "xpos": "188",
-      "ypos": "267"
+      "xpos": "170",
+      "ypos": "163"
     }
   },
   "Table": {
@@ -29,7 +29,7 @@
     },
     "###/SmartDashboard/Field": {
       "Collapsed": "0",
-      "Pos": "14,303",
+      "Pos": "4,301",
       "Size": "438,242"
     },
     "###FMS": {

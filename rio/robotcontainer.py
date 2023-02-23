@@ -201,7 +201,7 @@ class RobotContainer:
         self.autoChooser.setDefaultOption("No Auto", NoAuto())
         self.autoChooser.addOption("Curry Auto", CurvyAuto(self.armSubsystem))
         self.autoChooser.addOption("Backwards Auto", BackwardsAuto(self.robotDrive))
-        self.autoChooser.addOption("Back Auto", BackAuto(self.robotDrive, 0.25, 0.25))
+        self.autoChooser.addOption("Back Auto", BackAuto(self.robotDrive))
 
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)

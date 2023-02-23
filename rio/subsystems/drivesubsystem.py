@@ -227,10 +227,6 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         return self.ahrs.getRate()
 
-    def autoMovement(self, leftSpeed, rightSpeed):
-        self.leftMotors.set(leftSpeed)
-        self.rightMotors.set(rightSpeed)
-
     def periodic(self) -> None:
         """
         Called periodically when it can be called. Updates the robot's

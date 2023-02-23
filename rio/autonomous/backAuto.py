@@ -1,17 +1,15 @@
-# commands2
 import commands2
 
-from commands2 import WaitCommand
 from subsystems.drivesubsystem import DriveSubsystem
+from autonomous.flywithwire import FlyWithWires
 
 
 class BackAuto(commands2.SequentialCommandGroup):
-    def __init__(self, driveSubsystem: DriveSubsystem, speedLeft, speedRight) -> None:
+    def __init__(self, driveSubsystem: DriveSubsystem) -> None:
         """
-        A manual drive backwards command
+        a 'simple' drive back command
         """
 
         super().__init__(
-            # driveSubsystem.autoMovement(speedLeft, speedRight),
-            WaitCommand(1),
+            FlyWithWires(driveSubsystem, fwd=0.05, time=0.5),
         )
