@@ -19,6 +19,8 @@ class FlyWithWires(commands2.CommandBase):
         self.backgroundTimer = wpilib.Timer()
         self.backgroundTimer.start()
 
+        print("initalized")
+
     def initialize(self) -> None:
         self.backgroundTimer.reset()
 
@@ -27,10 +29,13 @@ class FlyWithWires(commands2.CommandBase):
             self.fwd,
             self.rot,
         )
+        print("running")
 
     def end(self, interrupted: bool) -> None:
         self.drive.arcadeDrive(0, 0)
+        print("ended")
 
     def isFinished(self) -> bool:
         if self.time != -1 and self.backgroundTimer.hasElapsed(self.time):
             return True
+        print("finished")
