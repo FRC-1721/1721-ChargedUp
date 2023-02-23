@@ -59,6 +59,11 @@ $("#p-sw").change(function () {
     }
 });
 
+$("img").one("error", function () { // jquery .one() works the same as .on(), but it only happens
+    $(this).attr("src", require("./assets/error.png"));
+    console.log("here");
+});
+
 function onRobotConnection(connected) {
     $("#robotstate").text(connected ? "Connected" : "Disconnected");
     $("#robotAddress").text(
