@@ -27,36 +27,33 @@ class HoldPosition(commands2.CommandBase):
         # Adding drivetrain as a requirement ensures no other command will interrupt us
         self.addRequirements([self.drivetrain])
 
-        self.re = self.drivetrain.getRightEncoder().getPosition()  # current left POS
-        self.le = self.drivetrain.getLeftEncoder().getPosition()  # current right POS
+        self.re = self.drivetrain.rightEncoder.getPosition()  # current left POS
+        self.le = self.drivetrain.leftEncoder.getPosition()  # current right POS
 
-        self.rPID = PIDController(0.6, 0.01, 1.0)
-        self.lPID = PIDController(0.6, 0.01, 1.0)
+        self.rPID = PIDController(0.1, 0.01, 1.0)
+        self.lPID = PIDController(0.1, 0.01, 1.0)
 
     def execute(self) -> None:
-        # This needs to be here so it will not
-        # spin if you go into it with momentiun
-        # self.drivetrain.leftMotors.
-
         print(
-            f"Right target is {self.re} error pos is {self.rPID.getPositionError()} Output is: {-self.rPID.calculate(self.drivetrain.getRightEncoder().getPosition(),self.re)}"
+            f"Target is: {self.re}, current pos is: {self.drivetrain.rightEncoder.getPosition()}"
         )
 
-        # print(f"Left target is {self.le} error pos is {self.lPID.getPositionError()}")
-
         self.drivetrain.tankDriveVolts(
-            -self.rPID.calculate(
-                self.drivetrain.getRightEncoder().getPosition(),
-                self.re,
+            self.rPID.calculate(
+                self.drivetrain.rightEncoder.getPosition(),
+                self.re + 5,
             ),
-            self.lPID.calculate(
-                self.drivetrain.getLeftEncoder().getPosition(),
-                self.le,
+            -self.lPID.calculate(
+                self.drivetrain.leftEncoder.getPosition(),
+                self.le - 5,
             ),
         )
 
         # Its ok! We're updating the motors
         self.drivetrain.drive.feed()
+
+    def isFinished(self) -> bool:
+        return False
 
     def end(self, interrupted: bool) -> None:
         pass
