@@ -24,7 +24,7 @@ from commands.manualGripper import ManualGripper
 from commands.presetArm import PresetArm
 from commands.manualArm import ManualArm
 from commands.findZero import FindZero
-
+from commands.holdPosition import HoldPosition
 
 # Autonomous
 from autonomous.curvyAuto import CurvyAuto
@@ -125,6 +125,10 @@ class RobotContainer:
                 (lambda: self.robotDrive.setMaxOutput(1)), [self.robotDrive]
             )
         )
+
+        commands2.button.JoystickButton(
+            self.driverController, self.driverConsts["DiffLock"]
+        ).whileTrue(HoldPosition(self.robotDrive))
 
         commands2.button.JoystickButton(
             self.operatorController,
