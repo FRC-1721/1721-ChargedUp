@@ -3,6 +3,8 @@ import commands2
 
 import rev
 
+from wpimath.controller import PIDController
+
 from subsystems.drivesubsystem import DriveSubsystem
 
 
@@ -25,18 +27,36 @@ class HoldPosition(commands2.CommandBase):
         # Adding drivetrain as a requirement ensures no other command will interrupt us
         self.addRequirements([self.drivetrain])
 
-    def execute(self) -> None:
-        # This needs to be here so it will not
-        # spin if you go into it with momentiun
         self.re = self.drivetrain.getRightEncoder().getPosition()  # current left POS
         self.le = self.drivetrain.getLeftEncoder().getPosition()  # current right POS
 
-        self.drivetrain.rPID.setReference(
-            self.re, rev.CANSparkMax.ControlType.kPosition
+        self.rPID = PIDController(0.6, 0.01, 1.0)
+        self.lPID = PIDController(0.6, 0.01, 1.0)
+
+    def execute(self) -> None:
+        # This needs to be here so it will not
+        # spin if you go into it with momentiun
+        # self.drivetrain.leftMotors.
+
+        print(
+            f"Right target is {self.re} error pos is {self.rPID.getPositionError()} Output is: {-self.rPID.calculate(self.drivetrain.getRightEncoder().getPosition(),self.re)}"
         )
-        self.drivetrain.lPID.setReference(
-            self.le, rev.CANSparkMax.ControlType.kPosition
+
+        # print(f"Left target is {self.le} error pos is {self.lPID.getPositionError()}")
+
+        self.drivetrain.tankDriveVolts(
+            -self.rPID.calculate(
+                self.drivetrain.getRightEncoder().getPosition(),
+                self.re,
+            ),
+            self.lPID.calculate(
+                self.drivetrain.getLeftEncoder().getPosition(),
+                self.le,
+            ),
         )
+
+        # Its ok! We're updating the motors
+        self.drivetrain.drive.feed()
 
     def end(self, interrupted: bool) -> None:
         pass
