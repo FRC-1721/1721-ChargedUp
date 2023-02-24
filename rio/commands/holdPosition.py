@@ -9,6 +9,9 @@ from subsystems.drivesubsystem import DriveSubsystem
 class HoldPosition(commands2.CommandBase):
     """
     Holds position using the embedded PID loops
+    TODO fix, this currently works because it uses
+    wpilibs motors saftey feature. I leave this here
+    because it spits our an error when doing so.
     """
 
     def __init__(
@@ -27,6 +30,8 @@ class HoldPosition(commands2.CommandBase):
         self.le = self.drivetrain.getLeftEncoder().getPosition()
 
     def execute(self) -> None:
+        self.re = self.drivetrain.getRightEncoder().getPosition()
+        self.le = self.drivetrain.getLeftEncoder().getPosition()
         self.drivetrain.rPID.setReference(
             self.re, rev.CANSparkMax.ControlType.kPosition
         )
