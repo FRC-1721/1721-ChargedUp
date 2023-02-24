@@ -37,7 +37,6 @@ class HoldPosition(commands2.CommandBase):
         self.drivetrain.lPID.setReference(
             self.le, rev.CANSparkMax.ControlType.kPosition
         )
-        commands2.WaitCommand(0.005)
 
     def end(self, interrupted: bool) -> None:
         pass
