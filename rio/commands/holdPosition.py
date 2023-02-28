@@ -41,11 +41,11 @@ class HoldPosition(commands2.CommandBase):
         self.drivetrain.tankDriveVolts(
             self.rPID.calculate(
                 self.drivetrain.rightEncoder.getPosition(),
-                self.re + 5,
+                self.re,
             ),
             -self.lPID.calculate(
                 self.drivetrain.leftEncoder.getPosition(),
-                self.le - 5,
+                self.le,
             ),
         )
 
