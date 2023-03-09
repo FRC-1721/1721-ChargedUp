@@ -24,6 +24,7 @@ main mode:
     Unclamp: 6
     Clamp: 5
     FindZero: 8
+    hold: 3
 
     # Presets/Modes
     LowGoal: 1

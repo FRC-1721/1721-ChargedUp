@@ -198,6 +198,12 @@ class RobotContainer:
             )
         )
 
+        # a lock command for the claw
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["hold"],
+        ).toggleOnTrue(ManualGripper(self.clawSubsystem, grabForce=-0.25))
+
     def configureAutonomous(self):
         # Create a sendable chooser
         self.autoChooser = wpilib.SendableChooser()
