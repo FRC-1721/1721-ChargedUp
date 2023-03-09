@@ -19,7 +19,7 @@ drive:
 
 arm:
   elevator:
-    kp: 0.2
+    kp: 0.3
     ki: 0.0001
     kd: 1
     ff: 0
