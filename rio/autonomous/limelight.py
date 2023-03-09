@@ -15,7 +15,7 @@ class limeLightCommands(commands2.CommandBase):
         super().__init__()
         # Configure networktables
         self.nt = NetworkTableInstance.getDefault()
-        self.ll = self.nt.getTable("limelight")
+        self.ll = self.nt.getTable("limelight-gabriel")
         self.botPos = 0
         self.drivesys = drive
         # Load map
@@ -27,20 +27,27 @@ class limeLightCommands(commands2.CommandBase):
 
     def execute(self) -> None:
         aprilTag = self.getTag()
-        if type(aprilTag) != int:
+        if type(aprilTag) is list and len(aprilTag) >= 6:
+            print(aprilTag, "asdfasdfasdf")
             distX = aprilTag[0]
-            DistY = aprilTag[1]
+            distY = aprilTag[1] - 180
             rotZ = aprilTag[5]
-            if distX > 10:
-                self.drivesys.arcadeDrive(10, 0)  # needs to be adjusted
-            if DistY > 0:
-                self.drivesys.arcadeDrive(10, 20)  # needs to be adjusted
-            elif DistY < 0:
-                self.drivesys.arcadeDrive(10, -20)  # needs to be adjusted
-            elif rotZ != 0:
-                TurnToAngle(rotZ, self.drivesys)  # prbably doesn't work
+            if -2.5 < rotZ < 2.5:
+                if distX >= -4:
+                    self.drivesys.arcadeDrive(0.5, 0)  # needs to be adjusted
+                elif distX >= -5:
+                    self.drivesys.arcadeDrive(0.35, 0)  # needs to be adjusted
+                elif distX >= -6:
+                    self.drivesys.arcadeDrive(0.2, 0)  # needs to be adjusted
+
+                    # if distY > 0:
+                    # self.drivesys.arcadeDrive(10, 20)  # needs to be adjusted
+                    # elif distY < 0:
+                    # self.drivesys.arcadeDrive(10, -20)  # needs to be adjusted
+            else:
+                TurnToAngle(rotZ - 180, self.drivesys)  # prbably doesn't work
         else:
-            if aprilTag == 0:
+            if aprilTag <= 0:
                 print("no apriltag found!")
             elif aprilTag == 1:
                 print("error while getting position of aprilTag")
@@ -52,8 +59,9 @@ class limeLightCommands(commands2.CommandBase):
         """
 
         tagID = self.ll.getEntry("tid").getDouble(0)
-        if tagID != 0:
-            tagPos = self.ll.getEntry("targetpose_robotspace").getDoubleArray(1)
+        print(tagID, "a")
+        if 0 < tagID <= 8:
+            tagPos = self.ll.getEntry("botpose").getDoubleArray(1)
             return tagPos
         # self.map["fiducials"][tagID - 1]["transform"] = tagPos
         return tagID
