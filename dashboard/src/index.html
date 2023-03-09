@@ -1,134 +1,144 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <title>1721 Dashboard</title>
-    <link rel="stylesheet" href="./style.sass" />
-    <link rel="shortcut icon" href="./assets/frc1721.svg" type="image/x-icon" />
-  </head>
-  <body>
-    <header class="header">
-      <img
-        src="./assets/frc1721.svg"
-        alt="Team 1721 Logo"
-        class="header-logo"
-      />
-      <img
-        src="./assets/frc1721.svg"
-        alt="Team 1721 Logo"
-        class="header-logo"
-      />
-      <img
-        src="./assets/frc1721.svg"
-        alt="Team 1721 Logo"
-        class="header-logo"
-      />
-      <p class="header-text">TEAM 1721 ---<>--- DASHBOARD</p>
-    </header>
+	<head>
+		<meta charset="utf-8" />
+		<title>1721 Dashboard</title>
+		<link rel="stylesheet" href="./style.scss" />
+		<link
+			rel="shortcut icon"
+			href="./assets/frc1721.svg"
+			type="image/x-icon"
+		/>
+	</head>
+	<body>
+		<header>
+			<img src="./assets/frc1721.svg" alt="Team 1721 Logo" />
+			<a href="./hello.html">
+				<img src="./assets/frc1721.svg" alt="Team 1721 Logo" />
+			</a>
+			<img src="./assets/frc1721.svg" alt="Team 1721 Logo" />
+			<p class="header-text">TEAM 1721 ---<>--- DASHBOARD</p>
+			<div style="flex: 5"></div>
+			<label for="p-sw" id="p-sw-l">
+				<input type="checkbox" id="p-sw" />
+				<span id="p-sw-s"></span>
+			</label>
+		</header>
 
-    <div class="main-wrapper">
-      <main>
-        <input
-          type="range"
-          id="sd-test"
-          class="dub-slider"
-          min="0"
-          max="4"
-          data-key="/SmartDashboard/Test/test"
-        />
+		<main>
+			<div class="sen-tables">
+				<div class="table build-info">
+					<div class="table-info">
+						<div class="table-label">Build Date</div>
+						<div
+							class="table-area dub-text"
+							data-key="/SmartDashboard/BuildData/deploy-date"
+							id="build-date-area"
+						></div>
+					</div>
+					<div class="table-info">
+						<div class="table-label">Build Host</div>
+						<div
+							class="table-area dub-text"
+							data-key="/SmartDashboard/BuildData/deploy-host"
+							id="build-host-area"
+						></div>
+					</div>
+					<div class="table-info">
+						<div class="table-label">Builder</div>
+						<div
+							class="table-area dub-text"
+							data-key="/SmartDashboard/BuildData/deploy-user"
+							id="builder-area"
+						></div>
+					</div>
+				</div>
+				<div class="table git-info">
+					<div class="table-info">
+						<div class="table-label">Git Branch</div>
+						<div
+							class="table-area dub-text"
+							data-key="/SmartDashboard/BuildData/git-branch"
+							id="git-branch-area"
+						></div>
+					</div>
+					<div class="table-info">
+						<div class="table-label">Git Hash</div>
+						<div
+							class="table-area dub-text"
+							data-key="/SmartDashboard/BuildData/git-desc"
+							id="git-hash-area"
+						></div>
+					</div>
+					<div class="table-info">
+						<div class="table-label">Dash Hash™</div>
+						<div id="dash-hash" class="table-area">
+							idiot-dash-hash
+						</div>
+					</div>
+				</div>
+				<div class="table nt-info">
+					<div class="table-info">
+						<div class="table-label">NT Websocket</div>
+						<div id="connectstate" class="table-area">Unknown</div>
+					</div>
+					<div class="table-info">
+						<div class="table-label">Robot State</div>
+						<div id="robotstate" class="table-area">Unknown</div>
+					</div>
+					<div class="table-info">
+						<div class="table-label">Address</div>
+						<div id="robotAddress" class="table-area">
+							Disconnected
+						</div>
+					</div>
+				</div>
+			</div>
 
-        <div id="info-one">
-          <div class="table build-info">
-            <div class="table-info">
-              <div class="table-label">Build Date</div>
-              <div
-                class="table-area dub-text"
-                data-key="/SmartDashboard/BuildData/deploy-date"
-                id="build-date-area"
-              ></div>
-            </div>
-            <div class="table-info">
-              <div class="table-label">Build Host</div>
-              <div
-                class="table-area dub-text"
-                data-key="/SmartDashboard/BuildData/deploy-host"
-                id="build-host-area"
-              ></div>
-            </div>
-            <div class="table-info">
-              <div class="table-label">Builder</div>
-              <div
-                class="table-area dub-text"
-                data-key="/SmartDashboard/BuildData/deploy-user"
-                id="builder-area"
-              ></div>
-            </div>
-          </div>
-          <div class="table git-info">
-            <div class="table-info">
-              <div class="table-label">Git Branch</div>
-              <div
-                class="table-area dub-text"
-                data-key="/SmartDashboard/BuildData/git-branch"
-                id="git-branch-area"
-              ></div>
-            </div>
-            <div class="table-info">
-              <div class="table-label">Git Hash</div>
-              <div
-                class="table-area dub-text"
-                data-key="/SmartDashboard/BuildData/git-desc"
-                id="git-hash-area"
-              ></div>
-            </div>
-            <div class="table-info">
-              <div class="table-label">Test</div>
-              <div
-                class="table-area dub-text"
-                data-key="/SmartDashboard/Test/test"
-                id="ntmtst"
-              >
-                idiot
-              </div>
-            </div>
-          </div>
+			<div id="aut-sel"></div>
 
-          <div class="table nt-info">
-            <div class="table-info">
-              <div class="table-label">NT Websocket</div>
-              <div id="connectstate" class="table-area">Unknown</div>
-            </div>
-            <div class="table-info">
-              <div class="table-label">Robot State</div>
-              <div id="robotstate" class="table-area">Unknown</div>
-            </div>
-            <div class="table-info">
-              <div class="table-label">Address</div>
-              <div id="robotAddress" class="table-area">Disconnected</div>
-            </div>
-          </div>
-        </div>
+			<div class="spacer"></div>
 
-        <div id="aut-sel"></div>
+			<div class="temps">
+				<div class="test1">
+					<div class="diff diffL diffF"></div>
+					<div class="diff diffL diffM"></div>
+					<div class="diff diffL diffB"></div>
+					<div id="L1"></div>
+					<div id="L2"></div>
+				</div>
+				<div id="Claw"></div>
+				<div class="spacer-temp">
 
-        <div id="info-field">
-          <div class="left-diff-container"></div>
-          <div id="info-field-canvas"></div>
-          <div class="right-diff-container"></div>
-        </div>
+				</div>
+				<div class="test2">
+					<div class="diff diffR diffF"></div>
+					<div class="diff diffR diffM"></div>
+					<div class="diff diffR diffB"></div>
+					<div id="R1"></div>
+					<div id="R2"></div>
+				</div>
+			</div>
 
-        <div id="raw-nt">
-          <div id="raw-title">Raw NT Table</div>
-          <div id="nt">
-            <div class="table"></div>
-          </div>
-        </div>
-      </main>
-    </div>
+			<div class="cameras">
+				<img id="cam1" src="http://10.17.21.11:5800" />
+				<img id="cam2" src="assets/drawing.svg" alt="CAMERA NUMBER 2" />
+			</div>
 
-    <script src="./jquery.js"></script>
-    <script src="./p5.min.js"></script>
-    <p></p>
-    <script src="./main.js" type="module"></script>
-  </body>
+			<div id="field-canvas"></div>
+		</main>
+
+		<div id="raw-nt">
+			<div id="raw-title">Raw NT Table</div>
+			<div id="nt">
+				<div class="table"></div>
+			</div>
+		</div>
+
+		<script src="./jquery.js"></script>
+		<script src="./d3.min.js"></script>
+		<script src="./p5.min.js"></script>
+		<p></p>
+		<script src="./main.js" type="module"></script>
+	</body>
 </html>

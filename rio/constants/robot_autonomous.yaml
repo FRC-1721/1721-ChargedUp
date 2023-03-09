@@ -2,7 +2,7 @@
 # autonomous related constraints
 
 # Width of the robot
-kTrackWidthMeters: 0.69
+kTrackWidthMeters: 0.578
 
 # Feed Forward Controller Consts
 ksVolts: 0.22

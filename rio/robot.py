@@ -22,8 +22,7 @@ project.
 """
 
 
-class MyRobot(commands2.TimedCommandRobot):
-
+class RotomToaster(commands2.TimedCommandRobot):
     """
     Our default robot class, pass it to wpilib.run
     Command v2 robots are encouraged to inherit from TimedCommandRobot, which
@@ -81,4 +80,4 @@ if __name__ == "__main__":
     logging.basicConfig(level=logging.DEBUG)
 
     # Run the robot
-    wpilib.run(MyRobot)
+    wpilib.run(RotomToaster)

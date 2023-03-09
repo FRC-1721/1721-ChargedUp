@@ -11,13 +11,13 @@ from wpimath.geometry import Pose2d, Rotation2d
 from wpimath.kinematics import DifferentialDriveOdometry, DifferentialDriveWheelSpeeds
 from ntcore import NetworkTableInstance
 from wpilib import DriverStation
+from wpilib import Field2d
 
 # Constants
 from constants.constants import getConstants
 
 # Vendor Libs
-from rev import CANSparkMax, CANSparkMaxLowLevel
-from ctre import Pigeon2
+from rev import CANSparkMax, CANSparkMaxLowLevel, RelativeEncoder
 from wpimath import geometry
 from navx import AHRS
 
@@ -91,6 +91,10 @@ class DriveSubsystem(commands2.SubsystemBase):
         # The right-side drive encoder
         self.rightEncoder = self.rightMotor1.getEncoder()
 
+        # PID Controllers
+        self.lPID = self.leftMotor1.getPIDController()
+        self.rPID = self.rightMotor1.getPIDController()
+
         # Setup the conversion factors for the motor controllers
         # TODO: Because rev is rev, there are a lot of problems that need to be addressed.
         # https://www.chiefdelphi.com/t/spark-max-encoder-setpositionconversionfactor-not-doing-anything/396629
@@ -105,11 +109,18 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.ahrs = AHRS.create_spi()  # creates navx object
 
         # Robot odometry
+        self.field = Field2d()
         self.odometry = DifferentialDriveOdometry(
             self.ahrs.getRotation2d(),
             self.leftEncoder.getPosition(),
             self.rightEncoder.getPosition(),
         )
+
+        # Enable braking
+        self.rightMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.rightMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.leftMotor1.setIdleMode(CANSparkMax.IdleMode.kBrake)
+        self.leftMotor2.setIdleMode(CANSparkMax.IdleMode.kBrake)
 
     def arcadeDrive(self, fwd: float, rot: float):
         """
@@ -144,7 +155,7 @@ class DriveSubsystem(commands2.SubsystemBase):
     def getWheelSpeeds(self):
         """Return an object which represents the wheel speeds of our drivetrain."""
         speeds = DifferentialDriveWheelSpeeds(
-            self.leftEncoder.getVelocity(), self.rightEncoder.getVelocity()
+            self.leftEncoder.getVelocity(), -self.rightEncoder.getVelocity()
         )
         return speeds
 
@@ -168,14 +179,14 @@ class DriveSubsystem(commands2.SubsystemBase):
         """
         return (self.leftEncoder.getDistance() + self.rightEncoder.getDistance()) / 2.0
 
-    def getLeftEncoder(self) -> wpilib.Encoder:
+    def getLeftEncoder(self) -> RelativeEncoder:
         """
         Gets the left drive encoder.
         :returns: the left drive encoder
         """
         return self.leftEncoder
 
-    def getRightEncoder(self) -> wpilib.Encoder:
+    def getRightEncoder(self) -> RelativeEncoder:
         """
         Gets the right drive encoder.
 
@@ -214,28 +225,39 @@ class DriveSubsystem(commands2.SubsystemBase):
         Returns the turn rate of the robot.
         :returns: The turn rate of the robot, in degrees per second
         """
-        return self.imu.GetRawGyro()
+        return self.ahrs.getRate()
 
     def periodic(self) -> None:
-        """Runs every loop"""
-
-        self.sd.putNumber("Audio/MatchTime", int(DriverStation.getMatchTime()))
-
-        # See here for turning bug
-        # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
-        return self.ahrs.getRawGyroZ()
-
-    def periodic(self):
         """
         Called periodically when it can be called. Updates the robot's
         odometry with sensor data.
         """
+
         self.odometry.update(
             self.ahrs.getRotation2d(),
             self.leftEncoder.getPosition(),
             -self.rightEncoder.getPosition(),
         )
 
-        self.sd.putNumber("Pose/Pose x", self.getPose().x)
-        self.sd.putNumber("Pose/Pose y", self.getPose().y)
-        self.sd.putNumber("Pose/Pose t", self.getPose().rotation().radians())
+        # Populates match time
+        self.sd.putNumber("Audio/MatchTime", int(wpilib.DriverStation.getMatchTime()))
+
+        # Updates the pose on the field (networktables)
+        self.field.setRobotPose(self.odometry.getPose())
+
+        # Match Time
+        self.sd.putNumber("Audio/MatchTime", int(DriverStation.getMatchTime()))
+
+        # Extra vis
+        self.sd.putNumber("Pose/DiffL", self.getWheelSpeeds().left)
+        self.sd.putNumber("Pose/DiffR", self.getWheelSpeeds().right)
+
+        # Thermals!
+        self.sd.putNumber("Thermals/L1", self.leftMotor1.getMotorTemperature())
+        self.sd.putNumber("Thermals/L2", self.leftMotor2.getMotorTemperature())
+        self.sd.putNumber("Thermals/R1", self.rightMotor1.getMotorTemperature())
+        self.sd.putNumber("Thermals/R2", self.rightMotor2.getMotorTemperature())
+
+        # See here for turning bug
+        # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
+        return self.ahrs.getRawGyroZ()

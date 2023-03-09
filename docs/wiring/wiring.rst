@@ -4,8 +4,11 @@ Robot Wiring
 .. include:: ../resources/resources.rst
 
 
-Wiring information here!
+.. figure:: resources/wiringPrototype.jpg
+  :height: 250
+  :alt: Wiring Prototype
 
+  Wiring Prototype
 
 Full Electrical Schematic
 =========================

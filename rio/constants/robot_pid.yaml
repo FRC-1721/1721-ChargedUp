@@ -16,3 +16,16 @@ drive:
 
   kTurnToleranceDeg: 5
   kTurnRateToleranceDegPerS: 10 # degrees per second
+
+arm:
+  elevator:
+    kp: 0.1
+    ki: 0.0001
+    kd: 1
+    ff: 0
+
+  ladder:
+    kp: 0.1
+    ki: 0.0001
+    kd: 1.5
+    ff: 0

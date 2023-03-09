@@ -19,14 +19,14 @@ from constants.constants import getConstants
 
 
 class CrossLinePath(commands2.RamseteCommand):
-    """A command that uses a ramsete controller to follow a preset path."""
+    """A command that uss a ramsete controller to follow a preset path."""
 
     def __init__(self, drive: DriveSubsystem) -> None:
         const = getConstants("robot_autonomous")
         driveKinematics = DifferentialDriveKinematics(const["kTrackWidthMeters"])
 
         constraints = PathConstraints(0.5, 0.1)
-        trajectory = PathPlanner.loadPath("New New Path", constraints, reversed=False)
+        trajectory = PathPlanner.loadPath("Top Func", constraints, reversed=False)
 
         super().__init__(
             trajectory.asWPILibTrajectory(),

@@ -18,14 +18,15 @@ if pose x/y cords match actual.
 .. literalinclude:: ../../rio/constants/robot_hardware.yaml
   :language: YAML
 
-.. figure:: resources/AProgrammer.png
-   :width: 80%
+.. figure:: resources/AProgrammer.jpg
+   :width: 50%
    :alt: Figure of a programmer
 
    A programmer in his natural habitat
 
-Getting started modifying these docs
-====================================
+
+Modifying these docs
+====================
 
 |software|
 
@@ -39,12 +40,13 @@ You'll need to install several packages to build these docs
    # Ubuntu/Debian users
    sudo apt install texlive-latex-recommended texlive-latex-extra texlive-pictures pandoc rename latexmk
 
-if any issue occur during the installation proccess first try googling the issue, then asking Khan or Joe.
+   # Arch/Manjaro users
+   pacman -S texlive-pictures pandoc latexmk
 
 Making the docs
 ---------------
 
-Under the ``Docs`` directory in ``pre2022season``, setup a pipenv using the 
+Under the ``Docs`` directory in ``1721-ChargedUp``, setup a pipenv using the 
 provided files and invoke the ``make latexpdf`` command to build the docs.
 
 .. code-block:: shell
@@ -54,57 +56,18 @@ provided files and invoke the ``make latexpdf`` command to build the docs.
    make latexpdf # Builds the manual
 
 Find the generated ``.pdf`` under ``docs/_build/latex/``
-it is recommended that you also have a restructured text interperter such as reStructuredText.
+it is recommended that you also have a restructured text interpreter such as reStructuredText.
 Documentation for sphinx can be found `here <https://sublime-and-sphinx-guide.readthedocs.io/en/latest/setup.html>`_
-
-Git
----
-
-While most git commands are in git documentation `here <https://git-scm.com/doc>`_,
-here are a few basic commands you should know.
-
-#. ``git clone <url>`` (clones a repository for you to use yourself, the https you can find by going to a github repository and clicking code the first option should be https. Copy that and then run the command.)
-#. ``git add -A`` (adds all changes to the version you would commit.)
-#. ``git status`` (tells you what files are changed and not yet added with git add)
-#. ``git commit -m "message"`` (puts all changes added into a commit with a message that you made.)
-#. ``git push`` (Push to upstream)
-#. ``git pull`` (Pull from upstream)
-#. ``git checkout <hash/branch name/tag>`` (Checkout a specific revision or branch)
-#. ``git stash`` (Stows your current changes for later)
-   * ``git stash apply`` (apply your stashed changed)
-   * ``git stash drop`` (clears the current stashed changes)
-#. ``git branch "new branch name"`` (Checkout to a new branch)
-#. ``git rebase <branch path>`` (this helps with not being able to push)
-#. ``git reset --hard`` (this command is a nuclear option, reverting back commits **BE CAREFUL**)
-
-Examples for each in order are:
-
-.. code-block:: shell
-
-   git clone https://github.com/FRC-1721/1721-ChargedUp.git
-   git add -A
-   git status
-   git commit -m "added git subsection"
-   git push
-   git pull
-   git checkout 13020ab
-   git stash
-   git stash apply
-   git stash drop
-   git branch "DevDocs"
-   git rebase origin/DevDocs
-   git reset --hard
-
-Please note that ``git push`` will not work on main and doesn't automatically create a pull request,
-to see how to use github see :ref:`Using github`.
 
 Using Github
 ============
 
 |software|
 
-We use `Github <https://github.com>`_ to store all our files,
-our repo is FRC-1721 to get on the github get Khan or Joe to add you.
+We use `Github <https://github.com>`_ as our main version
+control and automation system, paired with github actions and our
+own jenkins build server in the build space.
+
 
 Making Pull requests
 --------------------
@@ -120,8 +83,9 @@ First go to the current `repo 1721 ChargedUp <https://github.com/FRC-1721/1721-C
 You first under the pull requests tab create a new pull request,
 select the branch you want to make the pull request for.
 
-At the bottom of the page once approved by someone with proper clearence current Khan, Joe, or Turner you may merge it,
-please squash and merge to not have billions of commits in main.
+Once approved by someone with proper clearance (Keegan or Joe) you may merge it,
+please **squash and merge** to not have billions of commits in main.
+
 
 Creating Issues
 ---------------
@@ -132,10 +96,11 @@ are one way we communicate what needs to be done.
 On the issues tab there will be a button saying *New issue*,
 click that and enter the information about the issue.
 
+
 Making and Adding Labels and Milestones
 ---------------------------------------
 
-Labels and Milestones are a nice way to catagorize issues and pull requests,
+Labels and Milestones are a nice way to categorize issues and pull requests,
 they both can created and added the same way.
 
 To create a Label or Milestone on the main page of issues or pull requests there are buttons,
@@ -147,6 +112,7 @@ saying *Labels* and *Milestones*.
 
 After pressing input a name and a description, github uses a hex system for colors
 to help select a color use `this <https://www.color-hex.com/>`_.
+
 
 Robot Simulator
 ===============
@@ -233,26 +199,18 @@ Activating the dashboard doesn't automatically start. To start the Dashboard wit
    16:32:28:978 INFO    : net2js              : NetworkTables websocket opened
 
 Within this you will see one called local host, you will need to copy that link and put it in a web browser.
-It is recommened that you use this in incognito due to network cache causing issues with not updating.
+It is recommend that you use this in incognito due to network cache causing issues with not updating.
 
 .. remember to update png as software is updated ..
-.. image:: resources/WebStation.png
+.. image:: resources/Dashboard.png
   :width: 600
-  :alt: Alternative text
+  :alt: Dashboard image
 
-This will auto conntect to the simulation if one is running, if
+This will auto connect to the simulation if one is running, if
 you start one after remember to refresh the page.
 
 For this station to active things such as the swerve drive wheels,
 the simulation must be set to Teleoperated see :ref:`Using the Simulator`.
-
-In the top left there will display a simulation of the swerve drive wheels.
-
-To see the simulation of the swerve drive you first must turn the wheels.
-
-In the top right there is an autonomous selector where autonomous may be selected.
-
-There is also a camera that are on the bot.
 
 
 Robot code
@@ -266,7 +224,7 @@ Deploying code
 First remember to have the :ref:`FRC Driver Station` open first otherwise this won't work properly.
 
 To deploy robot code first go to the ``rio`` setup a pipenv
-and invoke the ``make deploy``
+and invoke the ``make deploy``, always run the :ref:`Robot Simulator` on code before deploying!
 
 .. code-block:: shell
 
@@ -274,7 +232,8 @@ and invoke the ``make deploy``
    pipenv shell
    make deploy # this run python3 robot.py deploy
 
-First time running it will ask for a team number (1721). After the first time it will know the team number deploy the code.
+First time running it will ask for a team number (1721). After the first time it will
+know the team number deploy the code.
 
 FRC Driver Station
 ------------------
@@ -302,7 +261,4 @@ Test, tests the code a better way to test is :ref:`Robot Simulator`.
 You can enable the robot after a joystick is detected, make sure to plug one 
 in, it has robot code, and has communications with the robot.
 
-You may also change which Team Station your at, this changing nothing, unless
-using something like the CANdle that changes color based on team.
-
-Also see :ref:`Dashboard` for a dashboard.
+Also see :ref:`Dashboard` for how to use the dashboard.

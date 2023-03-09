@@ -1,9 +1,6 @@
 # FRC 1721
 
 import wpilib
-import wpimath.controller
-
-import logging
 
 import commands2
 import commands2.cmd
@@ -14,17 +11,26 @@ from constants.constants import getConstants
 
 # Subsystems
 from subsystems.drivesubsystem import DriveSubsystem
+from subsystems.clawsubsystem import ClawSubsystem
+from subsystems.armsubsystem import ArmSubsystem
 
 # Commands
 from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
+from commands.turntoangle import TurnToAngle
+from commands.turntoangleprofiled import TurnToAngleProfiled
+from commands.manualGripper import ManualGripper
+from commands.presetArm import PresetArm
+from commands.manualArm import ManualArm
+from commands.findZero import FindZero
+
 
 # Autonomous
-from autonomous.crossLinePath import CrossLinePath
-
-# Autonomous
-from autonomous.limelight import limeLightCommands
+from autonomous.curvyAuto import CurvyAuto
+from autonomous.noauto import NoAuto
+from autonomous.backwardsAuto import BackwardsAuto
+from autonomous.backAuto import BackAuto
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -51,14 +57,22 @@ class RobotContainer:
         self.controlConsts = getConstants("robot_controls")
         self.hardConsts = getConstants("robot_hardware")
         self.pidConsts = getConstants("robot_pid")
-        self.driveConsts = self.controlConsts["driver"]
+        self.driverConsts = self.controlConsts["main mode"]["driver"]
+        self.operatorConsts = self.controlConsts["main mode"]["operator"]
 
         # The robot's subsystems
         self.robotDrive = DriveSubsystem()
+        self.clawSubsystem = ClawSubsystem()
+        self.armSubsystem = ArmSubsystem()
 
         # The driver's controller
         self.driverController = commands2.button.CommandJoystick(
-            self.driveConsts["controller_port"]
+            self.driverConsts["controller_port"]
+        )
+
+        # The operators controller
+        self.operatorController = commands2.button.CommandJoystick(
+            self.operatorConsts["controller_port"]
         )
 
         # Configure the button bindings
@@ -67,21 +81,31 @@ class RobotContainer:
         # Setup all autonomous routines
         self.configureAutonomous()
 
-        # Configure default commands
+        # Default drive command
         self.robotDrive.setDefaultCommand(
             FlyByWire(
                 self.robotDrive,
                 lambda: -self.driverController.getRawAxis(
-                    self.driveConsts["ForwardAxis"],
+                    self.driverConsts["ForwardAxis"],
                 ),
                 lambda: self.driverController.getRawAxis(
-                    self.driveConsts["SteerAxis"],
+                    self.driverConsts["SteerAxis"],
                 ),
             )
         )
 
-        # self.sd.putNumber("someNumber", 1234)
-        # print(self.FMSinfo.getNumber("StationNumber", -1))
+        # The default command for the arm Subsystem is manual control
+        self.armSubsystem.setDefaultCommand(
+            PresetArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+            )
+        )
 
     def configureButtonBindings(self):
         """
@@ -91,7 +115,7 @@ class RobotContainer:
         """
         # Drive at half speed when the right bumper is held
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["HalfSpeedButton"]
+            self.driverController, self.driverConsts["HalfSpeedButton"]
         ).onTrue(
             commands2.InstantCommand(
                 (lambda: self.robotDrive.setMaxOutput(0.5)), [self.robotDrive]
@@ -102,56 +126,71 @@ class RobotContainer:
             )
         )
 
-        commands2.button.JoystickButton(self.driverController, 1).onTrue(
-            commands2.InstantCommand(
-                (lambda: self.robotDrive.resetEncoders()), [self.robotDrive]
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Unclamp"],
+        ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=-1))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["Clamp"],
+        ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=1))
+
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["FindZero"],
+        ).whileTrue(FindZero(self.armSubsystem))
+
+        # This is temporary low goal!
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["LowGoal"],
+        ).toggleOnTrue(
+            PresetArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+                45,  # Random!
+                150,  # Just as random!
             )
         )
 
-        # Stabilize robot to drive straight with gyro (software diff lock)
+        # High Goal!
         commands2.button.JoystickButton(
-            self.driverController, self.driveConsts["DiffLock"]
-        ).whileTrue(
-            commands2.PIDCommand(
-                wpimath.controller.PIDController(
-                    self.pidConsts["drive"]["kStabilizationP"],
-                    self.pidConsts["drive"]["kStabilizationI"],
-                    self.pidConsts["drive"]["kStabilizationD"],
+            self.operatorController,
+            self.operatorConsts["HighGoal"],
+        ).toggleOnTrue(
+            PresetArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
                 ),
-                # Close the loop on the turn rate
-                self.robotDrive.getTurnRate,
-                # Setpoint is 0
-                0,
-                # Pipe the output to the turning controls
-                lambda output: self.robotDrive.arcadeDrive(
-                    -self.driverController.getRawAxis(self.driveConsts["ForwardAxis"]),
-                    output,
+                lambda: self.operatorController.getRawAxis(
+                    5,
                 ),
-                # Require the robot drive
-                [self.robotDrive],
+                94,  # Random!
+                135,  # Just as random!
             )
         )
 
-        # Turn to 90 degrees, with a 5 second timeout
+        # This is caleb's fully manual mode
         commands2.button.JoystickButton(
-            self.driverController,
-            self.driveConsts["Turn90"],
-        ).onTrue(
-            TurnToAngle(
-                90,
-                self.robotDrive,
-            ).withTimeout(5)
-        )
-
-        # Turn to -90 degrees with a profile, with a 5 second timeout
-        commands2.button.JoystickButton(
-            self.driverController,
-            self.driveConsts["TurnAnti90"],
-        ).onTrue(
-            TurnToAngleProfiled(
-                -90,
-                self.robotDrive,
-            ).withTimeout(5)
+            self.operatorController,
+            self.operatorConsts["ManualMode"],
+        ).toggleOnTrue(
+            ManualArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+            )
         )
 
     def configureAutonomous(self):
@@ -159,14 +198,11 @@ class RobotContainer:
         self.autoChooser = wpilib.SendableChooser()
 
         # Add options for chooser
-        # self.autoChooser.setDefaultOption("Null Auto", NullAuto(self.drivetrain))
-        self.autoChooser.setDefaultOption(
-            "Test",
-            CrossLinePath(self.robotDrive).withTimeout(15),
-        )
-        self.autoChooser.addOption(
-            "Jack's Auto", limeLightCommands(self.robotDrive).withTimeout(15)
-        )
+        self.autoChooser.setDefaultOption("No Auto", NoAuto())
+        self.autoChooser.addOption("Curry Auto", CurvyAuto(self.armSubsystem))
+        self.autoChooser.addOption("Backwards Auto", BackwardsAuto(self.robotDrive))
+        self.autoChooser.addOption("Back Auto", BackAuto(self.robotDrive))
+
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
 
@@ -183,9 +219,6 @@ class RobotContainer:
         for key in data:
             key_entry = self.build_table.getEntry(str(key))
             key_entry.setString(str(data[key]))
-
-        self.ntmov = self.sd.getSubTable("Test")
-        self.ntmov.putNumber("test", 2)
 
     def getAutonomousCommand(self) -> commands2.Command:
         """

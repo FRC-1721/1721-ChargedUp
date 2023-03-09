@@ -21,7 +21,7 @@ from constants.constants import getConstants
 
 
 class PhysicsEngine:
-    def __init__(self, physics_controller: PhysicsInterface, robot: "MyRobot"):
+    def __init__(self, physics_controller: PhysicsInterface, robot: "RotomToaster"):
         # Controller
         self.physics_controller = physics_controller
 
@@ -30,7 +30,7 @@ class PhysicsEngine:
 
         # Drivetrain motors (only simulating 2 out of 4)
         self.l_motor = robot.container.robotDrive.leftMotor1
-        self.r_motor = robot.container.robotDrive.leftMotor2
+        self.r_motor = robot.container.robotDrive.rightMotor1
 
         self.l_encoder = robot.container.robotDrive.leftEncoder
         self.r_encoder = robot.container.robotDrive.rightEncoder
@@ -62,34 +62,15 @@ class PhysicsEngine:
         field = self.physics_controller.field
 
         # Motor voltages
-        # self.l_motor.setBusVoltage(voltage) # Dosent work
-        l_v = self.l_motor.getAppliedOutput()
-        # self.r_motor.setBusVoltage(voltage) # Dosent work
-        r_v = self.r_motor.getAppliedOutput()
-
-        kS = 1  # Tuning value
-
-        if l_v > kS:
-            l_v -= kS
-        elif l_v < -kS:
-            l_v += kS
-        else:
-            l_v = 0
-
-        if r_v > kS:
-            r_v -= kS
-        elif r_v < -kS:
-            r_v += kS
-        else:
-            r_v = 0
+        l_v = self.l_motor.getAppliedOutput() * voltage
+        r_v = self.r_motor.getAppliedOutput() * voltage
 
         self.drivesim.setInputs(l_v, r_v)
         self.drivesim.update(tm_diff)
 
+        # print(f"{l_v}, {r_v}")
         self.l_encoder.setPosition(self.drivesim.getLeftPosition())
-        # self.l_encoder.setVelocity(self.drivesim.getLeftVelocity())
         self.r_encoder.setPosition(self.drivesim.getRightPosition())
-        # self.r_encoder.setVelocity(self.drivesim.getRightVelocity())
 
         pose = self.drivesim.getPose()
         field.setRobotPose(pose)
