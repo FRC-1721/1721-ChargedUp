@@ -1,6 +1,11 @@
 # Dev created/computer specific
 imgui.ini
 .vscode
+<<<<<<< HEAD
+networktables.json
+simgui*
+=======
+>>>>>>> main
 __pycache__
 _build
 *.*~
@@ -10,16 +15,25 @@ _build
 .pytest_cache
 
 # dashboard build files
+<<<<<<< HEAD
+<<<<<<< HEAD
+=======
+>>>>>>> main
 dashboard/www/main.js*
 
 # dashboard packages
 node_modules
 _staging
+<<<<<<< HEAD
+=======
+=======
+>>>>>>> main
 dashboard/.cache
 dashboard/.parcel-cache
 dashboard/dist/*
 #dashboard packages
 dashboard/node_modules
+>>>>>>> main
 
 # Tools
 .SysId/
@@ -30,4 +44,8 @@ sysid_data*
 # path plannter
 .pathplanner
 generatedCSV
+<<<<<<< HEAD
 generatedJSON
+=======
+generatedJSON
+>>>>>>> main

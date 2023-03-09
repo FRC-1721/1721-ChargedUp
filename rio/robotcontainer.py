@@ -205,7 +205,6 @@ class RobotContainer:
 
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
-        # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.
 
     def configureNetworktables(self):
         # Configure networktables
