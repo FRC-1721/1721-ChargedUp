@@ -15,7 +15,7 @@ main mode:
     DiffLock: 2
     Turn90: 3
     TurnAnti90: 4
-    grab: 5
+    StartConfig: 5
 
   operator: # using an "x-box" controller
     controller_port: 1

@@ -182,6 +182,24 @@ class RobotContainer:
             )
         )
 
+        # Starting config
+        commands2.button.JoystickButton(
+            self.driverController,
+            self.driverConsts["StartConfig"],
+        ).toggleOnTrue(
+            PresetArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+                0,  # Random!
+                55,  # Just as random!
+            )
+        )
+
         # This is caleb's fully manual mode
         commands2.button.JoystickButton(
             self.operatorController,
