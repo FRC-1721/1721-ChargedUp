@@ -29,7 +29,7 @@ class FlyByWire(commands2.CommandBase):
     def execute(self) -> None:
         if RobotBase.isReal():
             self.drivetrain.arcadeDrive(
-                self.exponential_dampen(self.forward() * 0.9) * -1,
+                self.exponential_dampen(self.forward()) * -1,
                 self.piecewise_dampen(self.rotation()),
             )
         else:

@@ -202,7 +202,7 @@ class RobotContainer:
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["hold"],
-        ).toggleOnTrue(ManualGripper(self.clawSubsystem, grabForce=-0.25))
+        ).toggleOnTrue(ManualGripper(self.clawSubsystem, grabForce=-0.3))
 
     def configureAutonomous(self):
         # Create a sendable chooser

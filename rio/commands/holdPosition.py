@@ -34,10 +34,6 @@ class HoldPosition(commands2.CommandBase):
         self.lPID = PIDController(0.1, 0.01, 1.0)
 
     def execute(self) -> None:
-        print(
-            f"Target is: {self.re}, current pos is: {self.drivetrain.rightEncoder.getPosition()}"
-        )
-
         self.drivetrain.tankDriveVolts(
             self.rPID.calculate(
                 self.drivetrain.rightEncoder.getPosition(),

@@ -257,5 +257,3 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.sd.putNumber("Thermals/L2", self.leftMotor2.getMotorTemperature())
         self.sd.putNumber("Thermals/R1", self.rightMotor1.getMotorTemperature())
         self.sd.putNumber("Thermals/R2", self.rightMotor2.getMotorTemperature())
-
-        print(self.rightEncoder.getPosition())
