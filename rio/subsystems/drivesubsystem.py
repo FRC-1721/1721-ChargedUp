@@ -89,7 +89,7 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.leftEncoder = self.leftMotor1.getEncoder()
 
         # The right-side drive encoder
-        self.rightEncoder = self.rightMotor1.getEncoder()
+        self.rightEncoder = self.rightMotor2.getEncoder()
 
         # PID Controllers
         self.lPID = self.leftMotor1.getPIDController()
@@ -257,7 +257,3 @@ class DriveSubsystem(commands2.SubsystemBase):
         self.sd.putNumber("Thermals/L2", self.leftMotor2.getMotorTemperature())
         self.sd.putNumber("Thermals/R1", self.rightMotor1.getMotorTemperature())
         self.sd.putNumber("Thermals/R2", self.rightMotor2.getMotorTemperature())
-
-        # See here for turning bug
-        # https://github.com/FRC-1721/1721-ChargedUp/issues/10#issuecomment-1386472066
-        return self.ahrs.getRawGyroZ()

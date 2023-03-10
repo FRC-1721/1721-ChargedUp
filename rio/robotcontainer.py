@@ -24,7 +24,7 @@ from commands.manualGripper import ManualGripper
 from commands.presetArm import PresetArm
 from commands.manualArm import ManualArm
 from commands.findZero import FindZero
-
+from commands.holdPosition import HoldPosition
 
 # Autonomous
 from autonomous.curvyAuto import CurvyAuto
@@ -126,6 +126,11 @@ class RobotContainer:
             )
         )
 
+        # This is causing an error read the message left in the class
+        commands2.button.JoystickButton(
+            self.driverController, self.driverConsts["DiffLock"]
+        ).whileTrue(HoldPosition(self.robotDrive))
+
         commands2.button.JoystickButton(
             self.operatorController,
             self.operatorConsts["Unclamp"],
@@ -177,6 +182,24 @@ class RobotContainer:
             )
         )
 
+        # Starting config
+        commands2.button.JoystickButton(
+            self.driverController,
+            self.driverConsts["StartConfig"],
+        ).toggleOnTrue(
+            PresetArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+                0,  # Random!
+                55,  # Just as random!
+            )
+        )
+
         # This is caleb's fully manual mode
         commands2.button.JoystickButton(
             self.operatorController,
@@ -192,6 +215,12 @@ class RobotContainer:
                 ),
             )
         )
+
+        # a lock command for the claw
+        commands2.button.JoystickButton(
+            self.operatorController,
+            self.operatorConsts["hold"],
+        ).toggleOnTrue(ManualGripper(self.clawSubsystem, grabForce=-0.35))
 
     def configureAutonomous(self):
         # Create a sendable chooser
