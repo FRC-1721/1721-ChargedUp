@@ -25,7 +25,7 @@ arm:
     ff: 0
 
   ladder:
-    kp: 0.4
-    ki: 0.0001
-    kd: 2.4
+    kp: 0.1
+    ki: 0
+    kd: 0
     ff: 0
