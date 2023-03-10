@@ -10,4 +10,4 @@ class BackAuto(commands2.SequentialCommandGroup):
         a 'simple' drive back command
         """
 
-        super().__init__(FlyWithWires(driveSubsystem, fwd=-0.5, time=8))
+        super().__init__(FlyWithWires(driveSubsystem, fwd=-0.5, time=3))
