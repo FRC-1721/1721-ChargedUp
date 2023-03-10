@@ -52,4 +52,4 @@ class FlyByWire(commands2.CommandBase):
         a dampened user input
         """
 
-        return x / 1.75
+        return x / 2.25
