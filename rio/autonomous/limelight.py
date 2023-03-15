@@ -30,22 +30,34 @@ class limeLightCommands(commands2.CommandBase):
         if type(aprilTag) is list and len(aprilTag) >= 6:
             print(aprilTag, "asdfasdfasdf")
             distX = aprilTag[0]
-            distY = aprilTag[1] - 180
+            distY = aprilTag[1]
             rotZ = aprilTag[5]
-            if -2.5 < rotZ < 2.5:
-                if distX >= -4:
-                    self.drivesys.arcadeDrive(0.5, 0)  # needs to be adjusted
-                elif distX >= -5:
-                    self.drivesys.arcadeDrive(0.35, 0)  # needs to be adjusted
-                elif distX >= -6:
-                    self.drivesys.arcadeDrive(0.2, 0)  # needs to be adjusted
-
-                    # if distY > 0:
-                    # self.drivesys.arcadeDrive(10, 20)  # needs to be adjusted
-                    # elif distY < 0:
-                    # self.drivesys.arcadeDrive(10, -20)  # needs to be adjusted
+            if rotZ > 0:
+                rotZ -= 180
             else:
-                TurnToAngle(rotZ - 180, self.drivesys)  # prbably doesn't work
+                rotZ += 180
+
+            movespeed = 0
+            rotSpeed = 0
+
+            print("Z: " + str(rotZ))
+            print("Y: " + str(distY))
+            if -5 < rotZ < 5:
+                if distX >= -4:
+                    movespeed = 1  # needs to be adjusted
+
+                elif distX >= -5:
+                    movespeed = 0.7
+                elif distX >= -6:
+                    movespeed = 0.4
+
+            elif -20 < rotZ < 20:
+                if rotZ > 1:
+                    rotSpeed = 0.25
+                elif rotZ < 20:
+                    rotSpeed = -0.25
+            print("movespeed: " + str(movespeed))
+            self.drivesys.arcadeDrive(movespeed, rotSpeed)
         else:
             if aprilTag <= 0:
                 print("no apriltag found!")
