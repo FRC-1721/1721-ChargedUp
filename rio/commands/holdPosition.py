@@ -3,12 +3,17 @@ import commands2
 
 import rev
 
+from wpimath.controller import PIDController
+
 from subsystems.drivesubsystem import DriveSubsystem
 
 
 class HoldPosition(commands2.CommandBase):
     """
     Holds position using the embedded PID loops
+    TODO fix, this currently works because it uses
+    wpilibs motors saftey feature. I leave this here
+    because it spits our an error when doing so.
     """
 
     def __init__(
@@ -22,17 +27,29 @@ class HoldPosition(commands2.CommandBase):
         # Adding drivetrain as a requirement ensures no other command will interrupt us
         self.addRequirements([self.drivetrain])
 
-        # Current rigth and left pos
-        self.re = self.drivetrain.getRightEncoder().getPosition()
-        self.le = self.drivetrain.getLeftEncoder().getPosition()
+        self.re = self.drivetrain.rightEncoder.getPosition()  # current left POS
+        self.le = self.drivetrain.leftEncoder.getPosition()  # current right POS
+
+        self.rPID = PIDController(0.1, 0.01, 1.0)
+        self.lPID = PIDController(0.1, 0.01, 1.0)
 
     def execute(self) -> None:
-        self.drivetrain.rPID.setReference(
-            self.re, rev.CANSparkMax.ControlType.kPosition
+        self.drivetrain.tankDriveVolts(
+            self.rPID.calculate(
+                self.drivetrain.rightEncoder.getPosition(),
+                self.re,
+            ),
+            -self.lPID.calculate(
+                self.drivetrain.leftEncoder.getPosition(),
+                self.le,
+            ),
         )
-        self.drivetrain.lPID.setReference(
-            self.le, rev.CANSparkMax.ControlType.kPosition
-        )
+
+        # Its ok! We're updating the motors
+        self.drivetrain.drive.feed()
+
+    def isFinished(self) -> bool:
+        return False
 
     def end(self, interrupted: bool) -> None:
         pass

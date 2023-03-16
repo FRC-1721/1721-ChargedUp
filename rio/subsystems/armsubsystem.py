@@ -119,5 +119,3 @@ class ArmSubsystem(commands2.SubsystemBase):
 
         if self.ledBackwardLimit.get():
             self.ladderEncoder.setPosition(0)
-
-        # print(self.ladderEncoder.getPosition())
