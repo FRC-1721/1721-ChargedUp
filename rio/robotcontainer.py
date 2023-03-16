@@ -31,6 +31,7 @@ from autonomous.curvyAuto import CurvyAuto
 from autonomous.noauto import NoAuto
 from autonomous.backwardsAuto import BackwardsAuto
 from autonomous.backAuto import BackAuto
+from autonomous.limelight import limeLightCommands
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -202,10 +203,10 @@ class RobotContainer:
         self.autoChooser.addOption("Curry Auto", CurvyAuto(self.armSubsystem))
         self.autoChooser.addOption("Backwards Auto", BackwardsAuto(self.robotDrive))
         self.autoChooser.addOption("Back Auto", BackAuto(self.robotDrive))
+        self.autoChooser.addOption("Jack Auto", limeLightCommands(self.robotDrive))
 
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
-        # self.sd.putData("Autonomous", self.autoChooser) # TODO: I don't know why this doesn't work.
 
     def configureNetworktables(self):
         # Configure networktables

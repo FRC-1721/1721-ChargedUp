@@ -211,6 +211,13 @@ function updateColors() {
     // Custom formatting
     checkSenTableVal(/-dirty$/, "#git-hash-area", "#cc241d");
 
+<<<<<<< HEAD
+	// Programmers
+	highlightColor(/SimUser$/, "#builder-area", 'linear-gradient(to right, #504945, #d3869b)'); // First one is fine to overwrite.
+	highlightColor(/joe/, "#builder-area", 'linear-gradient(to right, #504945, #831598)', false);
+	highlightColor(/dylan/, "#builder-area", 'linear-gradient(to right, #504945, #fe8019)', false);
+	highlightColor(/kredcool/, "#builder-area", 'linear-gradient(to right, #504945, #67ab24)', false);
+=======
     // Programmers
     checkSenTableVal(/SimUser$/, "#builder-area", "#d3869b"); // First one is fine to overwrite.
     checkSenTableVal(/joe/, "#builder-area", "#831598", false);
@@ -253,6 +260,7 @@ function updateColors() {
     // Branches
     highlightColor(/event/, "#git-branch-area", 'linear-gradient(to right, #504945, #689d6a)');
     highlightColor(/sim/, "#git-branch-area", 'linear-gradient(to right, #504945, #cc241d)', false);
+>>>>>>> main
 
 }
 
@@ -365,4 +373,9 @@ function updateRobotPos(v, i) {
 window.preload = preload;
 window.setup = setup;
 window.draw = draw;
+<<<<<<< HEAD
+window.mousePressed = mousePressed;
+//window.keyPressed = keyPressed;
+=======
 //window.mousePressed = mousePressed;
+>>>>>>> main

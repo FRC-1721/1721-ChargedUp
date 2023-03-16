@@ -34,6 +34,8 @@ class RotomToaster(commands2.TimedCommandRobot):
         This function is run when the robot is first started up and should be used for any
         initialization code.
         """
+        wpilib.CameraServer.launch()
+
         self.autonomousCommand: typing.Optional[commands2.Command] = None
 
         # Instantiate our RobotContainer.  This will perform all our button bindings, and put our
