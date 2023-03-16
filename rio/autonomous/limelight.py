@@ -34,8 +34,8 @@ class limeLightCommands(commands2.CommandBase):
             type(aprilTag) is list and len(aprilTag) >= 6
         ):  # checks tif the apriltag is a list and has the correct amount of values
             print(aprilTag, "asdfasdfasdf")
-            distX = aprilTag[0]  # x linear offset of apriltag and robot
-            distY = aprilTag[1]  # y linear offset of apriltag and robot
+            tanX = aprilTag[0]  # x linear offset of apriltag and robot
+            tanY = aprilTag[1]  # y linear offset of apriltag and robot
             rotZ = aprilTag[5]  # z rotational offset of apriltag and robot
 
             # due to the camera not being able to capture the tag in a
@@ -52,31 +52,43 @@ class limeLightCommands(commands2.CommandBase):
             rotSpeed = 0
 
             print("Z: " + str(rotZ))
-            print("Y: " + str(distY))
+            print("Y: " + str(tanY))
 
             # checks the angle offset of the robot and decides whether it should go straight forward or start turning
             if -5 < rotZ < 5:
                 # checks how far away from the apriltag the robot is and sets speed accordingly
-                if distX >= -4:
+                if tanX >= -4:
                     movespeed = 0.8  # needs to be adjusted
-                elif distX >= -5:
+                elif tanX >= -5:
                     movespeed = 0.6
-                elif distX >= -6:
+                elif tanX >= -6:
                     movespeed = 0.4
+
+            elif -1 < tanY < 1:
+                if tanY > 1:
+                    if rotZ > 50:
+                        rotSpeed = 0.25
+                    elif rotZ < 40:
+                        rotSpeed = -0.0
+                    else:
+                        movespeed = 0.5
+                if tanY < -1:
+                    if rotZ > -50:
+                        rotSpeed = 0.25
+                    elif rotZ < -40:
+                        rotSpeed = -0.0
+                    else:
+                        movespeed = 0.5
 
             elif -20 < rotZ < 20:
                 if rotZ > 0:
                     rotSpeed = 0.25
                 elif rotZ < 0:
                     rotSpeed = -0.25
+
             print("movespeed: " + str(movespeed))
             # drive the robot based on values
             self.drivesys.arcadeDrive(movespeed, rotSpeed)
-        else:
-            if aprilTag <= 0:
-                print("no apriltag found!")
-            elif aprilTag == 1:
-                print("error while getting position of aprilTag")
 
     def getTag(self):
         """
@@ -87,7 +99,7 @@ class limeLightCommands(commands2.CommandBase):
         tagID = self.ll.getEntry("tid").getDouble(0)
 
         # checks if targetID has been set and if it has, checks to make sure that it has the right ID
-        if self.targetID == None ^ tagID == self.targetID:
+        if (self.targetID == None) ^ (tagID == self.targetID):
             print(tagID, "a")
             if 0 < tagID <= 8:
                 tagPos = self.ll.getEntry("botpose").getDoubleArray(1)
