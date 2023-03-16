@@ -296,6 +296,11 @@ main {
     img {
         min-height: 377px;
     }
+
+    #cam2 {
+        transform: translateX(-100%) rotate(-90deg);
+        transform-origin: top right;
+    }
 }
 
 #field-canvas {
