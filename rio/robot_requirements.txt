@@ -7,6 +7,7 @@
 PyYAML
 robotpy
 robotpy-commands-v2
+robotpy-cscore
 robotpy-ctre
 robotpy-hal
 robotpy-rev
