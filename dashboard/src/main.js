@@ -156,7 +156,7 @@ function onValueChanged(key, value, isNew) {
     }
 
     if (key.includes("Pose/Diff")) {
-        if (key.includes("DiffL")) {
+        if (key.includes("DiffR")) {
             if (value >= 0) {
                 $(".diffL.diffF").css("height", Math.abs(value / 36) + "%")
                 $(".diffL.diffB").css("height", "0")
@@ -165,7 +165,7 @@ function onValueChanged(key, value, isNew) {
                 $(".diffL.diffB").css("height", Math.abs(value / 36) + "%")
             }
         }
-        if (key.includes("DiffR")) {
+        if (key.includes("DiffL")) {
             if (value >= 0) {
                 $(".diffR.diffF").css("height", Math.abs(value / 36) + "%")
                 $(".diffR.diffB").css("height", "0")
