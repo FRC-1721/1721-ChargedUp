@@ -32,6 +32,7 @@ from autonomous.noauto import NoAuto
 from autonomous.backwardsAuto import BackwardsAuto
 from autonomous.backAuto import BackAuto
 from autonomous.dropAuto import DropAuto
+from autonomous.dropDriveAuto import DropDriveAuto
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -232,8 +233,9 @@ class RobotContainer:
         # self.autoChooser.addOption("Curry Auto", CurvyAuto(self.armSubsystem))
         # self.autoChooser.addOption("Backwards Auto", BackwardsAuto(self.robotDrive))
         self.autoChooser.addOption("Back Auto", BackAuto(self.robotDrive))
+        self.autoChooser.addOption("Drop Auto", DropAuto(self.armSubsystem))
         self.autoChooser.addOption(
-            "Drop Auto", DropAuto(self.armSubsystem, self.robotDrive)
+            "Drop and Drive Auto", DropDriveAuto(self.armSubsystem, self.robotDrive)
         )
 
         # Put the chooser on the dashboard

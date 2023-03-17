@@ -9,7 +9,9 @@ from autonomous.flywithwire import FlyWithWires
 
 class DropDriveAuto(commands2.SequentialCommandGroup):
     def __init__(
-        self, armSubsystem: ArmSubsystem, driveSubsystem: DriveSubsystem
+        self,
+        armSubsystem: ArmSubsystem,
+        driveSubsystem: DriveSubsystem,
     ) -> None:
         """
         Moving the arm down to score in auto
