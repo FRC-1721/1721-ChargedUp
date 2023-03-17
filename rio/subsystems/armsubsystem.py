@@ -102,7 +102,11 @@ class ArmSubsystem(commands2.SubsystemBase):
         This is the spool motor, it controls
         how much rope we let out.
         """
-        self.elevatorMotor.set(speed)
+        if self.elevatorEncoder.getPosition() >= 100 and speed < 0.1:
+            self.elevatorMotor.set(speed)
+
+        else:
+            self.elevatorMotor.set(speed)
 
     def ascent(self, speed):
         """
