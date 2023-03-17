@@ -27,12 +27,11 @@ from commands.findZero import FindZero
 from commands.holdPosition import HoldPosition
 
 # Autonomous
-from autonomous.curvyAuto import CurvyAuto
 from autonomous.noauto import NoAuto
-from autonomous.backwardsAuto import BackwardsAuto
 from autonomous.backAuto import BackAuto
 from autonomous.dropAuto import DropAuto
 from autonomous.dropDriveAuto import DropDriveAuto
+from autonomous.blockDrop import BlockDrop
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -230,12 +229,12 @@ class RobotContainer:
 
         # Add options for chooser
         self.autoChooser.setDefaultOption("No Auto", NoAuto())
-        # self.autoChooser.addOption("Curry Auto", CurvyAuto(self.armSubsystem))
-        # self.autoChooser.addOption("Backwards Auto", BackwardsAuto(self.robotDrive))
-        self.autoChooser.addOption("Back Auto", BackAuto(self.robotDrive))
-        self.autoChooser.addOption("Drop Auto", DropAuto(self.armSubsystem))
         self.autoChooser.addOption(
-            "Drop and Drive Auto", DropDriveAuto(self.armSubsystem, self.robotDrive)
+            "Cone Drop Auto", DropDriveAuto(self.armSubsystem, self.robotDrive)
+        )
+        self.autoChooser.addOption(
+            "Block Drop Auto",
+            BlockDrop(self.clawSubsystem, self.armSubsystem, self.robotDrive),
         )
 
         # Put the chooser on the dashboard
