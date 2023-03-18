@@ -13,5 +13,5 @@ class BackAuto(commands2.SequentialCommandGroup):
         """
 
         super().__init__(
-            FlyWithWires(driveSubsystem, fwd=-0.5, time=2),
+            FlyWithWires(driveSubsystem, fwd=-0.5, time=3),
         )
