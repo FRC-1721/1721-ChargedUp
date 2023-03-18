@@ -88,8 +88,8 @@ class ArmSubsystem(commands2.SubsystemBase):
         self.elevatorMotor.setSmartCurrentLimit(8)
 
         # starting values
-        self.elevatorEncoder.setPosition(0)
-        self.ladderEncoder.setPosition(55)
+        self.elevatorEncoder.setPosition(self.elevatorConst["Start"])
+        self.ladderEncoder.setPosition(self.ladderConst["Start"])
 
     def gotoPosition(self, extension: float = 0, angle: float = 0):
         """
