@@ -52,4 +52,4 @@ class FlyForWire(commands2.CommandBase):
         a dampened user input
         """
 
-        return x / 2.25
+        return x / 3.5
