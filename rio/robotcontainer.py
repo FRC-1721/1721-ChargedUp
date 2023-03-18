@@ -31,6 +31,8 @@ from commands.flyforwire import FlyForWire
 from autonomous.noauto import NoAuto
 from autonomous.dropDriveAuto import DropDriveAuto
 from autonomous.blockDrop import BlockDrop
+from autonomous.blockDrip import BlockDrip
+from autonomous.dropAuto import DropAuto
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -247,8 +249,16 @@ class RobotContainer:
             "Cone Drop", DropDriveAuto(self.armSubsystem, self.robotDrive)
         )
         self.autoChooser.addOption(
+            "Cone Drip",
+            DropAuto(self.armSubsystem),
+        )
+        self.autoChooser.addOption(
             "Block Drop",
             BlockDrop(self.clawSubsystem, self.armSubsystem, self.robotDrive),
+        )
+        self.autoChooser.addOption(
+            "Block Drip",
+            BlockDrip(self.clawSubsystem, self.armSubsystem),
         )
 
         # Put the chooser on the dashboard
