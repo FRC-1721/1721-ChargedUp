@@ -132,7 +132,7 @@ class RobotContainer:
         # This is causing an error read the message left in the class
         commands2.button.JoystickButton(
             self.driverController, self.driverConsts["DiffLock"]
-        ).whileTrue(HoldPosition(self.robotDrive))
+        ).toggleOnTrue(HoldPosition(self.robotDrive))
 
         commands2.button.JoystickButton(
             self.operatorController,
