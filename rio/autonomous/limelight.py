@@ -34,7 +34,7 @@ class limeLightCommands(commands2.CommandBase):
             type(aprilTag) is list and len(aprilTag) >= 6
         ):  # checks tif the apriltag is a list and has the correct amount of values
             print(aprilTag, "asdfasdfasdf")
-            tanX = aprilTag[0]  # x linear offset of apriltag and robot
+            tanZ = aprilTag[3]  # x linear offset of apriltag and robot
             tanY = aprilTag[1]  # y linear offset of apriltag and robot
             rotZ = aprilTag[5]  # z rotational offset of apriltag and robot
 
@@ -42,10 +42,6 @@ class limeLightCommands(commands2.CommandBase):
             # stable manner as well as how it handles rotation, this
             # checks whether the z rot offset is negative or positive
             # and converts it into a better value
-            if rotZ > 0:
-                rotZ -= 180
-            else:
-                rotZ += 180
 
             # sets a default speed and rotational speed value
             movespeed = 0
@@ -57,14 +53,14 @@ class limeLightCommands(commands2.CommandBase):
             # checks the angle offset of the robot and decides whether it should go straight forward or start turning
             if -5 < rotZ < 5:
                 # checks how far away from the apriltag the robot is and sets speed accordingly
-                if tanX >= -4:
+                if tanZ <= -4:
                     movespeed = 0.8  # needs to be adjusted
-                elif tanX >= -5:
+                elif tanZ <= -3:
                     movespeed = 0.6
-                elif tanX >= -6:
+                elif tanZ <= -2:
                     movespeed = 0.4
 
-            elif -1 < tanY < 1:
+            elif (tanY < -1) or (tanY > 1):
                 if tanY > 1:
                     if rotZ > 50:
                         rotSpeed = 0.25
@@ -102,7 +98,7 @@ class limeLightCommands(commands2.CommandBase):
         if (self.targetID == None) ^ (tagID == self.targetID):
             print(tagID, "a")
             if 0 < tagID <= 8:
-                tagPos = self.ll.getEntry("botpose").getDoubleArray(1)
+                tagPos = self.ll.getEntry("camtran").getDoubleArray(1)
                 return tagPos
             # self.map["fiducials"][tagID - 1]["transform"] = tagPos
             return tagID
