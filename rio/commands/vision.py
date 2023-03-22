@@ -9,23 +9,21 @@ import commands2
 
 class globDetect(commands2.CommandBase):
     def __init__(self) -> None:
-        self.cone_lower = np.array([25, 52, 72], np.uint8)
-        self.cone_upper = np.array([102, 255, 255], np.uint8)
+        self.cone_lower = np.array([180, 101, 0], np.uint8)
+        self.cone_upper = np.array([252, 223, 0], np.uint8)
         super().__init__()
 
     def camSetup(self):
-        cs = CameraServer.getInstance()
-        cs.enableLogging()
 
         # Capture from the first USB Camera on the system
-        camera = cs.startAutomaticCapture()
+        camera = CameraServer.startAutomaticCapture()
         camera.setResolution(320, 240)
 
         # Get a CvSink. This will capture images from the camera
-        cvSink = cs.getVideo()
+        cvSink = CameraServer.getVideo()
 
         # (optional) Setup a CvSource. This will send images back to the Dashboard
-        outputStream = cs.putVideo("globDetect", 320, 240)
+        outputStream = CameraServer.putVideo("globDetect", 320, 240)
 
         # Allocating new images is very expensive, always try to preallocate
         img = np.zeros(shape=(240, 320, 3), dtype=np.uint8)
@@ -52,7 +50,7 @@ class globDetect(commands2.CommandBase):
                 if area > 300:
                     x, y, w, h = cv2.boundingRect(contour)
                     imageFrame = cv2.rectangle(
-                        imageFrame, (x, y), (x + w, y + h), (255, 165, 0), 2
+                        hsvFrame, (x, y), (x + w, y + h), (255, 165, 0), -1
                     )
 
                     cv2.putText(

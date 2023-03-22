@@ -16,6 +16,7 @@ main mode:
     Turn90: 3
     TurnAnti90: 4
     StartConfig: 5
+    globDetect: 6
 
   operator: # using an "x-box" controller
     controller_port: 1
