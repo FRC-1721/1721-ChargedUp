@@ -9,6 +9,7 @@ wpilib = {extras = ["all"]}
 pyyaml = "6.0"
 black = "*"
 robotpy-pathplannerlib = "*"
+opencv-python = "*"
 
 [dev-packages]
 black = "*"
