@@ -104,6 +104,8 @@ class RobotContainer:
                 lambda: self.operatorController.getRawAxis(
                     5,
                 ),
+                82,
+                163,
             )
         )
 
