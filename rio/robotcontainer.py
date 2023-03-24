@@ -26,10 +26,12 @@ from commands.crawl import Crawl
 
 # Autonomous
 from autonomous.noauto import NoAuto
-from autonomous.dropDriveAuto import DropDriveAuto
 from autonomous.blockDrop import BlockDrop
 from autonomous.blockDrip import BlockDrip
+from autonomous.shortBlock import ShortBlock
 from autonomous.dropAuto import DropAuto
+from autonomous.dropDriveAuto import DropDriveAuto
+from autonomous.shortCone import ShortCone
 from autonomous.drivestationcube import DrivestationCube
 
 # NetworkTables
@@ -179,8 +181,8 @@ class RobotContainer:
                 lambda: self.operatorController.getRawAxis(
                     5,
                 ),
-                94,  # Random!
-                135,  # Just as random!
+                0,  # Random!
+                0,  # Just as random!
             )
         )
 
@@ -255,26 +257,36 @@ class RobotContainer:
         self.autoChooser = wpilib.SendableChooser()
 
         # Add options for chooser
-        self.autoChooser.setDefaultOption("No Auto", NoAuto())
+        # Cones
         self.autoChooser.addOption(
-            "Cone Drop", DropDriveAuto(self.armSubsystem, self.robotDrive)
+            "Cone Long Drive", DropDriveAuto(self.armSubsystem, self.robotDrive)
         )
         self.autoChooser.addOption(
-            "Cone Drip",
+            "Cone Short Drive", ShortCone(self.armSubsystem, self.robotDrive)
+        )
+        self.autoChooser.addOption(
+            "Cone No Drive",
             DropAuto(self.armSubsystem),
         )
+        # Blocks
         self.autoChooser.addOption(
-            "Block Drop",
+            "Block Long Drive",
             BlockDrop(self.clawSubsystem, self.armSubsystem, self.robotDrive),
         )
         self.autoChooser.addOption(
-            "Block Drip",
+            "Block Short Drive",
+            ShortBlock(self.clawSubsystem, self.armSubsystem, self.robotDrive),
+        )
+        self.autoChooser.addOption(
+            "Block No Drive",
             BlockDrip(self.clawSubsystem, self.armSubsystem),
         )
+        # Misc
         self.autoChooser.addOption(
             "Drivestation [Exerpimental]",
             DrivestationCube(self.clawSubsystem, self.armSubsystem, self.robotDrive),
         )
+        ssself.autoChooser.setDefaultOption("No Auto", NoAuto())
 
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
