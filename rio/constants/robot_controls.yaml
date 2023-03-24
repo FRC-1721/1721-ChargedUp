@@ -17,6 +17,7 @@ main mode:
     TurnAnti90: 4
     StartConfig: 5
     Slow: 10
+    Crawl: 3
 
   operator: # using an "x-box" controller
     controller_port: 1
