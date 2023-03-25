@@ -23,5 +23,5 @@ class ShortCone(commands2.SequentialCommandGroup):
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 25, 163).withTimeout(1),
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 25, 236).withTimeout(1),
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 0, 236).withTimeout(1),
-            FlyWithWires(driveSubsystem, fwd=-0.75, time=2.1),
+            FlyWithWires(driveSubsystem, fwd=-0.75, time=3.1),
         )
