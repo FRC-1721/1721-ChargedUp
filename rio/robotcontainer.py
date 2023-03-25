@@ -15,7 +15,7 @@ from subsystems.clawsubsystem import ClawSubsystem
 from subsystems.armsubsystem import ArmSubsystem
 
 # Commands
-from commands.vision import globDetect
+from commands.objDetect import limeLightDetector
 from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
@@ -135,7 +135,7 @@ class RobotContainer:
 
         commands2.button.JoystickButton(
             self.driverController, self.driverConsts["globDetect"]
-        ).whileTrue(globDetect())
+        ).whileTrue(limeLightDetector(self.robotDrive))
 
         commands2.button.JoystickButton(
             self.operatorController,
