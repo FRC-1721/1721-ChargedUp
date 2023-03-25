@@ -5,6 +5,7 @@ from subsystems.drivesubsystem import DriveSubsystem
 
 from commands.presetArm import PresetArm
 from autonomous.flywithwire import FlyWithWires
+from autonomous.level import Level
 
 
 class ShortCone(commands2.SequentialCommandGroup):
@@ -22,5 +23,6 @@ class ShortCone(commands2.SequentialCommandGroup):
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 25, 163).withTimeout(1),
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 25, 236).withTimeout(1),
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 0, 236).withTimeout(1),
-            FlyWithWires(driveSubsystem, fwd=-0.5, time=3.1),
+            FlyWithWires(driveSubsystem, fwd=-0.75, time=1.1),
+            Level(driveSubsystem, armSubsystem, fwd=-0.3, time=0.1),
         )
