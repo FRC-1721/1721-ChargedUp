@@ -26,7 +26,6 @@ class Level(commands2.CommandBase):
         pass
 
     def execute(self) -> None:
-        PresetArm(self.arm, lambda: 0, lambda: 0, 82, 163),
         if self.drive.getPitch() != 89:
             FlyWithWires(self.drive, self.fwd, self.rot, self.time)
 

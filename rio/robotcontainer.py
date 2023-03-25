@@ -106,8 +106,6 @@ class RobotContainer:
                 lambda: self.operatorController.getRawAxis(
                     5,
                 ),
-                82,
-                163,
             )
         )
 
@@ -181,8 +179,8 @@ class RobotContainer:
                 lambda: self.operatorController.getRawAxis(
                     5,
                 ),
-                0,  # Random!
-                0,  # Just as random!
+                82,  # Random!
+                163,  # Just as random!
             )
         )
 
@@ -286,7 +284,7 @@ class RobotContainer:
             "Drivestation [Exerpimental]",
             DrivestationCube(self.clawSubsystem, self.armSubsystem, self.robotDrive),
         )
-        ssself.autoChooser.setDefaultOption("No Auto", NoAuto())
+        self.autoChooser.setDefaultOption("No Auto", NoAuto())
 
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)
