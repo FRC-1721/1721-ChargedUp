@@ -22,5 +22,5 @@ class DropDriveAuto(commands2.SequentialCommandGroup):
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 25, 163).withTimeout(1),
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 25, 236).withTimeout(1),
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 0, 236).withTimeout(1),
-            FlyWithWires(driveSubsystem, fwd=-0.6, time=3.1),
+            FlyWithWires(driveSubsystem, fwd=-0.5, time=3.1),
         )
