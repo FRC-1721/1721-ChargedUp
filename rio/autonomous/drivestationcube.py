@@ -7,9 +7,10 @@ from subsystems.drivesubsystem import DriveSubsystem
 from commands.presetArm import PresetArm
 from commands.manualGripper import ManualGripper
 from autonomous.flywithwire import FlyWithWires
+from autonomous.level import Level
 
 
-class BlockDrop(commands2.SequentialCommandGroup):
+class DrivestationCube(commands2.SequentialCommandGroup):
     def __init__(
         self,
         clawSubsystem: ClawSubsystem,
@@ -23,6 +24,6 @@ class BlockDrop(commands2.SequentialCommandGroup):
         super().__init__(
             PresetArm(armSubsystem, lambda: 0, lambda: 0, 82, 163).withTimeout(2),
             ManualGripper(clawSubsystem, 0.35).withTimeout(2),
-            PresetArm(armSubsystem, lambda: 0, lambda: 0, 0, 163).withTimeout(2),
-            FlyWithWires(driveSubsystem, fwd=-0.5, time=3.1),
+            FlyWithWires(driveSubsystem, fwd=-0.75, time=3),
+            Level(driveSubsystem, armSubsystem, fwd=-0.3, time=0.1),
         )

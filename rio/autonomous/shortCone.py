@@ -5,9 +5,10 @@ from subsystems.drivesubsystem import DriveSubsystem
 
 from commands.presetArm import PresetArm
 from autonomous.flywithwire import FlyWithWires
+from autonomous.level import Level
 
 
-class DropDriveAuto(commands2.SequentialCommandGroup):
+class ShortCone(commands2.SequentialCommandGroup):
     def __init__(
         self,
         armSubsystem: ArmSubsystem,

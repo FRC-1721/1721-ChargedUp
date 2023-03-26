@@ -19,20 +19,23 @@ from commands.objDetect import limeLightDetector
 from commands.turntoangle import TurnToAngle
 from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
-from commands.turntoangle import TurnToAngle
-from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.manualGripper import ManualGripper
 from commands.presetArm import PresetArm
 from commands.manualArm import ManualArm
 from commands.findZero import FindZero
 from commands.holdPosition import HoldPosition
+from commands.flyforwire import FlyForWire
+from commands.crawl import Crawl
 
 # Autonomous
 from autonomous.noauto import NoAuto
-from autonomous.backAuto import BackAuto
+from autonomous.blockDrop import BlockDrop
+from autonomous.blockDrip import BlockDrip
+from autonomous.shortBlock import ShortBlock
 from autonomous.dropAuto import DropAuto
 from autonomous.dropDriveAuto import DropDriveAuto
-from autonomous.blockDrop import BlockDrop
+from autonomous.shortCone import ShortCone
+from autonomous.drivestationcube import DrivestationCube
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -131,7 +134,7 @@ class RobotContainer:
         # This is causing an error read the message left in the class
         commands2.button.JoystickButton(
             self.driverController, self.driverConsts["DiffLock"]
-        ).whileTrue(HoldPosition(self.robotDrive))
+        ).toggleOnTrue(HoldPosition(self.robotDrive))
 
         commands2.button.JoystickButton(
             self.driverController, self.driverConsts["globDetect"]
@@ -183,8 +186,8 @@ class RobotContainer:
                 lambda: self.operatorController.getRawAxis(
                     5,
                 ),
-                94,  # Random!
-                135,  # Just as random!
+                82,  # Random!
+                163,  # Just as random!
             )
         )
 
@@ -228,19 +231,67 @@ class RobotContainer:
             self.operatorConsts["hold"],
         ).toggleOnTrue(ManualGripper(self.clawSubsystem, grabForce=-0.35))
 
+        # a slow command
+        commands2.button.JoystickButton(
+            self.driverController, self.driverConsts["Slow"]
+        ).whileTrue(
+            FlyForWire(
+                self.robotDrive,
+                lambda: -self.driverController.getRawAxis(
+                    self.driverConsts["ForwardAxis"],
+                ),
+                lambda: self.driverController.getRawAxis(
+                    self.driverConsts["SteerAxis"],
+                ),
+            )
+        )
+
+        commands2.button.JoystickButton(
+            self.driverController, self.driverConsts["Crawl"]
+        ).whileTrue(
+            Crawl(
+                self.robotDrive,
+                lambda: self.driverController.getRawAxis(
+                    self.driverConsts["SteerAxis"],
+                ),
+            )
+        )
+
     def configureAutonomous(self):
         # Create a sendable chooser
         self.autoChooser = wpilib.SendableChooser()
 
         # Add options for chooser
-        self.autoChooser.setDefaultOption("No Auto", NoAuto())
+        # Cones
         self.autoChooser.addOption(
-            "Cone Drop Auto", DropDriveAuto(self.armSubsystem, self.robotDrive)
+            "Cone Long Drive", DropDriveAuto(self.armSubsystem, self.robotDrive)
         )
         self.autoChooser.addOption(
-            "Block Drop Auto",
+            "Cone Short Drive", ShortCone(self.armSubsystem, self.robotDrive)
+        )
+        self.autoChooser.addOption(
+            "Cone No Drive",
+            DropAuto(self.armSubsystem),
+        )
+        # Blocks
+        self.autoChooser.addOption(
+            "Block Long Drive",
             BlockDrop(self.clawSubsystem, self.armSubsystem, self.robotDrive),
         )
+        self.autoChooser.addOption(
+            "Block Short Drive",
+            ShortBlock(self.clawSubsystem, self.armSubsystem, self.robotDrive),
+        )
+        self.autoChooser.addOption(
+            "Block No Drive",
+            BlockDrip(self.clawSubsystem, self.armSubsystem),
+        )
+        # Misc
+        self.autoChooser.addOption(
+            "Drivestation [Exerpimental]",
+            DrivestationCube(self.clawSubsystem, self.armSubsystem, self.robotDrive),
+        )
+        self.autoChooser.setDefaultOption("No Auto", NoAuto())
 
         # Put the chooser on the dashboard
         wpilib.SmartDashboard.putData("Autonomous", self.autoChooser)

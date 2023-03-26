@@ -1,26 +1,28 @@
 import commands2
 
 from subsystems.armsubsystem import ArmSubsystem
+from subsystems.clawsubsystem import ClawSubsystem
 from subsystems.drivesubsystem import DriveSubsystem
 
 from commands.presetArm import PresetArm
+from commands.manualGripper import ManualGripper
 from autonomous.flywithwire import FlyWithWires
 
 
-class DropDriveAuto(commands2.SequentialCommandGroup):
+class ShortBlock(commands2.SequentialCommandGroup):
     def __init__(
         self,
+        clawSubsystem: ClawSubsystem,
         armSubsystem: ArmSubsystem,
         driveSubsystem: DriveSubsystem,
     ) -> None:
         """
-        Moving the arm down to score in auto
-        then drive backwards
+        a 'simple' drive back command
         """
+
         super().__init__(
-            # keep at starting config
-            PresetArm(armSubsystem, lambda: 0, lambda: 0, 25, 163).withTimeout(1),
-            PresetArm(armSubsystem, lambda: 0, lambda: 0, 25, 236).withTimeout(1),
-            PresetArm(armSubsystem, lambda: 0, lambda: 0, 0, 236).withTimeout(1),
+            PresetArm(armSubsystem, lambda: 0, lambda: 0, 82, 163).withTimeout(2),
+            ManualGripper(clawSubsystem, 0.35).withTimeout(2),
+            PresetArm(armSubsystem, lambda: 0, lambda: 0, 0, 163).withTimeout(2),
             FlyWithWires(driveSubsystem, fwd=-0.5, time=3.1),
         )
