@@ -23,7 +23,7 @@ class Level(commands2.CommandBase):
         self.rot = rot
 
     def initialize(self) -> None:
-        pass
+        PresetArm(self.arm, lambda: 0, lambda: 0, 82, 163).withTimeout(2)
 
     def execute(self) -> None:
         if self.drive.getPitch() != 89:
