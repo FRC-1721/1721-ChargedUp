@@ -14,5 +14,4 @@ robotpy-rev
 robotpy-navx
 robotpy.pathplannerlib
 wpilib
-opencv-python
-
+numpy

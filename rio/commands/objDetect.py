@@ -23,17 +23,22 @@ class limeLightDetector(commands2.CommandBase):
     def execute(self) -> None:
         posX = self.ll.getEntry("tx").getDouble(0)
         append(self.xFifo, posX)
-        delete(self.xFifo, 0)
+        self.xFifo = delete(self.xFifo, 0)
 
         posY = self.ll.getEntry("ty").getDouble(0)
         append(self.yFifo, posY)
-        delete(self.yFifo, 0)
+        self.xFifo = delete(self.yFifo, 0)
 
         meanX = mean(posX)
         meanY = mean(posY)
+        print(self.xFifo)
 
-        if meanY > 0.5:
-            self.movespeed = 0.6
+        print(meanX)
+        print(meanY)
+        print(self.yFifo)
+
+        if meanY > 3.5:
+            self.movespeed = 0.1
         else:
             self.movespeed = 0
 
@@ -42,8 +47,10 @@ class limeLightDetector(commands2.CommandBase):
 
         elif meanX < -0.5:
             self.rotspeed = -0.5
-
         else:
             self.rotspeed = 0
-
+        print(self.movespeed)
+        print(self.rotspeed)
         self.drivesys.arcadeDrive(self.movespeed, self.rotspeed)
+        print(self.movespeed)
+        print(self.rotspeed)
