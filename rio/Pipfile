@@ -4,17 +4,18 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-robotpy = {extras = ["rev", "ctre", "commands2", "navx"]}
+robotpy = {extras = ["rev", "ctre", "commands2", "navx", "cscore"]}
 wpilib = {extras = ["all"]}
 pyyaml = "6.0"
 black = "*"
 robotpy-pathplannerlib = "*"
+numpy = "*"
 
 [dev-packages]
 black = "*"
 
 [requires]
-python_version = "3.10"
+python_version = "3.10" 
 
 [pipenv]
 allow_prereleases = true

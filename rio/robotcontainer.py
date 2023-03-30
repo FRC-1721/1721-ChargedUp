@@ -15,6 +15,9 @@ from subsystems.clawsubsystem import ClawSubsystem
 from subsystems.armsubsystem import ArmSubsystem
 
 # Commands
+from commands.objDetect import limeLightDetector
+from commands.turntoangle import TurnToAngle
+from commands.turntoangleprofiled import TurnToAngleProfiled
 from commands.flybywire import FlyByWire
 from commands.manualGripper import ManualGripper
 from commands.presetArm import PresetArm
@@ -132,6 +135,10 @@ class RobotContainer:
         commands2.button.JoystickButton(
             self.driverController, self.driverConsts["DiffLock"]
         ).toggleOnTrue(HoldPosition(self.robotDrive))
+
+        commands2.button.JoystickButton(
+            self.driverController, self.driverConsts["globDetect"]
+        ).whileTrue(limeLightDetector(self.robotDrive))
 
         commands2.button.JoystickButton(
             self.operatorController,
