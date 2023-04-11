@@ -23,6 +23,8 @@ from commands.findZero import FindZero
 from commands.holdPosition import HoldPosition
 from commands.flyforwire import FlyForWire
 from commands.crawl import Crawl
+from commands.ascent import Ascent
+from commands.extension import Extension
 
 # Autonomous
 from autonomous.noauto import NoAuto
@@ -249,6 +251,41 @@ class RobotContainer:
                 ),
             )
         )
+
+        # Comands for demo
+        commands2.button.JoystickButton(
+            self.driverController, self.driverConsts["FindZero"]
+        ).whileTrue(FindZero(self.armSubsystem))
+
+        commands2.button.JoystickButton(
+            self.driverController,
+            self.driverConsts["Unclamp"],
+        ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=-1))
+
+        commands2.button.JoystickButton(
+            self.driverController,
+            self.driverConsts["Clamp"],
+        ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=1))
+
+        commands2.button.POVButton(
+            self.driverController,
+            self.driverConsts["Up"],
+        ).whileTrue(Ascent(self.armSubsystem, 0.2))
+
+        commands2.button.POVButton(
+            self.driverController,
+            self.driverConsts["Down"],
+        ).whileTrue(Ascent(self.armSubsystem, -0.2))
+
+        commands2.button.JoystickButton(
+            self.driverController,
+            self.driverConsts["In"],
+        ).whileTrue(Extension(self.armSubsystem, 0.2))
+
+        commands2.button.JoystickButton(
+            self.driverController,
+            self.driverConsts["Out"],
+        ).whileTrue(Extension(self.armSubsystem, -0.2))
 
     def configureAutonomous(self):
         # Create a sendable chooser

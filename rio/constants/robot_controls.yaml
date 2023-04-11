@@ -18,6 +18,13 @@ main mode:
     StartConfig: 5
     Slow: 10
     Crawl: 3
+    FindZero: 6
+    Clamp: 1
+    Unclamp: 2
+    Up: 0 # POV value
+    Down: 180 # POV value
+    In: 8
+    Out: 7
 
   operator: # using an "x-box" controller
     controller_port: 1
