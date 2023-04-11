@@ -19,8 +19,6 @@ class Extension(commands2.CommandBase):
         self.armSubsystem = armSubsystem
         self.power = power
 
-        self.addRequirements([self.armSubsystem])
-
     def execute(self) -> None:
         self.armSubsystem.extension(self.power)
 
