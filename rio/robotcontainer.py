@@ -106,8 +106,8 @@ class RobotContainer:
                 lambda: self.operatorController.getRawAxis(
                     5,
                 ),
-                82,
-                163,
+                0,
+                261,
             )
         )
 
@@ -268,24 +268,36 @@ class RobotContainer:
         ).whileTrue(ManualGripper(self.clawSubsystem, grabForce=1))
 
         commands2.button.POVButton(
-            self.driverController,
-            self.driverConsts["Up"],
-        ).whileTrue(Ascent(self.armSubsystem, 0.2))
+            self.driverController, self.driverConsts["PresetOne"]
+        ).toggleOnTrue(
+            PresetArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+                45,  # Random!
+                150,  # Just as random!
+            )
+        )
 
         commands2.button.POVButton(
-            self.driverController,
-            self.driverConsts["Down"],
-        ).whileTrue(Ascent(self.armSubsystem, -0.2))
-
-        commands2.button.JoystickButton(
-            self.driverController,
-            self.driverConsts["In"],
-        ).whileTrue(Extension(self.armSubsystem, 0.2))
-
-        commands2.button.JoystickButton(
-            self.driverController,
-            self.driverConsts["Out"],
-        ).whileTrue(Extension(self.armSubsystem, -0.2))
+            self.driverController, self.driverConsts["PresetTwo"]
+        ).toggleOnTrue(
+            PresetArm(
+                self.armSubsystem,
+                lambda: -self.operatorController.getRawAxis(
+                    1,
+                ),
+                lambda: self.operatorController.getRawAxis(
+                    5,
+                ),
+                95,  # Random!
+                150,  # Just as random!
+            )
+        )
 
     def configureAutonomous(self):
         # Create a sendable chooser

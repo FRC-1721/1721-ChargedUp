@@ -21,10 +21,9 @@ main mode:
     FindZero: 6
     Clamp: 2
     Unclamp: 1
-    Up: 180 # POV value
-    Down: 0 # POV value
-    In: 8
-    Out: 7
+    PresetOne: 180 # POV value
+    PresetTwo: 90 # POV value
+
 
   operator: # using an "x-box" controller
     controller_port: 1
