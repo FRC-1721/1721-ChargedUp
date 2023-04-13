@@ -117,23 +117,6 @@ class RobotContainer:
         factories on commands2.button.CommandGenericHID or one of its
         subclasses (commands2.button.CommandJoystick or command2.button.CommandXboxController).
         """
-        # Drive at half speed when the right bumper is held
-        commands2.button.JoystickButton(
-            self.driverController, self.driverConsts["HalfSpeedButton"]
-        ).onTrue(
-            commands2.InstantCommand(
-                (lambda: self.robotDrive.setMaxOutput(0.5)), [self.robotDrive]
-            )
-        ).onFalse(
-            commands2.InstantCommand(
-                (lambda: self.robotDrive.setMaxOutput(1)), [self.robotDrive]
-            )
-        )
-
-        # This is causing an error read the message left in the class
-        commands2.button.JoystickButton(
-            self.driverController, self.driverConsts["DiffLock"]
-        ).toggleOnTrue(HoldPosition(self.robotDrive))
 
         commands2.button.JoystickButton(
             self.operatorController,
