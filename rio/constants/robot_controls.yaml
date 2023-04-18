@@ -16,13 +16,14 @@ main mode:
     Turn90: 3
     TurnAnti90: 4
     StartConfig: 5
-    Slow: 10
+    Slow: 4
     Crawl: 3
     FindZero: 6
     Clamp: 2
     Unclamp: 1
     PresetOne: 180 # POV value
     PresetTwo: 90 # POV value
+    Hold: 3
 
 
   operator: # using an "x-box" controller

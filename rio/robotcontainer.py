@@ -197,7 +197,7 @@ class RobotContainer:
                 lambda: -self.operatorController.getRawAxis(
                     1,
                 ),
-                lambda: self.operatorController.getRawAxis(
+                lambda: -self.operatorController.getRawAxis(
                     5,
                 ),
             )
@@ -281,6 +281,11 @@ class RobotContainer:
                 150,  # Just as random!
             )
         )
+
+        commands2.button.JoystickButton(
+            self.driverController,
+            self.driverConsts["Hold"],
+        ).toggleOnTrue(ManualGripper(self.clawSubsystem, grabForce=-0.35))
 
     def configureAutonomous(self):
         # Create a sendable chooser
