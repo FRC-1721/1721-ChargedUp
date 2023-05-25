@@ -53,7 +53,7 @@ class KidsAuto(commands2.CommandBase):
         else:
             path = "autonomous/"
 
-        with open(path + "kidsAuto.txt") as fp:
+        with open(path + "kidsAuto.txt", "r") as fp:
             self.lines = fp.readlines()
         self.curline = 0
 
