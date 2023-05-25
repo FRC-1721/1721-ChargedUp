@@ -22,7 +22,7 @@ def parseLine(line: str):
     try:
         if inp[0] == "FORWARD":
             ret[0] = cmds.FORWARD
-        if inp[0] == "BACK":
+        if inp[0] == "BACKWARD":
             ret[0] = cmds.BACKWARD
         if inp[0] == "RIGHT":
             ret[0] = cmds.RIGHT
@@ -72,12 +72,12 @@ class KidsAuto(commands2.CommandBase):
 
         if cmd[0] == cmds.FORWARD:
             self.drive.arcadeDrive(
-                0.2,
+                0.3,
                 0,
             )
         elif cmd[0] == cmds.BACKWARD:
             self.drive.arcadeDrive(
-                -0.2,
+                -0.3,
                 0,
             )
         elif cmd[0] == cmds.RIGHT:
