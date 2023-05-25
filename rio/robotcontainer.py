@@ -31,6 +31,7 @@ from autonomous.blockDrop import BlockDrop
 from autonomous.blockDrip import BlockDrip
 from autonomous.dropAuto import DropAuto
 from autonomous.drivestationcube import DrivestationCube
+from autonomous.kidsAuto import KidsAuto
 
 # NetworkTables
 from ntcore import NetworkTableInstance
@@ -272,6 +273,10 @@ class RobotContainer:
         self.autoChooser.addOption(
             "Drivestation [Exerpimental]",
             DrivestationCube(self.clawSubsystem, self.armSubsystem, self.robotDrive),
+        )
+        self.autoChooser.addOption(
+            "Kids Autonomous",
+            KidsAuto(self.robotDrive),
         )
 
         # Put the chooser on the dashboard
